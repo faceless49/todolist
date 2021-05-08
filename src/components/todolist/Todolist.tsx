@@ -3,10 +3,21 @@ import List from "./list/List";
 import Footer from "./footer/Footer";
 import React from "react";
 
-function Todolist(props:any) {
+type TaskType = {
+  id: number,
+  title: string,
+  isDone: boolean,
+}
+
+type PropsType = {
+  title: string,
+  tasks: Array<TaskType>,
+}
+
+function Todolist(props: PropsType) {
   return (
     <div>
-      <Header/>
+      <Header title={props.tasks[0].title} />
       <List/>
       <Footer/>
     </div>
