@@ -10,16 +10,23 @@ export type TaskType = {
 type PropsToDoListType = { // Мы создаем объект для передачи его в пропсы
   title: string
   tasks: Array<TaskType> // Массив чисел? Нет, Массив объектов тогда нужно описать type TaskType=
+  removeTasks: (taskID: number) => void
 }
 
 function Todolist(props: PropsToDoListType) { // props = {title: 'What to learn', tasks: []}
 
   const tasksJSXElements = props.tasks.map(t => {
+    const removeTasks = () => props.removeTasks(t.id)
     return (
-      <li><input type="checkbox" checked={t.isDone}/>
-        <span>{t.title}</span></li>
+      <li>
+        <input type="checkbox" checked={t.isDone}/>
+        <span>{t.title}</span>
+        <button onClick={removeTasks}>X</button>
+      </li>
     )
   })
+
+
   return (
     <div>
       <h3>{props.title}</h3>
