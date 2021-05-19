@@ -1,21 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Todolist, {TaskType} from './components/todolist/Todolist';
 
 
 function App() {
-  let tasksToLearn: Array<TaskType> = [
+  // let tasksToLearn: Array<TaskType> = [
+  //   {id: 1, title: 'HTML&CSS', isDone: true},
+  //   {id: 2, title: 'JS', isDone: true},
+  //   {id: 3, title: 'ReactJS', isDone: false},
+  //   {id: 4, title: 'Redux', isDone: false},
+  // ]
+
+  const [tasksToLearn, setTasksToLearn] = useState([
     {id: 1, title: 'HTML&CSS', isDone: true},
     {id: 2, title: 'JS', isDone: true},
     {id: 3, title: 'ReactJS', isDone: false},
     {id: 4, title: 'Redux', isDone: false},
-  ]
+  ])
 
   function removeTasks(taskID: number) {
     const filteredTasks = tasksToLearn.filter(t => t.id !== taskID)
     console.log(filteredTasks)
-    tasksToLearn = filteredTasks
+    // tasksToLearn = filteredTasks
+    setTasksToLearn(filteredTasks)
   }
+
 
   // ? Подаем разные данные в две компоненты, для отрисовки другого JSX
   // ? Для этого мы даем через пропсы массивы tasks
