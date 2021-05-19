@@ -7,13 +7,19 @@ export type TaskType = {
   isDone: boolean
 }
 
-type PropsType = { // Мы создаем объект для передачи его в пропсы
+type PropsToDoListType = { // Мы создаем объект для передачи его в пропсы
   title: string
   tasks: Array<TaskType> // Массив чисел? Нет, Массив объектов тогда нужно описать type TaskType=
 }
-function Todolist(props: PropsType) { // props = {title: 'What to learn', tasks: []}
-debugger
 
+function Todolist(props: PropsToDoListType) { // props = {title: 'What to learn', tasks: []}
+
+  const tasksJSXElements = props.tasks.map(t => {
+    return (
+      <li><input type="checkbox" checked={t.isDone}/>
+        <span>{t.title}</span></li>
+    )
+  })
   return (
     <div>
       <h3>{props.title}</h3>
@@ -22,9 +28,7 @@ debugger
         <button>+</button>
       </div>
       <ul>
-        <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
-        <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
-        <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
+        {tasksJSXElements}
       </ul>
       <div>
         <button>All</button>

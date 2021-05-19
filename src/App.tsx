@@ -4,7 +4,7 @@ import Todolist, {TaskType} from './components/todolist/Todolist';
 
 
 function App() {
-  const tasks1 = [
+  const tasksToLearn = [
     {id: 1, title: 'HTML&CSS', isDone: true},
     {id: 2, title: 'JS', isDone: true},
     {id: 3, title: 'ReactJS', isDone: false},
@@ -12,17 +12,18 @@ function App() {
     // ? Подаем разные данные в две компоненты, для отрисовки другого JSX
     // ? Для этого мы даем через пропсы массивы tasks
     // ? И указываем их в Todolist в тайпе, что ждем массивы tasks
+    // ? В функции всегда задавать данные?
 
-  const tasks2: Array<TaskType> = [
-    {id: 1, title: 'HelloWorld', isDone: true},
-    {id: 2, title: 'I am Happy', isDone: false},
-    {id: 3, title: 'Yo', isDone: false},
+  const tasksToBuy: Array<TaskType> = [
+    {id: 1, title: 'Milk', isDone: true},
+    {id: 2, title: 'Meat', isDone: false},
+    {id: 3, title: 'Bread', isDone: false},
   ]
 
   return (
     <div className="App">
-      <Todolist title="What to learn" tasks={tasks1}/>
-      <Todolist title="Songs" tasks={tasks2}/>
+      <Todolist title="What to learn" tasks={tasksToLearn}/>
+      <Todolist title="What to buy" tasks={tasksToBuy}/>
     </div>
   );
 }
