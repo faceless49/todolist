@@ -21,12 +21,11 @@ function Todolist(props: PropsToDoListType) { // props = {title: 'What to learn'
     const removeTasks = () => props.removeTasks(t.id)
 
     return (
-      <li>
+      <li key={t.id}>
         <input type="checkbox" checked={t.isDone}/>
         <span>{t.title}</span>
         <button onClick={removeTasks}>X</button>
         {/*  <button onClick={() => props.removeTasks(t.id)}>X</button> -- Так подробнее*/}
-
       </li>
     )
   })
@@ -43,9 +42,9 @@ function Todolist(props: PropsToDoListType) { // props = {title: 'What to learn'
         {tasksJSXElements}
       </ul>
       <div>
-        <button onClick={() => props.changeTodoListFilter("all")}>All</button>
-        <button onClick={() => props.changeTodoListFilter("active")}>Active</button>
-        <button onClick={() => props.changeTodoListFilter("completed")}>Completed</button>
+        <button onClick={() => props.changeTodoListFilter('all')}>All</button>
+        <button onClick={() => props.changeTodoListFilter('active')}>Active</button>
+        <button onClick={() => props.changeTodoListFilter('completed')}>Completed</button>
       </div>
     </div>
   );
