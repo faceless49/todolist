@@ -1,6 +1,5 @@
 import React from 'react';
-import {FilterValueType} from '../../App';
-
+import {keyType} from './../../App';
 
 export type TaskType = {
   id: number
@@ -8,46 +7,30 @@ export type TaskType = {
   isDone: boolean
 }
 
-type PropsToDoListType = { // Мы создаем объект для передачи его в пропсы
+export type PropsType = {
   title: string
-  tasks: Array<TaskType> // Массив чисел? Нет, Массив объектов тогда нужно описать type TaskType=
-  removeTasks: (taskID: number) => void // Тайп - функция, которая получит какое то число, и ничего не ретурнит
-  changeTodoListFilter: (filterValue: FilterValueType) => void
+  tasks: Array<TaskType>
+  removeTasks: (id: number) => void
+  changeFilter: (key: keyType) => void
 }
 
-function Todolist(props: PropsToDoListType) { // props = {title: 'What to learn', tasks: []}
-
-  const tasksJSXElements = props.tasks.map(t => {
-    const removeTasks = () => props.removeTasks(t.id)
-
-    return (
-      <li key={t.id}>
-        <input type="checkbox" checked={t.isDone}/>
-        <span>{t.title}</span>
-        <button onClick={removeTasks}>X</button>
-        {/*  <button onClick={() => props.removeTasks(t.id)}>X</button> -- Так подробнее*/}
-      </li>
-    )
-  })
-
-
-  return (
+export function Todolist(props: PropsType) {
+  return <div>
+    <h3>{props.title}</h3>
     <div>
-      <h3>{props.title}</h3>
-      <div>
-        <input/>
-        <button>+</button>
-      </div>
-      <ul>
-        {tasksJSXElements}
-      </ul>
-      <div>
-        <button onClick={() => props.changeTodoListFilter('all')}>All</button>
-        <button onClick={() => props.changeTodoListFilter('active')}>Active</button>
-        <button onClick={() => props.changeTodoListFilter('completed')}>Completed</button>
-      </div>
+      <input/>
+      <button>+</button>
     </div>
-  );
+    <ul>
+      {props.tasks.map(t => <li key={t.id}>
+        <button onClick={() => props.removeTasks(t.id)}>X</button>
+        <input type="checkbox" checked={t.isDone}/>
+        <span>{t.title}</span></li>)}
+    </ul>
+    <div>
+      <button onClick={() => props.changeFilter('All')}>All</button>
+      <button onClick={() => props.changeFilter('Active')}>Active</button>
+      <button onClick={() => props.changeFilter('Completed')}>Completed</button>
+    </div>
+  </div>
 }
-
-export default Todolist;
