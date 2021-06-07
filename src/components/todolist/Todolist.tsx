@@ -1,8 +1,9 @@
 import React from 'react';
-import {keyType} from './../../App';
+import {keyType} from '../../App';
+import {Button} from '../ui/Button';
 
 export type TaskType = {
-  id: number
+  id: string
   title: string
   isDone: boolean
 }
@@ -10,7 +11,7 @@ export type TaskType = {
 export type PropsType = {
   title: string
   tasks: Array<TaskType>
-  removeTasks: (id: number) => void
+  removeTasks: (id: string) => void
   changeFilter: (key: keyType) => void
 }
 
@@ -28,9 +29,9 @@ export function Todolist(props: PropsType) {
         <span>{t.title}</span></li>)}
     </ul>
     <div>
-      <button onClick={() => props.changeFilter('All')}>All</button>
-      <button onClick={() => props.changeFilter('Active')}>Active</button>
-      <button onClick={() => props.changeFilter('Completed')}>Completed</button>
+      <Button callBack={() => props.changeFilter('All')} value={'All'}/>
+      <Button callBack={() => props.changeFilter('Active')} value={'Active'}/>
+      <Button callBack={() => props.changeFilter('Completed')} value={'Completed'}/>
     </div>
   </div>
 }
