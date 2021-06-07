@@ -19,6 +19,12 @@ export function Todolist(props: PropsType) {
   const changeFilterHandlerAll = () => {
     props.changeFilter('All')
   }
+  const changeFilterHandlerActive = () => {
+    props.changeFilter('Active')
+  }
+  const changeFilterHandlerCompleted = () => {
+    props.changeFilter('Completed')
+  }
 
   return <div>
     <h3>{props.title}</h3>
@@ -27,23 +33,27 @@ export function Todolist(props: PropsType) {
       <button>+</button>
     </div>
     <ul>
-      {
-        props.tasks.map(t =>
+      {props.tasks.map((t: TaskType) => {
+        const removeTasksHandler = () => {
+          props.removeTasks(t.id)
+        }
+        return (
           <li key={t.id}>
-            <Button callBack={() => {
-              props.removeTasks(t.id)
-            }} value={'x'}/>
+            <Button callBack={removeTasksHandler} value={'x'}/>
             {/*<button onClick={() => {props.removeTask(t.id)}}>x</button>*/}
             <input type="checkbox" checked={t.isDone}/>
             <span>{t.title}</span>
           </li>
         )
+      })
+      }
       }
     </ul>
     <div>
       <Button callBack={changeFilterHandlerAll} value={'All'}/>
-      <Button callBack={() => props.changeFilter('Active')} value={'Active'}/>
-      <Button callBack={() => props.changeFilter('Completed')} value={'Completed'}/>
+      {/*<Button callBack={() => props.changeFilter('Active')} value={'Active'}/>*/}
+      <Button callBack={changeFilterHandlerActive} value={'Active'}/>
+      <Button callBack={changeFilterHandlerCompleted} value={'Completed'}/>
     </div>
   </div>
 }
