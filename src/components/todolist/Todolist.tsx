@@ -16,6 +16,10 @@ export type PropsType = {
 }
 
 export function Todolist(props: PropsType) {
+  const changeFilterHandlerAll = () => {
+    props.changeFilter('All')
+  }
+
   return <div>
     <h3>{props.title}</h3>
     <div>
@@ -23,13 +27,21 @@ export function Todolist(props: PropsType) {
       <button>+</button>
     </div>
     <ul>
-      {props.tasks.map(t => <li key={t.id}>
-        <button onClick={() => props.removeTasks(t.id)}>X</button>
-        <input type="checkbox" checked={t.isDone}/>
-        <span>{t.title}</span></li>)}
+      {
+        props.tasks.map(t =>
+          <li key={t.id}>
+            <Button callBack={() => {
+              props.removeTasks(t.id)
+            }} value={'x'}/>
+            {/*<button onClick={() => {props.removeTask(t.id)}}>x</button>*/}
+            <input type="checkbox" checked={t.isDone}/>
+            <span>{t.title}</span>
+          </li>
+        )
+      }
     </ul>
     <div>
-      <Button callBack={() => props.changeFilter('All')} value={'All'}/>
+      <Button callBack={changeFilterHandlerAll} value={'All'}/>
       <Button callBack={() => props.changeFilter('Active')} value={'Active'}/>
       <Button callBack={() => props.changeFilter('Completed')} value={'Completed'}/>
     </div>
