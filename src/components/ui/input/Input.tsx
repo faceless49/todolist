@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 
 type inputType = {
   callBack: (newTitle: string) => void
@@ -15,13 +15,22 @@ export const Input = (props: inputType) => {
   const onClickHandler = () => {
     props.callBack(title)
     setTitle('')
-    console.log(title)
   }
+
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.charCode);
+    if (e.key === 'Enter') {
+      onClickHandler()
+    }
+  }
+
   return (
     <div>
       <input
         value={title}
-        onChange={onChangeHandler}/>
+        onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
+      />
       <button onClick={onClickHandler}>+</button>
     </div>
   );
