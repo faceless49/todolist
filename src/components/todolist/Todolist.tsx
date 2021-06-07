@@ -14,7 +14,7 @@ export type PropsType = {
   tasks: Array<TaskType>
   removeTasks: (id: string) => void
   changeFilter: (key: keyType) => void
-  addTask: () => void
+  addTask: (newTitle: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -30,7 +30,7 @@ export function Todolist(props: PropsType) {
 
   return <div>
     <h3>{props.title}</h3>
-    <Input callBack={() => props.addTask()}/>
+    <Input callBack={(newTitle) => props.addTask(newTitle)}/>
     <ul>
       {props.tasks.map((t: TaskType) => {
         const removeTasksHandler = () => {

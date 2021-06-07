@@ -1,18 +1,28 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 
 type inputType = {
-  callBack: () => void
+  callBack: (newTitle: string) => void
+
 }
 
 export const Input = (props: inputType) => {
+  let [title, setTitle] = useState('')
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value)
+    setTitle(e.currentTarget.value)
   }
 
+  const onClickHandler = () => {
+    props.callBack(title)
+    setTitle('')
+    console.log(title)
+  }
   return (
     <div>
-      <input onChange={onChangeHandler}/>
-      <button onClick={() => props.callBack()}>+</button>
+      <input
+        value={title}
+        onChange={onChangeHandler}/>
+      <button onClick={onClickHandler}>+</button>
     </div>
   );
 };

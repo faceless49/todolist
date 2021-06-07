@@ -16,8 +16,8 @@ function App() {
     {id: v1(), title: 'SASS', isDone: true}
   ])
 
-  const addTask = () => {
-    let newTask = {id: v1(), title: 'NEWNEW-HTML&CSS', isDone: true}
+  const addTask = (newTitle: string) => {
+    let newTask = {id: v1(), title: newTitle, isDone: true}
     console.log('asdasd')
     setTasks([newTask, ...tasks])
   }
