@@ -16,6 +16,12 @@ function App() {
     {id: v1(), title: 'SASS', isDone: true}
   ])
 
+  const addTask = () => {
+    let newTask = {id: v1(), title: 'NEWNEW-HTML&CSS', isDone: true}
+    console.log('asdasd')
+    setTasks([newTask, ...tasks])
+  }
+
   const removeTasks = (tID: string) => {
     console.log(tasks)
     tasks = tasks.filter(t => t.id !== tID)
@@ -44,6 +50,7 @@ function App() {
                 tasks={filterValue}
                 removeTasks={removeTasks}
                 changeFilter={changeFilter}
+                addTask={addTask}
       />
 
     </div>

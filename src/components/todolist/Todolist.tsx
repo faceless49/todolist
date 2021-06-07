@@ -1,6 +1,7 @@
 import React from 'react';
 import {keyType} from '../../App';
 import {Button} from '../ui/Button';
+import {Input} from '../ui/input/Input';
 
 export type TaskType = {
   id: string
@@ -13,6 +14,7 @@ export type PropsType = {
   tasks: Array<TaskType>
   removeTasks: (id: string) => void
   changeFilter: (key: keyType) => void
+  addTask: () => void
 }
 
 export function Todolist(props: PropsType) {
@@ -28,10 +30,7 @@ export function Todolist(props: PropsType) {
 
   return <div>
     <h3>{props.title}</h3>
-    <div>
-      <input/>
-      <button>+</button>
-    </div>
+    <Input callBack={() => props.addTask()}/>
     <ul>
       {props.tasks.map((t: TaskType) => {
         const removeTasksHandler = () => {
@@ -46,7 +45,6 @@ export function Todolist(props: PropsType) {
           </li>
         )
       })
-      }
       }
     </ul>
     <div>
