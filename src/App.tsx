@@ -16,10 +16,12 @@ function App() {
     {id: v1(), title: 'SASS', isDone: true}
   ])
 
+
   const addTask = (newTitle: string) => {
-    let newTask = {id: v1(), title: newTitle, isDone: true}
+    let newTask = {id: v1(), title: newTitle, isDone: false}
     setTasks([newTask, ...tasks])
   }
+
 
   const removeTasks = (tID: string) => {
     console.log(tasks)
@@ -42,6 +44,15 @@ function App() {
     filterValue = tasks.filter(t => t.isDone)
   }
 
+  const changeTaskStatus = (id: string, newIsDone: boolean) => {
+    let currentTask = tasks.find(t => t.id === id)
+    if (currentTask) {
+      currentTask.isDone = newIsDone
+      // * 2 variant
+      // * currentTask.isDone = !currentTask.isDone
+      setTasks([...tasks]);
+    }
+  }
 
   return (
     <div className="App">
@@ -50,6 +61,8 @@ function App() {
                 removeTasks={removeTasks}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
+                filter={filter}
       />
 
     </div>
