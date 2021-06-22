@@ -50,23 +50,11 @@ function App() {
   // ])
 
 
-  const addTask = (newTitle: string) => {
-    let newTask = {id: v1(), title: newTitle, isDone: false}
-    setTasks([newTask, ...tasks])
-  }
 
 
-  const removeTasks = (tID: string) => {
-    console.log(tasks)
-    tasks = tasks.filter(t => t.id !== tID)
-    setTasks(tasks)
-  }
 
   let [filter, setFilter] = useState<keyType>('All')
 
-  const changeFilter = (key: keyType) => {
-    setFilter(key)
-  }
 
   let filterValue = tasks
 
@@ -77,7 +65,7 @@ function App() {
     filterValue = tasks.filter(t => t.isDone)
   }
 
-  const changeTaskStatus = (id: string, newIsDone: boolean) => {
+  const changeTaskStatus = (id: string, newIsDone: boolean, todoListID: string) => {
     let currentTask = tasks.find(t => t.id === id)
     if (currentTask) {
       currentTask.isDone = newIsDone
@@ -86,6 +74,20 @@ function App() {
       setTasks([...tasks]);
     }
   }
+  const changeFilter = (key: keyType, todoListID: string) => {
+    setFilter(key)
+  }
+  const addTask = (newTitle: string, todoListID: string) => {
+    let newTask = {id: v1(), title: newTitle, isDone: false}
+    setTasks([newTask, ...tasks])
+  }
+  const removeTasks = (tID: string, todoListID: string) => {
+    console.log(tasks)
+    tasks = tasks.filter(t => t.id !== tID)
+    setTasks(tasks)
+  }
+
+  
 
   return (
     <div className="App">
