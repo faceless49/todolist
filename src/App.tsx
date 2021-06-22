@@ -6,15 +6,48 @@ import {v1} from 'uuid';
 
 export type keyType = 'All' | 'Active' | 'Completed'
 
+type TodoListType = {
+  id: string
+  title: string
+  filter: keyType
+}
+
+type TaskStateType = {
+  [key: string]: Array<TaskType>
+}
+
 function App() {
-
-
-  let [tasks, setTasks] = useState<Array<TaskType>>([
-    {id: v1(), title: 'HTML&CSS', isDone: true},
-    {id: v1(), title: 'JS', isDone: true},
-    {id: v1(), title: 'ReactJS', isDone: false},
-    {id: v1(), title: 'SASS', isDone: true}
+  const todoListID_1 = v1()
+  const todoListID_2 = v1()
+  const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+    {id: todoListID_1, title: 'What to Learn', filter: 'All'},
+    {id: todoListID_2, title: 'What to buy', filter: 'All'}
   ])
+  const [tasks, setTasks] = useState<TaskStateType>({
+    [todoListID_1]: [
+      {id: v1(), title: 'HTML&CSS', isDone: true},
+      {id: v1(), title: 'JS', isDone: true},
+      {id: v1(), title: 'ReactJS', isDone: false},
+      {id: v1(), title: 'SASS', isDone: true}
+    ],
+    [todoListID_2]: [
+      {id: v1(), title: 'NASDAQ', isDone: false},
+      {id: v1(), title: 'Amazon', isDone: true},
+      {id: v1(), title: 'Facebook', isDone: false},
+      {id: v1(), title: 'NVIDIA', isDone: true},
+      {id: v1(), title: 'Tesla', isDone: true},
+    ]
+  })
+
+
+
+  // * Отправляем в отдельные массивы
+  // let [tasks, setTasks] = useState<Array<TaskType>>([
+  //   {id: v1(), title: 'HTML&CSS', isDone: true},
+  //   {id: v1(), title: 'JS', isDone: true},
+  //   {id: v1(), title: 'ReactJS', isDone: false},
+  //   {id: v1(), title: 'SASS', isDone: true}
+  // ])
 
 
   const addTask = (newTitle: string) => {

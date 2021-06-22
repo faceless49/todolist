@@ -42,7 +42,6 @@ export function Todolist(props: PropsType) {
 
         return (
           <li key={t.id}>
-            {/*<button onClick={() => {props.removeTask(t.id)}}>x</button>*/}
             <input type="checkbox" checked={t.isDone} onChange={changeTaskStatus}/>
             <span className={t.isDone ? 'is-done' : ''}>{t.title}</span>
             <Button callBack={removeTasksHandler} value={'x'}/>
@@ -53,19 +52,19 @@ export function Todolist(props: PropsType) {
     </ul>
     <div>
       <Button
-              callBack={onFilterClickHandler('All')}
-              value={'All'}
-              filter={props.filter}
+        callBack={onFilterClickHandler('All')}
+        value={'All'}
+        filter={props.filter}
       />
       <Button
-              callBack={onFilterClickHandler('Active')}
-              value={'Active'}
-              filter={props.filter}
+        callBack={onFilterClickHandler('Active')}
+        value={'Active'}
+        filter={props.filter}
       />
       <Button
-              callBack={onFilterClickHandler('Completed')}
-              value={'Completed'}
-              filter={props.filter}
+        callBack={onFilterClickHandler('Completed')}
+        value={'Completed'}
+        filter={props.filter}
       />
     </div>
   </div>
