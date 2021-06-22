@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './App.css';
+import s from './App.module.scss';
 import {TaskType, Todolist} from './components/todolist/Todolist';
 import {v1} from 'uuid';
 
@@ -115,7 +115,7 @@ function App() {
   })
 
   return (
-    <div className="App">
+    <div className={s.App}>
       {todoListsComponents}
     </div>
   );

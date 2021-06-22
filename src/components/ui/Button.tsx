@@ -1,6 +1,6 @@
 import React from 'react';
 import {keyType} from '../../App';
-import s from './Button.module.css'
+import s from './Button.module.scss'
 type propsType = {
   callBack: () => void
   value: string
