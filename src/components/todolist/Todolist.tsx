@@ -12,34 +12,40 @@ export type TaskType = {
 export type PropsType = {
   title: string
   tasks: Array<TaskType>
+  filter: keyType
+  todolistID: string
   removeTasks: (id: string, todoListID: string) => void
   changeTodoListFilter: (key: keyType, todoListID: string) => void
   addTask: (newTitle: string, todoListID: string) => void
   changeTaskStatus: (id: string, isDone: boolean, todoListID: string) => void
   removeTodoList: (todoListID: string) => void
-  filter: keyType
 }
 
 export function Todolist(props: PropsType) {
 
-  const onFilterClickHandler = (filterValue: keyType) => {
-    return () => props.changeFilter(filterValue)
+  const onFilterClickHandler = (key: keyType) => {
+    return () => props.changeTodoListFilter(key, props.todolistID)
   }
-
+  const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
 
   return <div>
-    <h3>{props.title}</h3>
-    <Input callBack={(newTitle) => props.addTask(newTitle)}/>
+    <h3>
+      {props.title}
+      <button onClick={onClickRemoveTodoList}>X</button>
+    </h3>
+    <Input callBack={(newTitle) => props.addTask(newTitle, props.todolistID)}/>
+
     <ul>
 
       {props.tasks.map((t: TaskType) => {
         const removeTasksHandler = () => {
-          props.removeTasks(t.id)
+          props.removeTasks(t.id, props.todolistID)
         }
 
         const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-          props.changeTaskStatus(t.id, e.currentTarget.checked)
+          props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistID)
         }
+
 
         return (
           <li key={t.id}>
@@ -51,6 +57,7 @@ export function Todolist(props: PropsType) {
       })
       }
     </ul>
+
     <div>
       <Button
         callBack={onFilterClickHandler('All')}
