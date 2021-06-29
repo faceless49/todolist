@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import s from './EditableSpan.module.scss'
 
 type EditableSpanPropsType = {
-  className: string
+  className?: string
   title: string
   changeTitle: (title: string) => void
 }
