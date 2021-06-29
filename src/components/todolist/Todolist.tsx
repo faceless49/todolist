@@ -2,6 +2,7 @@ import React, {ChangeEvent} from 'react';
 import {keyType} from '../../App';
 import {Button} from '../ui/Button';
 import {Input} from '../ui/input/Input';
+import {EditableSpan} from '../ui/editableSpan/EditableSpan';
 
 export type TaskType = {
   id: string
@@ -33,7 +34,9 @@ export function Todolist(props: PropsType) {
       {props.title}
       <button onClick={onClickRemoveTodoList}>X</button>
     </h3>
-    <Input callBack={(newTitle) => props.addTask(newTitle, props.todolistID)}/>
+    <Input
+      callBack={(newTitle) =>
+        props.addTask(newTitle, props.todolistID)}/>
 
     <ul>
 
@@ -50,7 +53,8 @@ export function Todolist(props: PropsType) {
         return (
           <li key={t.id}>
             <input type="checkbox" checked={t.isDone} onChange={changeTaskStatus}/>
-            <span className={t.isDone ? 'is-done' : ''}>{t.title}</span>
+            {/*<span className={t.isDone ? 'is-done' : ''}>{t.title}</span>*/}
+            <EditableSpan className={t.isDone ? 'is-done' : ''} title={t.title}/>
             <Button callBack={removeTasksHandler} value={'x'}/>
           </li>
         )

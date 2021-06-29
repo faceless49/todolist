@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import s from './App.module.scss';
 import {TaskType, Todolist} from './components/todolist/Todolist';
 import {v1} from 'uuid';
+import {Input} from './components/ui/input/Input';
 
 
 export type keyType = 'All' | 'Active' | 'Completed'
@@ -87,7 +88,16 @@ function App() {
     setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
     delete tasks[todoListID]
   }
-
+  const addTodoList = (title: string) => {
+    const newTodoListID = v1()
+    const newTodoList: TodoListType = {
+      id: newTodoListID,
+      title: title,
+      filter: 'All'
+    }
+    setTodoLists([...todoLists, newTodoList])
+    setTasks({...tasks, [newTodoListID]: []})
+  }
 
   const todoListsComponents = todoLists.map(tl => {
     let tasksForTodolist = tasks[tl.id]
@@ -117,6 +127,7 @@ function App() {
   return (
     <div className={s.App}>
       {todoListsComponents}
+      <Input callBack={addTodoList}/>
     </div>
   );
 }
