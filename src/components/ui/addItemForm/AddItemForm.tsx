@@ -4,7 +4,7 @@ type inputType = {
   callBack: (newTitle: string) => void
 }
 
-export const Input = (props: inputType) => {
+export const AddItemForm = (props: inputType) => {
     let [title, setTitle] = useState('')
     let [error, setError] = useState<null | string>(null)
 

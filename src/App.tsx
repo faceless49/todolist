@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import s from './App.module.scss';
 import {TaskType, Todolist} from './components/todolist/Todolist';
 import {v1} from 'uuid';
-import {Input} from './components/ui/input/Input';
+import {AddItemForm} from './components/ui/addItemForm/AddItemForm';
 
 
 export type keyType = 'All' | 'Active' | 'Completed'
@@ -152,7 +152,7 @@ function App() {
   return (
     <div className={s.App}>
       {todoListsComponents}
-      <Input callBack={addTodoList}/>
+      <AddItemForm callBack={addTodoList}/>
     </div>
   );
 }

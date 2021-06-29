@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import {keyType} from '../../App';
 import {Button} from '../ui/Button';
-import {Input} from '../ui/input/Input';
+import {AddItemForm} from '../ui/addItemForm/AddItemForm';
 import {EditableSpan} from '../ui/editableSpan/EditableSpan';
 
 export type TaskType = {
@@ -40,7 +40,7 @@ export function Todolist(props: PropsType) {
         changeTitle={changeTodoListTitle}/>
       <button onClick={onClickRemoveTodoList}>X</button>
     </h3>
-    <Input
+    <AddItemForm
       callBack={(newTitle) =>
         props.addTask(newTitle, props.todolistID)}/>
 
