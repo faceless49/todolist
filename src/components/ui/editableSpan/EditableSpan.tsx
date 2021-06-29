@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import s from './EditableSpan.module.scss'
 
 type EditableSpanPropsType = {
@@ -14,12 +14,20 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 
   const onEditMode = () => setEditMode(true)
   const offEditMode = () => {
-    props.changeTitle(title)
-    setEditMode(false);
+    if (title) {
+      props.changeTitle(title)
+    }
+    setEditMode(false)
   }
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
   }
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      offEditMode()
+    }
+  }
+
 
   return (
     editMode
@@ -28,6 +36,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
         value={title}
         onBlur={offEditMode}
         onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
       />
       : <span
         onDoubleClick={onEditMode}
