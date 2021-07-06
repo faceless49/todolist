@@ -4,7 +4,7 @@ import {keyType} from '../../App';
 import {AddItemForm} from '../ui/addItemForm/AddItemForm';
 import {EditableSpan} from '../ui/editableSpan/EditableSpan';
 import s from '../ui/Button.module.scss';
-import {Button, IconButton} from '@material-ui/core';
+import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 
 
@@ -48,15 +48,15 @@ export function Todolist(props: PropsType) {
         color={'primary'}
       >
         <Delete/>
-
       </IconButton>
-
     </h3>
+
+
     <AddItemForm
       callBack={(newTitle) =>
         props.addTask(newTitle, props.todolistID)}/>
 
-    <ul>
+    <ul style={{listStyleType: 'none', paddingLeft: '0'}}>
       {props.tasks.map((t: TaskType) => {
         const removeTasksHandler = () => {
           props.removeTasks(t.id, props.todolistID)
@@ -71,11 +71,16 @@ export function Todolist(props: PropsType) {
 
         return (
           <li key={t.id}>
-            <input type="checkbox" checked={t.isDone} onChange={changeTaskStatus}/>
+            <Checkbox
+              checked={t.isDone}
+              onChange={changeTaskStatus}
+            />
+
             <EditableSpan
               changeTitle={changeTaskTitleHandler}
               className={t.isDone ? 'is-done' : ''}
               title={t.title}/>
+
             <IconButton
               onClick={removeTasksHandler}
               color={'primary'}
@@ -83,13 +88,11 @@ export function Todolist(props: PropsType) {
             >
               <Delete/>
             </IconButton>
-            {/*<Button callBack={removeTasksHandler} value={'x'}/>*/}
           </li>
         )
       })
       }
     </ul>
-
     <div>
 
       {/*<Button*/}

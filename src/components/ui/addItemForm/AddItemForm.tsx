@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button, IconButton} from '@material-ui/core';
+import {Button, IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
 type inputType = {
@@ -32,20 +32,23 @@ export const AddItemForm = (props: inputType) => {
 
     return (
       <div>
-        <input
+        <TextField
           value={title}
+          label={'Title'}
+          variant={'outlined'}
+          size={'small'}
           onChange={onChangeHandler}
           onKeyPress={onKeyPressHandler}
-          className={error ? 'error' : ''}
+          error={!!error} // ! TODO: Use StyleComponent later for text required
+          helperText={error && error}
         />
+
         <IconButton
           size={'small'}
           color={'primary'}
           onClick={onClickHandler}>
           <AddBox/>
         </IconButton>
-        {/*<button onClick={onClickHandler}>+</button>*/}
-        {error && <div className={'error-message'}>{error}</div>}
       </div>
     );
   }

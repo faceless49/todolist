@@ -3,6 +3,8 @@ import s from './App.module.scss';
 import {TaskType, Todolist} from './components/todolist/Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/ui/addItemForm/AddItemForm';
+import {AppBar, Button, Container, IconButton, Toolbar, Typography, Grid, Paper} from '@material-ui/core';
+import {Menu} from '@material-ui/icons';
 
 
 export type keyType = 'All' | 'Active' | 'Completed'
@@ -133,26 +135,46 @@ function App() {
     }
 
     return (
-      <Todolist
-        todolistID={tl.id}
-        title={tl.title}
-        tasks={tasksForTodolist}
-        removeTasks={removeTasks}
-        addTask={addTask}
-        changeTodoListFilter={changeTodoListFilter}
-        changeTaskStatus={changeTaskStatus}
-        removeTodoList={removeTodoList}
-        filter={tl.filter}
-        changeTaskTitle={changeTaskTitle}
-        changeTodoListTitle={changeTodoListTitle}
-      />
+      <Paper>
+        <Todolist
+          todolistID={tl.id}
+          title={tl.title}
+          tasks={tasksForTodolist}
+          removeTasks={removeTasks}
+          addTask={addTask}
+          changeTodoListFilter={changeTodoListFilter}
+          changeTaskStatus={changeTaskStatus}
+          removeTodoList={removeTodoList}
+          filter={tl.filter}
+          changeTaskTitle={changeTaskTitle}
+          changeTodoListTitle={changeTodoListTitle}
+        />
+      </Paper>
     )
   })
 
   return (
     <div className={s.App}>
-      {todoListsComponents}
-      <AddItemForm callBack={addTodoList}/>
+      <AppBar position="static">
+        <Toolbar style={{justifyContent: 'space-between'}}>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <Menu/>
+          </IconButton>
+          <Typography variant="h6">
+            Todolists
+          </Typography>
+          <Button
+            color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{padding: '20px 0'}}>
+          <AddItemForm callBack={addTodoList}/>
+        </Grid>
+        <Grid container>
+          {todoListsComponents}
+        </Grid>
+      </Container>
     </div>
   );
 }
