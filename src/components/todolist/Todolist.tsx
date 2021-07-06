@@ -15,10 +15,10 @@ export type TaskType = {
 }
 
 export type PropsType = {
+  todolistID: string
   title: string
   tasks: Array<TaskType>
   filter: keyType
-  todolistID: string
   removeTasks: (id: string, todoListID: string) => void
   changeTodoListFilter: (key: keyType, todoListID: string) => void
   addTask: (newTitle: string, todoListID: string) => void
@@ -30,11 +30,17 @@ export type PropsType = {
 
 export function Todolist(props: PropsType) {
 
-  const onFilterClickHandler = (key: keyType) => {
-    return () => props.changeTodoListFilter(key, props.todolistID)
-  }
+  // const onFilterClickHandler = (key: keyType) => {
+  //   return () => props.changeTodoListFilter(key, props.todolistID)
+  // for Custom Component }
+
+
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todolistID)
+
+  const onAllClickHandler = () => props.changeTodoListFilter('All', props.todolistID);
+  const onActiveClickHandler = () => props.changeTodoListFilter('Active', props.todolistID);
+  const onCompletedClickHandler = () => props.changeTodoListFilter('Completed', props.todolistID);
 
 
   return <div>
@@ -50,7 +56,6 @@ export function Todolist(props: PropsType) {
         <Delete/>
       </IconButton>
     </h3>
-
 
     <AddItemForm
       callBack={(newTitle) =>
@@ -95,41 +100,25 @@ export function Todolist(props: PropsType) {
     </ul>
     <div>
 
-      {/*<Button*/}
-      {/*  size={'small'}*/}
-      {/*  variant={'contained'}*/}
-      {/*  color={props.filter === 'All' ? 'secondary' : 'primary'}*/}
-      {/*  onClick={onFilterClickHandler}*/}
-      {/*>All</Button>*/}
-      {/*<Button*/}
-      {/*  size={'small'}*/}
-      {/*  color={props.filter === 'Active' ? 'secondary' : 'primary'}*/}
-      {/*  onClick={onFilterClickHandler}*/}
-      {/*  variant={'contained'}*/}
-      {/*>Active</Button>*/}
-      {/*<Button*/}
-      {/*  size={'small'}*/}
-      {/*  color={props.filter === 'Completed' ? 'secondary' : 'primary'}*/}
-      {/*  onClick={onFilterClickHandler}*/}
-      {/*  variant={'contained'}*/}
-      {/*>Completed</Button>*/}
+      <Button
+        size={'small'}
+        variant={'contained'}
+        color={props.filter === 'All' ? 'secondary' : 'primary'}
+        onClick={onAllClickHandler}>All</Button>
 
+      <Button
+        size={'small'}
+        color={props.filter === 'Active' ? 'secondary' : 'primary'}
+        onClick={onActiveClickHandler}
+        variant={'contained'}
+      >Active</Button>
 
-      {/*<Button*/}
-      {/*  callBack={onFilterClickHandler('All')}*/}
-      {/*  value={'All'}*/}
-      {/*  filter={props.filter}*/}
-      {/*/>*/}
-      {/*<Button*/}
-      {/*  callBack={onFilterClickHandler('Active')}*/}
-      {/*  value={'Active'}*/}
-      {/*  filter={props.filter}*/}
-      {/*/>*/}
-      {/*<Button*/}
-      {/*  callBack={onFilterClickHandler('Completed')}*/}
-      {/*  value={'Completed'}*/}
-      {/*  filter={props.filter}*/}
-      {/*/>*/}
+      <Button
+        size={'small'}
+        color={props.filter === 'Completed' ? 'secondary' : 'primary'}
+        onClick={onCompletedClickHandler}
+        variant={'contained'}
+      >Completed</Button>
     </div>
   </div>
 }

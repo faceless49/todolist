@@ -135,21 +135,27 @@ function App() {
     }
 
     return (
-      <Paper>
-        <Todolist
-          todolistID={tl.id}
-          title={tl.title}
-          tasks={tasksForTodolist}
-          removeTasks={removeTasks}
-          addTask={addTask}
-          changeTodoListFilter={changeTodoListFilter}
-          changeTaskStatus={changeTaskStatus}
-          removeTodoList={removeTodoList}
-          filter={tl.filter}
-          changeTaskTitle={changeTaskTitle}
-          changeTodoListTitle={changeTodoListTitle}
-        />
-      </Paper>
+      <Grid
+        item
+        key={tl.id}>
+        <Paper
+          style={{padding: '10px'}}
+          elevation={5}>
+          <Todolist
+            todolistID={tl.id}
+            title={tl.title}
+            tasks={tasksForTodolist}
+            removeTasks={removeTasks}
+            addTask={addTask}
+            changeTodoListFilter={changeTodoListFilter}
+            changeTaskStatus={changeTaskStatus}
+            removeTodoList={removeTodoList}
+            filter={tl.filter}
+            changeTaskTitle={changeTaskTitle}
+            changeTodoListTitle={changeTodoListTitle}
+          />
+        </Paper>
+      </Grid>
     )
   })
 
@@ -157,21 +163,27 @@ function App() {
     <div className={s.App}>
       <AppBar position="static">
         <Toolbar style={{justifyContent: 'space-between'}}>
-          <IconButton edge="start" color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu">
             <Menu/>
           </IconButton>
           <Typography variant="h6">
             Todolists
           </Typography>
-          <Button
-            color="inherit">Login</Button>
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <Container fixed>
-        <Grid container style={{padding: '20px 0'}}>
+        <Grid
+          container
+          style={{padding: '20px 20px'}}>
           <AddItemForm callBack={addTodoList}/>
         </Grid>
-        <Grid container>
+        <Grid
+          container
+          spacing={5}>
           {todoListsComponents}
         </Grid>
       </Container>
