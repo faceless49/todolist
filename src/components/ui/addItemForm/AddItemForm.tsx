@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, IconButton} from '@material-ui/core';
+import {AddBox} from '@material-ui/icons';
 
 type inputType = {
   callBack: (newTitle: string) => void
@@ -36,9 +38,14 @@ export const AddItemForm = (props: inputType) => {
           onKeyPress={onKeyPressHandler}
           className={error ? 'error' : ''}
         />
-        <button onClick={onClickHandler}>+</button>
+        <IconButton
+          size={'small'}
+          color={'primary'}
+          onClick={onClickHandler}>
+          <AddBox/>
+        </IconButton>
+        {/*<button onClick={onClickHandler}>+</button>*/}
         {error && <div className={'error-message'}>{error}</div>}
-
       </div>
     );
   }

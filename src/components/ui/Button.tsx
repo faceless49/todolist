@@ -7,7 +7,7 @@ type propsType = {
   filter?: keyType
 }
 
-export const Button = (props: propsType) => {
+const Button = (props: propsType) => {
 
   return (
     <button className={props.filter === props.value ? s.activeFilter : ''}
