@@ -9,25 +9,24 @@ import {Menu} from '@material-ui/icons';
 
 export type keyType = 'All' | 'Active' | 'Completed'
 
-type TodoListType = {
+export type TodoListType = {
   id: string
   title: string
   filter: keyType
 }
 
-type TaskStateType = {
+export type TaskStateType = {
   [key: string]: Array<TaskType>
 }
 
 function App() {
   const todoListID_1 = v1()
   const todoListID_2 = v1()
+
   const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
     {id: todoListID_1, title: 'What to Learn', filter: 'All'},
     {id: todoListID_2, title: 'What to buy', filter: 'All'}
   ])
-
-
   const [tasks, setTasks] = useState<TaskStateType>({
     [todoListID_1]: [
       {id: v1(), title: 'HTML&CSS', isDone: true},
@@ -73,7 +72,6 @@ function App() {
     //   setTasks([...tasks]);
     // }
   }
-
   const changeTaskTitle = (tID: string, title: string, todoListID: string) => {
 
 
@@ -85,6 +83,7 @@ function App() {
     })
     setTasks({...tasks});
   }
+
   const changeTodoListFilter = (key: keyType, todoListID: string) => {
     setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: key} : tl))
   }
