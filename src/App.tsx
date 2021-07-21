@@ -54,7 +54,7 @@ function App() {
 
   const changeTaskStatus = (tID: string, newIsDone: boolean, todoListID: string) => {
 
-    // ? const todoListTasks = tasks[todoListID]
+    // const todoListTasks = tasks[todoListID]
 
     tasks[todoListID] = tasks[todoListID].map(t => {
       if (t.id === tID) {
@@ -93,7 +93,6 @@ function App() {
     setTasks({...tasks})
   }
   const removeTasks = (tID: string, todoListID: string) => {
-    console.log(tasks)
     tasks[todoListID] = tasks[todoListID].filter(t => t.id !== tID)
     setTasks({...tasks})
   }
