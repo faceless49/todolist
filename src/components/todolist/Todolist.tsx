@@ -5,6 +5,9 @@ import {AddItemForm} from '../ui/addItemForm/AddItemForm';
 import {EditableSpan} from '../ui/editableSpan/EditableSpan';
 import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../../store/store';
+import {TaskStateType, TodoListType} from '../../AppWithRedux';
 
 
 export type TaskType = {
@@ -33,6 +36,12 @@ export function Todolist(props: PropsType) {
   //   return () => props.changeTodoListFilter(key, props.todolistID)
   // for Custom Component }
 
+  // Берем объект Todolist и рисуем его вместо props везде в ретурне компоненты
+  const todo = useSelector<AppRootStateType, TodoListType[]>(state => state.todoLists
+    .filter(todo => todo.id === props.todolistID[0]))
+
+  // Берем массив тасок и рисуем его вместо props везде в ретурне тасок компоненты
+  const todoTask = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
 
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todolistID)
@@ -102,14 +111,17 @@ export function Todolist(props: PropsType) {
         size={'small'}
         variant={'contained'}
         color={props.filter === 'All' ? 'secondary' : 'primary'}
-        onClick={onAllClickHandler}>All</Button>
+        onClick={onAllClickHandler}>
+        All
+      </Button>
 
       <Button
         size={'small'}
         color={props.filter === 'Active' ? 'secondary' : 'primary'}
         onClick={onActiveClickHandler}
-        variant={'contained'}
-      >Active</Button>
+        variant={'contained'}>
+        Active
+      </Button>
 
       <Button
         size={'small'}
