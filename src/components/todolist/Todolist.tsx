@@ -3,7 +3,6 @@ import {keyType} from '../../App';
 // import {Button} from '../ui/Button';
 import {AddItemForm} from '../ui/addItemForm/AddItemForm';
 import {EditableSpan} from '../ui/editableSpan/EditableSpan';
-import s from '../ui/Button.module.scss';
 import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 
@@ -66,7 +65,6 @@ export function Todolist(props: PropsType) {
         const removeTasksHandler = () => {
           props.removeTasks(t.id, props.todolistID)
         }
-
         const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
           props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistID)
         }
