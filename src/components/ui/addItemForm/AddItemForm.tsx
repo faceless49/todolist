@@ -6,7 +6,9 @@ type inputType = {
   callBack: (newTitle: string) => void
 }
 
-export const AddItemForm = (props: inputType) => {
+export const AddItemForm = React.memo((props: inputType) => {
+    console.log('Additem render')
+
     let [title, setTitle] = useState('')
     let [error, setError] = useState<null | string>(null)
 
@@ -25,6 +27,9 @@ export const AddItemForm = (props: inputType) => {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (error !== null) {
+        setError(null)
+      }
       if (e.key === 'Enter') {
         onClickHandler()
       }
@@ -51,6 +56,6 @@ export const AddItemForm = (props: inputType) => {
         </IconButton>
       </div>
     );
-  }
+  })
 ;
 

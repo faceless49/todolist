@@ -7,7 +7,7 @@ import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../store/store';
-import {TaskStateType, TodoListType} from '../../AppWithRedux';
+import {TodoListType} from '../../AppWithRedux';
 
 
 export type TaskType = {
@@ -23,25 +23,19 @@ export type PropsType = {
   filter: keyType
   removeTasks: (id: string, todoListID: string) => void
   changeTodoListFilter: (key: keyType, todoListID: string) => void
-  addTask: (newTitle: string, todoListID: string) => void
+  addTask: (newTitle: string, todolistID: string) => void
   changeTaskStatus: (id: string, isDone: boolean, todoListID: string) => void
   changeTaskTitle: (tID: string, title: string, todoListID: string) => void
   removeTodoList: (todoListID: string) => void
   changeTodoListTitle: (title: string, todoListID: string) => void
 }
 
-export function Todolist(props: PropsType) {
-
+export const Todolist = React.memo((props: PropsType) => {
+  console.log('todolist')
   // const onFilterClickHandler = (key: keyType) => {
   //   return () => props.changeTodoListFilter(key, props.todolistID)
   // for Custom Component }
 
-  // Берем объект Todolist и рисуем его вместо props везде в ретурне компоненты
-  const todo = useSelector<AppRootStateType, TodoListType[]>(state => state.todoLists
-    .filter(todo => todo.id === props.todolistID[0]))
-
-  // Берем массив тасок и рисуем его вместо props везде в ретурне тасок компоненты
-  const todoTask = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
 
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todolistID)
@@ -50,6 +44,21 @@ export function Todolist(props: PropsType) {
   const onActiveClickHandler = () => props.changeTodoListFilter('Active', props.todolistID);
   const onCompletedClickHandler = () => props.changeTodoListFilter('Completed', props.todolistID);
 
+  const addTask = (title: string) => {
+    props.addTask(title, props.todolistID) // * TODO asking about this const. Why we should declare here. 26STR
+  }
+
+
+
+  let allTodolistTasks = props.tasks
+  let tasksForTodolist = allTodolistTasks
+
+  if (props.filter === 'Active') {
+    tasksForTodolist = allTodolistTasks.filter(t => !t.isDone)
+  }
+  if (props.filter === 'Completed') {
+    tasksForTodolist = allTodolistTasks.filter(t => t.isDone)
+  }
 
   return <div>
     <h3>
@@ -66,11 +75,10 @@ export function Todolist(props: PropsType) {
     </h3>
 
     <AddItemForm
-      callBack={(newTitle) =>
-        props.addTask(newTitle, props.todolistID)}/>
+      callBack={addTask}/>
 
     <ul style={{listStyleType: 'none', paddingLeft: '0'}}>
-      {props.tasks.map((t: TaskType) => {
+      {tasksForTodolist.map((t: TaskType) => {
         const removeTasksHandler = () => {
           props.removeTasks(t.id, props.todolistID)
         }
@@ -102,11 +110,11 @@ export function Todolist(props: PropsType) {
             </IconButton>
           </li>
         )
-      })
-      }
+      })}
     </ul>
-    <div>
 
+
+    <div>
       <Button
         size={'small'}
         variant={'contained'}
@@ -131,5 +139,5 @@ export function Todolist(props: PropsType) {
       >Completed</Button>
     </div>
   </div>
-}
+})
 
