@@ -106,7 +106,12 @@ function AppWithRedux() {
   },[dispatch])
 
 
+
+
   const todoListsComponents = todoLists.map(tl => {
+
+    let allTodolistTasks = tasks[tl.id]
+    let tasksForTodolist = allTodolistTasks
 
     return (
       <Grid
@@ -118,7 +123,7 @@ function AppWithRedux() {
           <Todolist
             todolistID={tl.id}
             title={tl.title}
-            tasks={tasks[tl.id]}
+            tasks={tasksForTodolist}
             removeTasks={removeTasks}
             addTask={addTask}
             changeTodoListFilter={changeTodoListFilter}

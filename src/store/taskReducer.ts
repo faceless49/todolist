@@ -4,7 +4,6 @@ import {TaskType} from '../components/todolist/Todolist';
 import {AddTodolistAT, RemoveTodolistAT} from './todolistsReducer';
 
 
-
 // * Prod Types for work
 // const initialState = {
 //   ['1']: [
@@ -73,21 +72,19 @@ export const tasksReducer = (state: TaskStateType = initialState, action: Action
       return {...state, [action.todoListID]: [newTask, ...state[action.todoListID]]}
     }
     case 'CHANGE-TASK-STATUS': {
-      return {
-        ...state, [action.taskID]: state[action.todoListID].map(task => {
-          if (task.id === action.taskID) {
-            return {...task, isDone: action.isDone}
-          }
-          return task
-        })
-      }
+      let todolistTasks = state[action.todoListID];
+      state[action.todoListID] = todolistTasks.map(t => t.id === action.taskID
+        ? {...t, isDone: action.isDone}
+        : t);
+      return ({...state})
     }
     case 'CHANGE-TASK-TITLE': {
-      return {
-        ...state, [action.todoListID]: state[action.todoListID]
-          .map(task => task.id === action.taskID ? {...task, title: action.title} : task)
-      }
+      let todolistTasks = state[action.todoListID];
+      state[action.todoListID] = todolistTasks.map(t => t.title === action.title
+        ? {...t, title: action.title}
+        : t)
     }
+      return ({...state})
     case 'ADD-TODOLIST':
       return {
         ...state, [action.todoListID]: []
