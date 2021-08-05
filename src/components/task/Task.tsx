@@ -27,7 +27,6 @@ export const Task = React.memo((props: TaskPropsType) => {
   return (
     <li key={props.task.id}>
       <Checkbox
-        checked={props.task.isDone}
         onChange={changeTaskStatus}
       />
 

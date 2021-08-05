@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import s from './EditableSpan.module.scss'
 import {TextField} from '@material-ui/core';
 
@@ -13,22 +13,27 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [title, setTitle] = useState<string>(props.title)
 
-  const onEditMode = () => setEditMode(true)
+  const activateEditMode = () => {
+    setEditMode(true)
+    setTitle(props.title)
+  }
   const offEditMode = () => {
     if (title) {
       props.changeTitle(title)
     }
-    setEditMode(!onEditMode)
+    setEditMode(!activateEditMode)
   }
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
+
+
+  const changeTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
-  }
+  }, [])
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       offEditMode()
     }
-  }
-
+  } // TODO: Why when i wrapped onkeypresshandler usecallback no set title
 
   return (
     editMode
@@ -37,11 +42,11 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
         autoFocus
         value={title}
         onBlur={offEditMode}
-        onChange={onChangeHandler}
+        onChange={changeTitle}
         onKeyPress={onKeyPressHandler}
       />
       : <span
-        onDoubleClick={onEditMode}
+        onDoubleClick={activateEditMode}
         className={props.className}>{props.title}</span>
   );
 });

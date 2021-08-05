@@ -29,11 +29,6 @@ export type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-  console.log('todolist')
-  // const onFilterClickHandler = (key: keyType) => {
-  //   return () => props.changeTodoListFilter(key, props.todolistID)
-  // for Custom Component }
-
 
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = useCallback((title: string) => {
