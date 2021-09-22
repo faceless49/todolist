@@ -7,14 +7,15 @@ import {
 } from './todolistsReducer';
 
 import {v1} from 'uuid';
-import {keyType, TodoListType} from '../App';
+import {keyType, TodolistType} from '../App';
 
 let todolistId1: string
 let todolistId2: string
 
-let startState: Array<TodoListType>
+let startState: Array<TodolistType>
 
-beforeEach(() => {
+beforeEach(() => { // ? Определяем здесь значения для всех тестов
+                      // ? Выносим за скоуп переменные тудулистов для иммутабельности
   todolistId1 = v1();
   todolistId2 = v1();
 
@@ -26,7 +27,6 @@ beforeEach(() => {
 
 
 test('correct todolist should be removed', () => {
-
 
   const endState = todoListsReducer(startState, RemoveTodoListAC(todolistId1))
 

@@ -9,7 +9,7 @@ import {Menu} from '@material-ui/icons';
 
 export type keyType = 'All' | 'Active' | 'Completed'
 
-export type TodoListType = {
+export type TodolistType = {
   id: string
   title: string
   filter: keyType
@@ -23,7 +23,7 @@ function App() {
   const todoListID_1 = v1()
   const todoListID_2 = v1()
 
-  let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+  let [todoLists, setTodoLists] = useState<Array<TodolistType>>([
     {id: todoListID_1, title: 'What to Learn', filter: 'All'},
     {id: todoListID_2, title: 'What to buy', filter: 'All'}
   ])
@@ -46,17 +46,8 @@ function App() {
   })
 
 
-  // * Отправляем в 1 объект 2 массива
-  // let [tasks, setTasks] = useState<Array<TaskType>>([
-  //   {id: v1(), title: 'HTML&CSS', isDone: true},
-  //   {id: v1(), title: 'JS', isDone: true},
-  //   {id: v1(), title: 'ReactJS', isDone: false},
-  //   {id: v1(), title: 'SASS', isDone: true}
-  // ])
-
   const changeTaskStatus = (tID: string, newIsDone: boolean, todoListID: string) => {
 
-    // const todoListTasks = tasks[todoListID]
 
     tasks[todoListID] = tasks[todoListID].map(t => {
       if (t.id === tID) {
@@ -65,17 +56,8 @@ function App() {
       return t
     })
     setTasks({...tasks});
-
-    // let currentTask = tasks.find(t => t.id === id)
-    // if (currentTask) {
-    //   currentTask.isDone = newIsDone
-    //   // * 2 variant
-    //   // * currentTask.isDone = !currentTask.isDone
-    //   setTasks([...tasks]);
-    // }
   }
   const changeTaskTitle = (tID: string, title: string, todoListID: string) => {
-
 
     tasks[todoListID] = tasks[todoListID].map(t => {
       if (t.id === tID) {
@@ -101,10 +83,11 @@ function App() {
   const removeTodoList = (todoListID: string) => {
     setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
     delete tasks[todoListID]
+    setTasks({...tasks})
   }
   const addTodoList = (title: string) => {
     const newTodoListID = v1()
-    const newTodoList: TodoListType = {
+    const newTodoList: TodolistType = {
       id: newTodoListID,
       title: title,
       filter: 'All'
@@ -192,5 +175,3 @@ function App() {
 }
 
 export default App;
-
-
