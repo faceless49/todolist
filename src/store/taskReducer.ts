@@ -72,19 +72,20 @@ export const tasksReducer = (state: TaskStateType = initialState, action: Action
       return {...state, [action.todoListID]: [newTask, ...state[action.todoListID]]}
     }
     case 'CHANGE-TASK-STATUS': {
-      let todolistTasks = state[action.todoListID];
-      state[action.todoListID] = todolistTasks.map(t => t.id === action.taskID
+      const stateCopy = {...state}
+      let todolistTasks = stateCopy[action.todoListID];
+      stateCopy[action.todoListID] = todolistTasks.map(t => t.id === action.taskID
         ? {...t, isDone: action.isDone}
         : t);
-      return ({...state})
+      return stateCopy // TODO: dont work active filter
     }
     case 'CHANGE-TASK-TITLE': {
-      debugger
-      let todolistTasks = state[action.todoListID];
-      state[action.todoListID] = todolistTasks.map(t => t.id === action.taskID
+      const stateCopy = {...state}
+      let todolistTasks = stateCopy[action.todoListID];
+      stateCopy[action.todoListID] = todolistTasks.map(t => t.id === action.taskID
         ? {...t, title: action.title}
         : t);
-      return ({...state})
+      return stateCopy
     }
     case 'ADD-TODOLIST':
       return {
@@ -122,7 +123,7 @@ export const changeTaskStatusAC = (taskID: string, isDone: boolean, todoListID: 
     todoListID
   }
 }
-export const changeTaskTitleAC = ( taskID: string, title: string, todoListID: string): ChangeTaskTitleActionType => {
+export const changeTaskTitleAC = (taskID: string, title: string, todoListID: string): ChangeTaskTitleActionType => {
   return {
     type: 'CHANGE-TASK-TITLE',
     title,

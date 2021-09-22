@@ -29,7 +29,6 @@ export type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = useCallback((title: string) => {
     props.changeTodoListTitle(title, props.todolistID)

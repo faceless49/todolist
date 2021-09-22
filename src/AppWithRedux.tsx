@@ -103,6 +103,7 @@ function AppWithRedux() {
     dispatch(action)
   },[dispatch])
   const changeTodoListFilter = useCallback((key: keyType, todoListID: string) => {
+    debugger
     const action = changeTodoListFilterAC(key, todoListID)
     dispatch(action)
   },[dispatch])
