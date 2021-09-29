@@ -162,7 +162,7 @@ function App() {
         <Grid
           container
           style={{padding: '20px 20px'}}>
-          <AddItemForm callBack={addTodoList}/>
+          <AddItemForm addItem={addTodoList}/>
         </Grid>
         <Grid
           container

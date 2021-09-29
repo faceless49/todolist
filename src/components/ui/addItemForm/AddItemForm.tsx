@@ -1,13 +1,14 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {Button, IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
-type inputType = {
-  callBack: (newTitle: string) => void
+type AddItemFormPropsType = {
+  addItem: (newTitle: string) => void
 }
 
-export const AddItemForm = React.memo((props: inputType) => {
-    console.log('Additem render')
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+  // Обернули в хок, но у нас в пропсах addItem callback, поэтому перерисовка все равно произойдет
+    console.log('AddItemForm render')
 
     let [title, setTitle] = useState('')
     let [error, setError] = useState<null | string>(null)
@@ -16,15 +17,15 @@ export const AddItemForm = React.memo((props: inputType) => {
       setTitle(e.currentTarget.value)
     }
 
-    const onClickHandler = () => {
+    const onClickHandler = useCallback(() => {
       if (title) {
-        props.callBack(title.trim())
+        props.addItem(title.trim())
         setTitle('')
         setError(null)
       } else {
         setError('Title is required')
       }
-    }
+    }, [props, title])
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
       if (error !== null) {

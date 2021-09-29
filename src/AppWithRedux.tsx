@@ -30,7 +30,6 @@ export type TaskStateType = {
 }
 
 function AppWithRedux() {
-  console.log('App render')
   // Достаем из редакса юзселектором
   // let todoListID_1 = v1()
   // let todoListID_2 = v1()
@@ -102,6 +101,9 @@ function AppWithRedux() {
     const action = changeTodoListTitleAC(title, todoListID)
     dispatch(action)
   },[dispatch])
+
+
+
   const changeTodoListFilter = useCallback((key: keyType, todoListID: string) => {
     debugger
     const action = changeTodoListFilterAC(key, todoListID)
@@ -113,8 +115,6 @@ function AppWithRedux() {
 
   const todoListsComponents = todoLists.map(tl => {
 
-    let allTodolistTasks = tasks[tl.id]
-    let tasksForTodolist = allTodolistTasks
 
     return (
       <Grid
@@ -126,7 +126,7 @@ function AppWithRedux() {
           <Todolist
             todolistID={tl.id}
             title={tl.title}
-            tasks={tasksForTodolist}
+            tasks={tasks[tl.id]}
             removeTasks={removeTasks}
             addTask={addTask}
             changeTodoListFilter={changeTodoListFilter}
@@ -161,7 +161,7 @@ function AppWithRedux() {
         <Grid
           container
           style={{padding: '20px 20px'}}>
-          <AddItemForm callBack={addTodoList}/>
+          <AddItemForm addItem={addTodoList}/>
         </Grid>
         <Grid
           container

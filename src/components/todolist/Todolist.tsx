@@ -29,6 +29,8 @@ export type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
+  console.log('todolist render')
+
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistID)
   const changeTodoListTitle = useCallback((title: string) => {
     props.changeTodoListTitle(title, props.todolistID)
@@ -43,13 +45,13 @@ export const Todolist = React.memo((props: PropsType) => {
   }, [props.addTask, props.todolistID])
 
 
-  let tasksForTodolist = props.tasks
+  let allTodolistTasks = props.tasks
 
   if (props.filter === 'Active') {
-    tasksForTodolist = props.tasks.filter(t => !t.isDone)
+    allTodolistTasks = allTodolistTasks.filter(t => !t.isDone)
   }
   if (props.filter === 'Completed') {
-    tasksForTodolist = props.tasks.filter(t => t.isDone)
+    allTodolistTasks = allTodolistTasks.filter(t => t.isDone)
   }
 
   return <div>
@@ -67,11 +69,12 @@ export const Todolist = React.memo((props: PropsType) => {
     </h3>
 
     <AddItemForm
-      callBack={addTask}/>
+      addItem={addTask}/>
 
     <ul style={{listStyleType: 'none', paddingLeft: '0'}}>
 
-      {tasksForTodolist.map((t: TaskType) =>
+      {allTodolistTasks.map((t: TaskType) =>
+
         <Task
           task={t}
           todolistID={props.todolistID}

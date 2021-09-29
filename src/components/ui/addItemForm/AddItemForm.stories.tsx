@@ -19,6 +19,6 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 export const AddItemFormStories = Template.bind({});
 
 AddItemFormStories.args = {
-  callBack: action('Button inside form clicked')
+  addItem: action('Button inside form clicked')
 };
 
