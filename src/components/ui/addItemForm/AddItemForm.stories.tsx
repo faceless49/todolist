@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {AddItemForm} from './AddItemForm';
 import {action} from '@storybook/addon-actions'
 
@@ -8,13 +8,16 @@ export default {
   title: 'Todolist/AddItemForm', // Title Story
   component: AddItemForm,
   argTypes: { // Additional description for our component(props)
-   addItem: { // Our onClick func callback
-     description: 'Add task in our todolist'
-   },
+    addItem: { // Our onClick func callback
+      description: 'Add task in our todolist'
+    },
   },
 } as ComponentMeta<typeof AddItemForm>;
 
-const AddItemFormTemplate: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
+const AddItemFormTemplate: ComponentStory<typeof AddItemForm> = (args) => {
+ // Можно добавить через аргтайпс стейт
+  return <AddItemForm {...args} />
+};
 
 export const AddItemFormStory = AddItemFormTemplate.bind({});
 

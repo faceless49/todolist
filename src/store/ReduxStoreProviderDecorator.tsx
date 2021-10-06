@@ -6,7 +6,8 @@ import {combineReducers, createStore} from 'redux';
 import {tasksReducer} from './taskReducer';
 import {todoListsReducer} from './todolistsReducer';
 
-// export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>  <Provider store={store}>{storyFn()}</Provider>
+// export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>
+// <Provider store={store}>{storyFn()}</Provider>
 
 
 const rootReducer = combineReducers({

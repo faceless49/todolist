@@ -38,7 +38,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     return (
       <div>
-        <TextField
+       <TextField
           value={title}
           label={'Title'}
           variant={'outlined'}
@@ -48,7 +48,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
           error={!!error} // ! TODO: Use StyleComponent later for text required
           helperText={error && error}
         />
-
         <IconButton
           size={'small'}
           color={'primary'}
