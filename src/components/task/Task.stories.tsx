@@ -1,14 +1,11 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task} from './Task';
 import {action} from '@storybook/addon-actions'
-import {TaskType} from '../todolist/Todolist';
 
 
-
-
-const changeTaskStatusCallback = action('Change Task status')
-const removeTasksCallback = action('Remove task')
+const changeTaskStatusCallback = action('Change Task Status')
+const removeTasksCallback = action('Remove Task')
 const changeTaskTitleCallback = action('Title is changed')
 
 
@@ -25,23 +22,22 @@ export default {
 const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
 
 
+// const baseArgs = { Можно сразу подбросить в export default args с данными колбеками
+//   changeTaskStatus: changeTaskStatusCallback,
+//   removeTasks: removeTasksCallback,
+//   changeTaskTitle: changeTaskTitleCallback
+// }
 
-const args = {
-  changeTaskStatus: changeTaskStatusCallback,
-  removeTasks: removeTasksCallback,
-  changeTaskTitle: changeTaskTitleCallback
-}
-
-export const TaskIsDone = Template.bind({});
-TaskIsDone.args = {
-  // ...args, Можно в общие аргсы вынести
+export const TaskIsDoneStory = Template.bind({});
+TaskIsDoneStory.args = {
+  //...baseArgs, //  Можно в общие аргсы вынести указаны выше
   todolistID: 'todo1',
   task: {id: '1', title: 'Redux', isDone: true},
 }
 
-export const TaskIsNotDone = Template.bind({});
-TaskIsNotDone.args = {
-  // ...args,
+export const TaskIsNotDoneStory = Template.bind({});
+TaskIsNotDoneStory.args = {
+  //...baseArgs,
   todolistID: 'todo2',
   task: {id: '2', title: 'JS', isDone: false},
 }

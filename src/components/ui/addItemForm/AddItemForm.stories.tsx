@@ -5,20 +5,20 @@ import {action} from '@storybook/addon-actions'
 
 
 export default {
-  title: 'Todolist/AddItemForm',
+  title: 'Todolist/AddItemForm', // Title Story
   component: AddItemForm,
-  argTypes: {
-   onClick: {
-     description: 'Button inside form clicked'
+  argTypes: { // Additional description for our component(props)
+   addItem: { // Our onClick func callback
+     description: 'Add task in our todolist'
    },
   },
 } as ComponentMeta<typeof AddItemForm>;
 
-const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
+const AddItemFormTemplate: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
 
-export const AddItemFormStories = Template.bind({});
+export const AddItemFormStory = AddItemFormTemplate.bind({});
 
-AddItemFormStories.args = {
-  addItem: action('Button inside form clicked')
+AddItemFormStory.args = {
+  addItem: action('Add task in our todolist')
 };
 
