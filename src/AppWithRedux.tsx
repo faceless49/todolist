@@ -27,6 +27,7 @@ import {
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
+  removeTaskTC,
 } from "./store/taskReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootStateType } from "./store/store";
@@ -108,8 +109,8 @@ function AppWithRedux() {
   );
   const removeTasks = useCallback(
     (taskID: string, todoListID: string) => {
-      const action = removeTaskAC(taskID, todoListID);
-      dispatch(action);
+      const thunk = removeTaskTC(taskID, todoListID);
+      dispatch(thunk);
     },
     [dispatch]
   );

@@ -197,7 +197,7 @@ export const setTasksAC = (
   tasks: Array<TaskType>,
   todolistId: string
 ): SetTasksActionType => {
-  return { type: "SET-TASKS", tasks, todolistId };
+  return { type: "SET-TASKS", tasks, todolistId } as const;
 };
 
 export const fetchTasksTC = (todolistId: string) => {
@@ -208,4 +208,12 @@ export const fetchTasksTC = (todolistId: string) => {
       dispatch(action);
     });
   };
+};
+
+export const removeTaskTC = (taskId: string, todolistId: string) => (
+  dispatch: Dispatch
+) => {
+  todolistApi.deleteTask(todolistId, taskId).then((res) => {
+    dispatch(removeTaskAC(taskId, todolistId));
+  });
 };
