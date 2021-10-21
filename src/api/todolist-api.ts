@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
+import { TodolistDomainType } from "../store/todolistsReducer";
 
 const instance = axios.create({
-  baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+  baseURL: "https://social-network.samuraijs.com/api/1.1/",
   withCredentials: true,
   headers: {
-    'API-KEY': 'db8d2f12-200b-4467-ba1f-cd791df3f39c'
-  }
+    "API-KEY": "db8d2f12-200b-4467-ba1f-cd791df3f39c",
+  },
 });
 
 type CommonResponseType<T = {}> = {
@@ -26,14 +27,14 @@ export enum TaskStatuses {
   New = 0,
   InProgress = 1,
   Completed = 2,
-  Draft = 3
+  Draft = 3,
 }
 export enum TaskPriorities {
   Low = 0,
   Middle = 1,
   Hi = 2,
   Urgently = 3,
-  Later = 4
+  Later = 4,
 }
 
 export type TaskType = {
@@ -64,14 +65,14 @@ type ResponseType<D = {}> = {
 // TODO: Type
 export const todolistApi = {
   getTodos() {
-    let promise = instance.get<Array<TodolistType>>('todo-lists');
+    let promise = instance.get<Array<TodolistDomainType>>("todo-lists");
     return promise;
   },
   createTodo(title: string) {
     return instance.post<CommonResponseType<{ item: TodolistType }>>(
-      'todo-lists',
+      "todo-lists",
       {
-        title: title
+        title: title,
       }
     );
   },
@@ -80,7 +81,7 @@ export const todolistApi = {
   },
   updateTodolistTitle(todolistId: string, title: string) {
     return instance.put<CommonResponseType>(`todo-lists/${todolistId}`, {
-      title
+      title,
     });
   },
 
@@ -100,5 +101,5 @@ export const todolistApi = {
   },
   updateTask(todolistId: string, taskId: string) {
     return instance.put(`/todo-lists/${todolistId}/tasks/${taskId}`);
-  }
+  },
 };

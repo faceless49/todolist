@@ -1,8 +1,7 @@
-import React, { useCallback, useReducer } from 'react';
-import s from './App.module.scss';
-import { Todolist } from './components/todolist/Todolist';
-import { v1 } from 'uuid';
-import { AddItemForm } from './components/ui/addItemForm/AddItemForm';
+import React, { useCallback, useEffect } from "react";
+import s from "./App.module.scss";
+import { Todolist } from "./components/todolist/Todolist";
+import { AddItemForm } from "./components/ui/addItemForm/AddItemForm";
 import {
   AppBar,
   Button,
@@ -11,28 +10,27 @@ import {
   IconButton,
   Paper,
   Toolbar,
-  Typography
-} from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
+  Typography,
+} from "@material-ui/core";
+import { Menu } from "@material-ui/icons";
 import {
   addTodoListAC,
   changeTodoListFilterAC,
   changeTodoListTitleAC,
   FilterValueType,
   RemoveTodoListAC,
+  setTodolistsTC,
   TodolistDomainType,
-  todoListsReducer
-} from './store/todolistsReducer';
+} from "./store/todolistsReducer";
 import {
   addTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-  tasksReducer
-} from './store/taskReducer';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from './store/store';
-import { TaskStatuses, TaskType } from './api/todolist-api';
+} from "./store/taskReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { AppRootStateType } from "./store/store";
+import { TaskStatuses, TaskType } from "./api/todolist-api";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -72,6 +70,10 @@ function AppWithRedux() {
   //   {id: v1(), title: 'ReactJS', isDone: false},
   //   {id: v1(), title: 'SASS', isDone: true}
   // ])
+
+  useEffect(() => {
+    dispatch(setTodolistsTC());
+  }, []);
 
   let todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
     (state) => state.todoLists
@@ -145,7 +147,7 @@ function AppWithRedux() {
   const todoListsComponents = todoLists.map((tl) => {
     return (
       <Grid item key={tl.id}>
-        <Paper style={{ padding: '10px' }} elevation={5}>
+        <Paper style={{ padding: "10px" }} elevation={5}>
           <Todolist
             todolistID={tl.id}
             title={tl.title}
@@ -167,7 +169,7 @@ function AppWithRedux() {
   return (
     <div className={s.App}>
       <AppBar position="static">
-        <Toolbar style={{ justifyContent: 'space-between' }}>
+        <Toolbar style={{ justifyContent: "space-between" }}>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
@@ -176,7 +178,7 @@ function AppWithRedux() {
         </Toolbar>
       </AppBar>
       <Container fixed>
-        <Grid container style={{ padding: '20px 20px' }}>
+        <Grid container style={{ padding: "20px 20px" }}>
           <AddItemForm addItem={addTodoList} />
         </Grid>
         <Grid container spacing={5}>

@@ -1,91 +1,91 @@
-import { Provider } from 'react-redux';
-import { AppRootStateType } from './store';
-import React from 'react';
-import { v1 } from 'uuid';
-import { combineReducers, createStore } from 'redux';
-import { tasksReducer } from './taskReducer';
-import { todoListsReducer } from './todolistsReducer';
-import { TaskPriorities, TaskStatuses } from '../api/todolist-api';
+import { Provider } from "react-redux";
+import { AppRootStateType } from "./store";
+import React from "react";
+import { v1 } from "uuid";
+import { combineReducers, createStore } from "redux";
+import { tasksReducer } from "./taskReducer";
+import { todoListsReducer } from "./todolistsReducer";
+import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
 
 // export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>
 // <Provider store={store}>{storyFn()}</Provider>
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
-  todoLists: todoListsReducer
+  todoLists: todoListsReducer,
 });
 
 const initialGlobalState = {
   todoLists: [
     {
-      id: 'todolistId1',
-      title: 'What to Learn',
-      filter: 'All',
-      addedDate: '',
-      order: 0
+      id: "todolistId1",
+      title: "What to Learn",
+      filter: "All",
+      addedDate: "",
+      order: 0,
     },
     {
-      id: 'todolistId2',
-      title: 'What to buy',
-      filter: 'All',
-      addedDate: '',
-      order: 0
-    }
+      id: "todolistId2",
+      title: "What to buy",
+      filter: "All",
+      addedDate: "",
+      order: 0,
+    },
   ],
   tasks: {
-    ['todolistId1']: [
+    ["todolistId1"]: [
       {
         id: v1(),
-        title: 'HTML&CSS',
+        title: "HTML&CSS",
         status: TaskStatuses.Completed,
-        todoListId: 'todolistId1',
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        todoListId: "todolistId1",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'JS',
+        title: "JS",
         status: TaskStatuses.Completed,
-        todoListId: 'todolistId1',
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        todoListId: "todolistId1",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 1,
         priority: TaskPriorities.Low,
-        description: ''
-      }
+        description: "",
+      },
     ],
-    ['todolistId2']: [
+    ["todolistId2"]: [
       {
         id: v1(),
-        title: 'NASDAQ',
+        title: "NASDAQ",
         status: TaskStatuses.New,
-        todoListId: 'todolistId2',
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        todoListId: "todolistId2",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'Amazon',
+        title: "Amazon",
         status: TaskStatuses.Completed,
-        todoListId: 'todolistId2',
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        todoListId: "todolistId2",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 1,
         priority: TaskPriorities.Low,
-        description: ''
-      }
-    ]
-  }
+        description: "",
+      },
+    ],
+  },
 };
 
 export const storyBookStore = createStore(

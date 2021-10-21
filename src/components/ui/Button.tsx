@@ -1,10 +1,11 @@
 import React from 'react';
-import {keyType} from '../../App';
 import s from './Button.module.scss'
+import {FilterValueType} from '../../store/todolistsReducer';
+
 type propsType = {
   callBack: () => void
   value: string
-  filter?: keyType
+  filter?: FilterValueType
 }
 
 const Button = (props: propsType) => {
