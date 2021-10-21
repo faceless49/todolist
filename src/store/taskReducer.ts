@@ -12,6 +12,7 @@ import {
   todolistApi,
 } from "../api/todolist-api";
 import { Dispatch } from "redux";
+import { AppRootStateType } from "./store";
 
 export type RemoveTaskActionType = {
   type: "REMOVE-TASK";
@@ -20,8 +21,7 @@ export type RemoveTaskActionType = {
 };
 export type AddTaskActionType = {
   type: "ADD-TASK";
-  title: string;
-  todoListID: string;
+  task: TaskType;
 };
 export type ChangeTaskStatusActionType = {
   type: "CHANGE-TASK-STATUS";
@@ -71,23 +71,13 @@ export const tasksReducer = (
       return stateCopy;
     }
     case "ADD-TASK": {
-      let newTask: TaskType = {
-        id: v1(),
-        title: action.title,
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Low,
-        addedDate: "",
-        startDate: "",
-        description: "",
-        order: 6,
-        todoListId: action.todoListID,
-        deadline: "",
-      };
-      return {
-        ...state,
-        [action.todoListID]: [newTask, ...state[action.todoListID]],
-      };
+      const stateCopy = { ...state };
+      const tasks = stateCopy[action.task.todoListId];
+      const newTasks = [action.task, ...tasks];
+      stateCopy[action.task.todoListId] = newTasks;
+      return stateCopy;
     }
+
     case "CHANGE-TASK-STATUS": {
       return {
         ...state,
@@ -137,14 +127,10 @@ export const removeTaskAC = (
     todoListID,
   };
 };
-export const addTaskAC = (
-  title: string,
-  todoListID: string
-): AddTaskActionType => {
+export const addTaskAC = (task: TaskType): AddTaskActionType => {
   return {
     type: "ADD-TASK",
-    title,
-    todoListID,
+    task,
   };
 };
 export const changeTaskStatusAC = (
@@ -216,4 +202,46 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (
   todolistApi.deleteTask(todolistId, taskId).then((res) => {
     dispatch(removeTaskAC(taskId, todolistId));
   });
+};
+
+export const addTaskTC = (title: string, todolistId: string) => (
+  dispatch: Dispatch<AddTaskActionType>
+) => {
+  todolistApi.createTask(todolistId, title).then((res) => {
+    let task = res.data.data.item;
+    const action = addTaskAC(task);
+    dispatch(action);
+  });
+};
+
+export const updateTaskStatusTC = (
+  taskId: string,
+  todolistId: string,
+  status: TaskStatuses
+) => {
+  return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    // так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
+    // те, которые мы хотим обновить, соответственно нам нужно в этом месте взять таску целиком  // чтобы у неё отобрать остальные св-ва
+
+    const allTasksFromState = getState().tasks;
+    const tasksForCurrentTodolist = allTasksFromState[todolistId];
+    const task = tasksForCurrentTodolist.find((t) => {
+      return t.id === taskId;
+    });
+
+    if (task) {
+      todolistApi
+        .updateTask(todolistId, taskId, {
+          title: task.title,
+          startDate: task.startDate,
+          priority: task.priority,
+          description: task.description,
+          deadline: task.deadline,
+          status: status,
+        })
+        .then(() => {
+          dispatch(changeTaskStatusAC(taskId, status, todolistId));
+        });
+    }
+  };
 };

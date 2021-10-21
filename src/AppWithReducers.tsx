@@ -1,35 +1,35 @@
-import React, { useReducer, useState } from 'react';
-import s from './App.module.scss';
-import { TaskPriorities, TaskStatuses, TaskType } from './api/todolist-api';
-import { v1 } from 'uuid';
-import { AddItemForm } from './components/ui/addItemForm/AddItemForm';
+import React, { useReducer } from "react";
+import s from "./App.module.scss";
+import { TaskPriorities, TaskStatuses, TaskType } from "./api/todolist-api";
+import { v1 } from "uuid";
+import { AddItemForm } from "./components/ui/addItemForm/AddItemForm";
 import {
   AppBar,
   Button,
   Container,
+  Grid,
   IconButton,
+  Paper,
   Toolbar,
   Typography,
-  Grid,
-  Paper
-} from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
+} from "@material-ui/core";
+import { Menu } from "@material-ui/icons";
 import {
   addTodoListAC,
   changeTodoListFilterAC,
   changeTodoListTitleAC,
   FilterValueType,
   RemoveTodoListAC,
-  todoListsReducer
-} from './store/todolistsReducer';
+  todoListsReducer,
+} from "./store/todolistsReducer";
 import {
   addTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-  tasksReducer
-} from './store/taskReducer';
-import { Todolist } from './components/todolist/Todolist';
+  tasksReducer,
+} from "./store/taskReducer";
+import { Todolist } from "./components/todolist/Todolist";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -42,138 +42,138 @@ function AppWithReducers() {
   let [todoLists, dispatchToTodoLists] = useReducer(todoListsReducer, [
     {
       id: todoListID_1,
-      title: 'What to Learn',
-      filter: 'All',
+      title: "What to Learn",
+      filter: "All",
       order: 0,
-      addedDate: ''
+      addedDate: "",
     },
     {
       id: todoListID_2,
-      title: 'What to buy',
-      filter: 'All',
+      title: "What to buy",
+      filter: "All",
       order: 0,
-      addedDate: ''
-    }
+      addedDate: "",
+    },
   ]);
 
   const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
     [todoListID_1]: [
       {
         id: v1(),
-        title: 'HTML&CSS',
+        title: "HTML&CSS",
         todoListId: todoListID_1,
         status: TaskStatuses.Completed,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'JS',
+        title: "JS",
         status: TaskStatuses.Completed,
         todoListId: todoListID_1,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 1,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'ReactJS',
+        title: "ReactJS",
         status: TaskStatuses.New,
         todoListId: todoListID_1,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 2,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'SASS',
+        title: "SASS",
         status: TaskStatuses.New,
         todoListId: todoListID_1,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 3,
         priority: TaskPriorities.Low,
-        description: ''
-      }
+        description: "",
+      },
     ],
     [todoListID_2]: [
       {
         id: v1(),
-        title: 'NASDAQ',
+        title: "NASDAQ",
         status: TaskStatuses.New,
 
         todoListId: todoListID_2,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'Amazon',
+        title: "Amazon",
         status: TaskStatuses.Completed,
 
         todoListId: todoListID_2,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 1,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'Facebook',
+        title: "Facebook",
         status: TaskStatuses.New,
 
         todoListId: todoListID_2,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 2,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'NVIDIA',
+        title: "NVIDIA",
         status: TaskStatuses.Completed,
 
         todoListId: todoListID_2,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 3,
         priority: TaskPriorities.Low,
-        description: ''
+        description: "",
       },
       {
         id: v1(),
-        title: 'Tesla',
+        title: "Tesla",
         status: TaskStatuses.Completed,
 
         todoListId: todoListID_2,
-        startDate: '',
-        deadline: '',
-        addedDate: '',
+        startDate: "",
+        deadline: "",
+        addedDate: "",
         order: 4,
         priority: TaskPriorities.Low,
-        description: ''
-      }
-    ]
+        description: "",
+      },
+    ],
   });
 
   // * Отправляем в 1 объект 2 массива
@@ -196,7 +196,8 @@ function AppWithReducers() {
     const action = changeTaskTitleAC(tID, title, todoListID);
     dispatchToTasks(action);
   };
-  const addTask = (newTitle: string, todoListID: string) => {
+  const addTask = () => {
+    // @ts-ignore
     const action = addTaskAC(newTitle, todoListID);
     dispatchToTasks(action);
   };
@@ -227,12 +228,12 @@ function AppWithReducers() {
   const todoListsComponents = todoLists.map((tl) => {
     let tasksForTodolist = tasks[tl.id];
 
-    if (tl.filter === 'Active') {
+    if (tl.filter === "Active") {
       tasksForTodolist = tasks[tl.id].filter(
         (t) => t.status === TaskStatuses.New
       );
     }
-    if (tl.filter === 'Completed') {
+    if (tl.filter === "Completed") {
       tasksForTodolist = tasks[tl.id].filter(
         (t) => t.status === TaskStatuses.Completed
       );
@@ -240,7 +241,7 @@ function AppWithReducers() {
 
     return (
       <Grid item key={tl.id}>
-        <Paper style={{ padding: '10px' }} elevation={5}>
+        <Paper style={{ padding: "10px" }} elevation={5}>
           <Todolist
             todolistID={tl.id}
             title={tl.title}
@@ -262,7 +263,7 @@ function AppWithReducers() {
   return (
     <div className={s.App}>
       <AppBar position="static">
-        <Toolbar style={{ justifyContent: 'space-between' }}>
+        <Toolbar style={{ justifyContent: "space-between" }}>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
@@ -271,7 +272,7 @@ function AppWithReducers() {
         </Toolbar>
       </AppBar>
       <Container fixed>
-        <Grid container style={{ padding: '20px 20px' }}>
+        <Grid container style={{ padding: "20px 20px" }}>
           <AddItemForm addItem={addTodoList} />
         </Grid>
         <Grid container spacing={5}>

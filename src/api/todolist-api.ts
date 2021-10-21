@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { TodolistDomainType } from "../store/todolistsReducer";
 
 const instance = axios.create({
@@ -59,7 +59,17 @@ type GetTasksResponse = {
 type ResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;
+  fieldsErrors: Array<string>;
   data: D;
+};
+
+export type UpdateTaskModelType = {
+  title: string;
+  description: string;
+  status: TaskStatuses;
+  priority: TaskPriorities;
+  startDate: string;
+  deadline: string;
 };
 
 // TODO: Type
@@ -92,14 +102,23 @@ export const todolistApi = {
   },
 
   createTask(todolistId: string, title: string) {
-    return instance.post(`todo-lists/${todolistId}/tasks`, { title });
+    return instance.post<ResponseType<{ item: TaskType }>>(
+      `todo-lists/${todolistId}/tasks`,
+      {
+        title,
+      }
+    );
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<ResponseType>(
       `/todo-lists/${todolistId}/tasks/${taskId}`
     );
   },
-  updateTask(todolistId: string, taskId: string) {
-    return instance.put(`/todo-lists/${todolistId}/tasks/${taskId}`);
+
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+    return instance.put<
+      UpdateTaskModelType,
+      AxiosResponse<ResponseType<{ item: TaskType }>>
+    >(`/todo-lists/${todolistId}/tasks/${taskId}`, model);
   },
 };

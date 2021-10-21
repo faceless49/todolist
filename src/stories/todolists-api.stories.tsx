@@ -221,6 +221,7 @@ export const UpdateTask = () => {
   const [taskId, setTaskId] = useState<string>("");
 
   const UpdateTask = () => {
+    // @ts-ignore
     todolistApi.updateTask(todolistId, taskId).then((res) => {
       setState(res.data);
     });
