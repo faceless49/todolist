@@ -130,3 +130,26 @@ export const setTodolistsTC = () => (
     dispatch(setTodosAC(todos));
   });
 };
+
+export const removeTodolistTC = (todolistId: string) => (
+  dispatch: Dispatch,
+  getState: () => AppRootStateType
+) => {
+  todolistApi.deleteTodo(todolistId).then((res) => {
+    dispatch(RemoveTodoListAC(todolistId));
+  });
+};
+
+export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
+  todolistApi.createTodo(title).then((res) => {
+    dispatch(addTodoListAC(title));
+  });
+};
+
+export const changeTodolistTitleTC = (title: string, todolistId: string) => (
+  dispatch: Dispatch
+) => {
+  todolistApi.updateTodolistTitle(todolistId, title).then((res) => {
+    dispatch(changeTodoListTitleAC(title, todolistId));
+  });
+};

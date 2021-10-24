@@ -10,6 +10,7 @@ import {
   TaskStatuses,
   TaskType,
   todolistApi,
+  UpdateTaskModelType,
 } from "../api/todolist-api";
 import { Dispatch } from "redux";
 import { AppRootStateType } from "./store";
@@ -158,27 +159,12 @@ export const changeTaskTitleAC = (
   };
 };
 
-// * Thunk
-// export const fetchTasksTC = (todolistId: string) => {
-//   debugger;
-//   return (dispatch: Dispatch) => {
-//     todolistApi.getTasks(todolistId).then((res) => {});
-//   };
-// };
-
-// export const fetchTasksThunk = (dispatch: Dispatch, todolistId: string) => {
-//   todolistApi.getTasks(todolistId)
-//     .then((res) => {
-//
-//   });
-// };
-
 export type SetTasksActionType = {
   type: "SET-TASKS";
   tasks: Array<TaskType>;
   todolistId: string;
 };
-
+// * AC
 export const setTasksAC = (
   tasks: Array<TaskType>,
   todolistId: string
@@ -186,6 +172,7 @@ export const setTasksAC = (
   return { type: "SET-TASKS", tasks, todolistId } as const;
 };
 
+// * THUNK
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
     todolistApi.getTasks(todolistId).then((res) => {
@@ -244,4 +231,31 @@ export const updateTaskStatusTC = (
         });
     }
   };
+};
+
+export const changeTaskTitleTC = (
+  title: string,
+  taskId: string,
+  todolistId: string
+) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+  const allTasksFromState = getState().tasks;
+  const tasksForCurrentTodolist = allTasksFromState[todolistId];
+  const task = tasksForCurrentTodolist.find((t) => {
+    return t.id === taskId;
+  });
+
+  if (task) {
+    todolistApi
+      .updateTask(todolistId, taskId, {
+        title: title,
+        startDate: task.startDate,
+        priority: task.priority,
+        description: task.description,
+        deadline: task.deadline,
+        status: task.status,
+      })
+      .then(() => {
+        dispatch(changeTaskTitleAC(taskId, title, todolistId));
+      });
+  }
 };

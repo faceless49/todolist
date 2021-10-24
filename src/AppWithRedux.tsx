@@ -15,16 +15,20 @@ import {
 import { Menu } from "@material-ui/icons";
 import {
   addTodoListAC,
+  addTodolistTC,
   changeTodoListFilterAC,
   changeTodoListTitleAC,
+  changeTodolistTitleTC,
   FilterValueType,
   RemoveTodoListAC,
+  removeTodolistTC,
   setTodolistsTC,
   TodolistDomainType,
 } from "./store/todolistsReducer";
 import {
   addTaskTC,
   changeTaskTitleAC,
+  changeTaskTitleTC,
   removeTaskTC,
   updateTaskStatusTC,
 } from "./store/taskReducer";
@@ -92,8 +96,7 @@ function AppWithRedux() {
 
   const changeTaskTitle = useCallback(
     (taskID: string, title: string, todoListID: string) => {
-      const action = changeTaskTitleAC(taskID, title, todoListID);
-      dispatch(action);
+      dispatch(changeTaskTitleTC(title, taskID, todoListID));
     },
     [dispatch]
   );
@@ -115,22 +118,19 @@ function AppWithRedux() {
 
   const removeTodoList = useCallback(
     (todoListID: string) => {
-      const action = RemoveTodoListAC(todoListID);
-      dispatch(action);
+      dispatch(removeTodolistTC(todoListID));
     },
     [dispatch]
   );
   const addTodoList = useCallback(
     (title: string) => {
-      const action = addTodoListAC(title);
-      dispatch(action);
+      dispatch(addTodolistTC(title));
     },
     [dispatch]
   );
   const changeTodoListTitle = useCallback(
     (title: string, todoListID: string) => {
-      const action = changeTodoListTitleAC(title, todoListID);
-      dispatch(action);
+      dispatch(changeTodolistTitleTC(title, todoListID));
     },
     [dispatch]
   );
