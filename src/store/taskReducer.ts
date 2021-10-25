@@ -100,10 +100,7 @@ export const tasksReducer = (
       return stateCopy;
     }
     case "ADD-TODOLIST":
-      return {
-        [action.todoListID]: [],
-        ...state,
-      };
+      return { ...state, [action.todolist.id]: [] };
     case "REMOVE-TODOLIST":
       let stateCopy = { ...state };
       delete stateCopy[action.todolistID];
@@ -118,6 +115,7 @@ export const tasksReducer = (
   }
 };
 
+// * AC
 export const removeTaskAC = (
   taskID: string,
   todoListID: string
@@ -164,7 +162,7 @@ export type SetTasksActionType = {
   tasks: Array<TaskType>;
   todolistId: string;
 };
-// * AC
+
 export const setTasksAC = (
   tasks: Array<TaskType>,
   todolistId: string
