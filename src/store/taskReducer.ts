@@ -222,7 +222,7 @@ export const updateTaskStatusTC = (
           priority: task.priority,
           description: task.description,
           deadline: task.deadline,
-          status: status,
+          status,
         })
         .then(() => {
           dispatch(changeTaskStatusAC(taskId, status, todolistId));
@@ -245,7 +245,7 @@ export const changeTaskTitleTC = (
   if (task) {
     todolistApi
       .updateTask(todolistId, taskId, {
-        title: title,
+        title,
         startDate: task.startDate,
         priority: task.priority,
         description: task.description,
