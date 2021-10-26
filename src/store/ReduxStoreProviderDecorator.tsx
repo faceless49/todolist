@@ -4,7 +4,7 @@ import React from "react";
 import { v1 } from "uuid";
 import { combineReducers, createStore } from "redux";
 import { tasksReducer } from "./taskReducer";
-import { todoListsReducer } from "./todolistsReducer";
+import { todolistsReducer } from "./todolistsReducer";
 import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
 
 // export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>
@@ -12,7 +12,7 @@ import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
-  todoLists: todoListsReducer,
+  todoLists: todolistsReducer,
 });
 
 const initialGlobalState = {
@@ -38,7 +38,7 @@ const initialGlobalState = {
         id: v1(),
         title: "HTML&CSS",
         status: TaskStatuses.Completed,
-        todoListId: "todolistId1",
+        todolistId: "todolistId1",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -50,7 +50,7 @@ const initialGlobalState = {
         id: v1(),
         title: "JS",
         status: TaskStatuses.Completed,
-        todoListId: "todolistId1",
+        todolistId: "todolistId1",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -64,7 +64,7 @@ const initialGlobalState = {
         id: v1(),
         title: "NASDAQ",
         status: TaskStatuses.New,
-        todoListId: "todolistId2",
+        todolistId: "todolistId2",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -76,7 +76,7 @@ const initialGlobalState = {
         id: v1(),
         title: "Amazon",
         status: TaskStatuses.Completed,
-        todoListId: "todolistId2",
+        todolistId: "todolistId2",
         startDate: "",
         deadline: "",
         addedDate: "",

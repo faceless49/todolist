@@ -16,16 +16,15 @@ import {
 import { Menu } from "@material-ui/icons";
 import {
   addTodoListAC,
-  changeTodoListFilterAC,
-  changeTodoListTitleAC,
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
   FilterValueType,
-  RemoveTodoListAC,
-  todoListsReducer,
+  removeTodoListAC,
+  todolistsReducer,
 } from "./store/todolistsReducer";
 import {
   addTaskAC,
   updateTaskAC,
-  changeTaskTitleAC,
   removeTaskAC,
   tasksReducer,
 } from "./store/taskReducer";
@@ -36,19 +35,19 @@ export type TaskStateType = {
 };
 
 function AppWithReducers() {
-  let todoListID_1 = v1();
-  let todoListID_2 = v1();
+  let todolistId_1 = v1();
+  let todolistId_2 = v1();
 
-  let [todoLists, dispatchToTodoLists] = useReducer(todoListsReducer, [
+  let [todoLists, dispatchToTodoLists] = useReducer(todolistsReducer, [
     {
-      id: todoListID_1,
+      id: todolistId_1,
       title: "What to Learn",
       filter: "All",
       order: 0,
       addedDate: "",
     },
     {
-      id: todoListID_2,
+      id: todolistId_2,
       title: "What to buy",
       filter: "All",
       order: 0,
@@ -57,11 +56,11 @@ function AppWithReducers() {
   ]);
 
   const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
-    [todoListID_1]: [
+    [todolistId_1]: [
       {
         id: v1(),
         title: "HTML&CSS",
-        todoListId: todoListID_1,
+        todolistId: todolistId_1,
         status: TaskStatuses.Completed,
         startDate: "",
         deadline: "",
@@ -74,7 +73,7 @@ function AppWithReducers() {
         id: v1(),
         title: "JS",
         status: TaskStatuses.Completed,
-        todoListId: todoListID_1,
+        todolistId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -86,7 +85,7 @@ function AppWithReducers() {
         id: v1(),
         title: "ReactJS",
         status: TaskStatuses.New,
-        todoListId: todoListID_1,
+        todolistId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -98,7 +97,7 @@ function AppWithReducers() {
         id: v1(),
         title: "SASS",
         status: TaskStatuses.New,
-        todoListId: todoListID_1,
+        todolistId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -107,13 +106,13 @@ function AppWithReducers() {
         description: "",
       },
     ],
-    [todoListID_2]: [
+    [todolistId_2]: [
       {
         id: v1(),
         title: "NASDAQ",
         status: TaskStatuses.New,
 
-        todoListId: todoListID_2,
+        todolistId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -126,7 +125,7 @@ function AppWithReducers() {
         title: "Amazon",
         status: TaskStatuses.Completed,
 
-        todoListId: todoListID_2,
+        todolistId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -139,7 +138,7 @@ function AppWithReducers() {
         title: "Facebook",
         status: TaskStatuses.New,
 
-        todoListId: todoListID_2,
+        todolistId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -152,7 +151,7 @@ function AppWithReducers() {
         title: "NVIDIA",
         status: TaskStatuses.Completed,
 
-        todoListId: todoListID_2,
+        todolistId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -165,7 +164,7 @@ function AppWithReducers() {
         title: "Tesla",
         status: TaskStatuses.Completed,
 
-        todoListId: todoListID_2,
+        todolistId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -187,27 +186,27 @@ function AppWithReducers() {
   const changeTaskStatus = (
     tID: string,
     status: TaskStatuses,
-    todoListID: string
+    todolistId: string
   ) => {
-    const action = updateTaskAC(tID, { status }, todoListID);
+    const action = updateTaskAC(tID, { status }, todolistId);
     dispatchToTasks(action);
   };
-  const changeTaskTitle = (tID: string, title: string, todoListID: string) => {
-    const action = updateTaskAC(tID, { title }, todoListID);
+  const changeTaskTitle = (tID: string, title: string, todolistId: string) => {
+    const action = updateTaskAC(tID, { title }, todolistId);
     dispatchToTasks(action);
   };
   const addTask = () => {
     // @ts-ignore
-    const action = addTaskAC(newTitle, todoListID);
+    const action = addTaskAC(newTitle, todolistId);
     dispatchToTasks(action);
   };
-  const removeTasks = (tID: string, todoListID: string) => {
-    const action = removeTaskAC(tID, todoListID);
+  const removeTasks = (tID: string, todolistId: string) => {
+    const action = removeTaskAC(tID, todolistId);
     dispatchToTasks(action);
   };
 
-  const removeTodoList = (todoListID: string) => {
-    const action = RemoveTodoListAC(todoListID);
+  const removeTodoList = (todolistId: string) => {
+    const action = removeTodoListAC(todolistId);
     dispatchToTodoLists(action);
     dispatchToTasks(action);
   };
@@ -221,12 +220,12 @@ function AppWithReducers() {
     dispatchToTasks(action);
     dispatchToTodoLists(action);
   };
-  const changeTodoListTitle = (title: string, todoListID: string) => {
-    const action = changeTodoListTitleAC(title, todoListID);
+  const changeTodoListTitle = (title: string, todolistId: string) => {
+    const action = changeTodolistTitleAC(title, todolistId);
     dispatchToTodoLists(action);
   };
-  const changeTodoListFilter = (key: FilterValueType, todoListID: string) => {
-    const action = changeTodoListFilterAC(key, todoListID);
+  const changeTodoListFilter = (key: FilterValueType, todolistId: string) => {
+    const action = changeTodolistFilterAC(key, todolistId);
     dispatchToTodoLists(action);
   };
 
@@ -248,7 +247,7 @@ function AppWithReducers() {
       <Grid item key={tl.id}>
         <Paper style={{ padding: "10px" }} elevation={5}>
           <Todolist
-            todolistID={tl.id}
+            todolistId={tl.id}
             title={tl.title}
             tasks={tasksForTodolist}
             removeTasks={removeTasks}
