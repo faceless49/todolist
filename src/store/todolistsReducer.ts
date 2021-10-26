@@ -81,6 +81,8 @@ export const todoListsReducer = (
   }
 };
 
+// ** ===== Action Creators
+
 export const RemoveTodoListAC = (todolistID: string): RemoveTodolistAT => {
   return { type: "REMOVE-TODOLIST", todolistID: todolistID };
 };
@@ -116,7 +118,7 @@ export const setTodosAC = (
   };
 };
 
-// THUNK
+// ** ===== THUNKS
 
 export const setTodolistsTC = () => (
   dispatch: Dispatch,

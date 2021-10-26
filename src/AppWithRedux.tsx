@@ -14,24 +14,15 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 import {
-  addTodoListAC,
   addTodolistTC,
   changeTodoListFilterAC,
-  changeTodoListTitleAC,
   changeTodolistTitleTC,
   FilterValueType,
-  RemoveTodoListAC,
   removeTodolistTC,
   setTodolistsTC,
   TodolistDomainType,
 } from "./store/todolistsReducer";
-import {
-  addTaskTC,
-  changeTaskTitleAC,
-  changeTaskTitleTC,
-  removeTaskTC,
-  updateTaskStatusTC,
-} from "./store/taskReducer";
+import { addTaskTC, removeTaskTC, updateTaskTC } from "./store/taskReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootStateType } from "./store/store";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
@@ -89,14 +80,14 @@ function AppWithRedux() {
 
   const changeTaskStatus = useCallback(
     (taskID: string, status: TaskStatuses, todoListID: string) => {
-      dispatch(updateTaskStatusTC(taskID, todoListID, status));
+      dispatch(updateTaskTC(taskID, todoListID, { status }));
     },
     [dispatch]
   );
 
   const changeTaskTitle = useCallback(
     (taskID: string, title: string, todoListID: string) => {
-      dispatch(changeTaskTitleTC(title, taskID, todoListID));
+      dispatch(updateTaskTC(taskID, todoListID, { title }));
     },
     [dispatch]
   );
