@@ -65,7 +65,7 @@ function AppWithRedux() {
   //   {id: v1(), title: 'ReactJS', isDone: false},
   //   {id: v1(), title: 'SASS', isDone: true}
   // ])
-
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setTodolistsTC());
   }, []);
@@ -76,7 +76,7 @@ function AppWithRedux() {
   let tasks = useSelector<AppRootStateType, TaskStateType>(
     (state) => state.tasks
   );
-  const dispatch = useDispatch();
+
 
   const changeTaskStatus = useCallback(
     (taskID: string, status: TaskStatuses, todolistId: string) => {
