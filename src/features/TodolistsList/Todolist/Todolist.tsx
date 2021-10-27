@@ -1,38 +1,17 @@
 import React, { useCallback, useEffect } from "react";
-import { AddItemForm } from "../ui/addItemForm/AddItemForm";
-import { EditableSpan } from "../ui/editableSpan/EditableSpan";
 import { Button, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import { Task } from "../task/Task";
-import { TaskStatuses, TaskType } from "../../api/todolist-api";
-import { FilterValueType } from "../../store/todolistsReducer";
-import { fetchTasksTC } from "../../store/taskReducer";
 import { useDispatch } from "react-redux";
-
-export type PropsType = {
-  todolistId: string;
-  title: string;
-  tasks: Array<TaskType>;
-  filter: FilterValueType;
-  removeTasks: (id: string, todolistId: string) => void;
-  changeTodoListFilter: (key: FilterValueType, todolistId: string) => void;
-  addTask: (newTitle: string, todolistId: string) => void;
-  changeTaskStatus: (
-    id: string,
-    status: TaskStatuses,
-    todolistId: string
-  ) => void;
-  changeTaskTitle: (tID: string, title: string, todolistId: string) => void;
-  removeTodoList: (todolistId: string) => void;
-  changeTodoListTitle: (title: string, todolistId: string) => void;
-};
+import { TaskStatuses, TaskType } from "../../../api/todolist-api";
+import { FilterValueType } from "../todolistsReducer";
+import { fetchTasksTC } from "../taskReducer";
+import { AddItemForm } from "../../../components/ui/addItemForm/AddItemForm";
+import { Task } from "./Task/Task";
+import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
 
 export const Todolist = React.memo((props: PropsType) => {
-  console.log("todolist render");
-
   const dispatch = useDispatch();
   useEffect(() => {
-    debugger;
     dispatch(fetchTasksTC(props.todolistId));
   }, []);
 
@@ -59,7 +38,7 @@ export const Todolist = React.memo((props: PropsType) => {
 
   const addTask = useCallback(
     (title: string) => {
-      props.addTask(title, props.todolistId); // * TODO asking about this const. Why we should declare here. 26STR
+      props.addTask(title, props.todolistId);
     },
     [props.addTask, props.todolistId]
   );
@@ -136,3 +115,21 @@ export const Todolist = React.memo((props: PropsType) => {
     </div>
   );
 });
+
+export type PropsType = {
+  todolistId: string;
+  title: string;
+  tasks: Array<TaskType>;
+  filter: FilterValueType;
+  removeTasks: (id: string, todolistId: string) => void;
+  changeTodoListFilter: (key: FilterValueType, todolistId: string) => void;
+  addTask: (newTitle: string, todolistId: string) => void;
+  changeTaskStatus: (
+    id: string,
+    status: TaskStatuses,
+    todolistId: string
+  ) => void;
+  changeTaskTitle: (tID: string, title: string, todolistId: string) => void;
+  removeTodoList: (todolistId: string) => void;
+  changeTodoListTitle: (title: string, todolistId: string) => void;
+};

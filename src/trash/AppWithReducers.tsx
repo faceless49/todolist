@@ -1,8 +1,6 @@
 import React, { useReducer } from "react";
 import s from "./App.module.scss";
-import { TaskPriorities, TaskStatuses, TaskType } from "./api/todolist-api";
 import { v1 } from "uuid";
-import { AddItemForm } from "./components/ui/addItemForm/AddItemForm";
 import {
   AppBar,
   Button,
@@ -14,6 +12,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
+import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
 import {
   addTodoListAC,
   changeTodolistFilterAC,
@@ -21,14 +20,14 @@ import {
   FilterValueType,
   removeTodoListAC,
   todolistsReducer,
-} from "./store/todolistsReducer";
+} from "../features/TodolistsList/todolistsReducer";
 import {
-  addTaskAC,
-  updateTaskAC,
   removeTaskAC,
   tasksReducer,
-} from "./store/taskReducer";
-import { Todolist } from "./components/todolist/Todolist";
+  updateTaskAC,
+} from "../features/TodolistsList/taskReducer";
+import { AddItemForm } from "../components/ui/addItemForm/AddItemForm";
+import { Todolist } from "../features/TodolistsList/Todolist/Todolist";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -60,7 +59,7 @@ function AppWithReducers() {
       {
         id: v1(),
         title: "HTML&CSS",
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         status: TaskStatuses.Completed,
         startDate: "",
         deadline: "",
@@ -73,7 +72,7 @@ function AppWithReducers() {
         id: v1(),
         title: "JS",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -85,7 +84,7 @@ function AppWithReducers() {
         id: v1(),
         title: "ReactJS",
         status: TaskStatuses.New,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -97,7 +96,7 @@ function AppWithReducers() {
         id: v1(),
         title: "SASS",
         status: TaskStatuses.New,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -112,7 +111,7 @@ function AppWithReducers() {
         title: "NASDAQ",
         status: TaskStatuses.New,
 
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -125,7 +124,7 @@ function AppWithReducers() {
         title: "Amazon",
         status: TaskStatuses.Completed,
 
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -138,7 +137,7 @@ function AppWithReducers() {
         title: "Facebook",
         status: TaskStatuses.New,
 
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -151,7 +150,7 @@ function AppWithReducers() {
         title: "NVIDIA",
         status: TaskStatuses.Completed,
 
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -164,7 +163,7 @@ function AppWithReducers() {
         title: "Tesla",
         status: TaskStatuses.Completed,
 
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",

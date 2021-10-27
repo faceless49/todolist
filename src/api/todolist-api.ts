@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { TodolistDomainType } from "../store/todolistsReducer";
+import { TodolistDomainType } from "../features/TodolistsList/todolistsReducer";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -92,7 +92,7 @@ export type TaskType = {
   startDate: string;
   deadline: string;
   id: string;
-  todolistId: string;
+  todoListId: string;
   order: number;
   addedDate: string;
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Task } from "./Task";
 import { action } from "@storybook/addon-actions";
-import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
+import { TaskPriorities, TaskStatuses } from "../../../../api/todolist-api";
 
 const changeTaskStatusCallback = action("Change Task Status");
 const removeTasksCallback = action("Remove Task");
@@ -40,7 +40,7 @@ TaskIsDoneStory.args = {
     order: 0,
     priority: TaskPriorities.Low,
     description: "",
-    todolistId: "todo1",
+    todoListId: "todo1",
   },
 };
 
@@ -58,6 +58,6 @@ TaskIsNotDoneStory.args = {
     order: 0,
     priority: TaskPriorities.Low,
     description: "",
-    todolistId: "todo2",
+    todoListId: "todo2",
   },
 };

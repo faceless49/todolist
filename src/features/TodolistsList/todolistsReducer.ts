@@ -1,6 +1,6 @@
-import { todolistApi, TodolistType } from '../api/todolist-api';
-import { Dispatch } from 'redux';
-import { AppRootStateType } from './store';
+import { Dispatch } from "redux";
+import { todolistApi, TodolistType } from "../../api/todolist-api";
+import { AppRootStateType } from "../../app/store";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -9,17 +9,17 @@ export const todolistsReducer = (
   action: ActionsType
 ): TodolistDomainType[] => {
   switch (action.type) {
-    case 'SET-TODOS':
-      return action.todolists.map((tl) => ({ ...tl, filter: 'All' }));
-    case 'REMOVE-TODOLIST':
+    case "SET-TODOS":
+      return action.todolists.map((tl) => ({ ...tl, filter: "All" }));
+    case "REMOVE-TODOLIST":
       return state.filter((tl) => tl.id !== action.todolistId);
-    case 'ADD-TODOLIST':
-      return [{ ...action.todolist, filter: 'All' }, ...state];
-    case 'CHANGE-TODOLIST-TITLE':
+    case "ADD-TODOLIST":
+      return [{ ...action.todolist, filter: "All" }, ...state];
+    case "CHANGE-TODOLIST-TITLE":
       return state.map((tl) =>
         tl.id === action.todolistId ? { ...tl, title: action.title } : tl
       );
-    case 'CHANGE-TODOLIST-FILTER':
+    case "CHANGE-TODOLIST-FILTER":
       return state.map((tl) =>
         tl.id === action.todolistId ? { ...tl, filter: action.key } : tl
       );
@@ -31,16 +31,16 @@ export const todolistsReducer = (
 // ** ===== Action Creators
 
 export const removeTodoListAC = (todolistId: string) =>
-  ({ type: 'REMOVE-TODOLIST', todolistId } as const);
+  ({ type: "REMOVE-TODOLIST", todolistId } as const);
 
 export const addTodoListAC = (todolist: TodolistType) =>
-  ({ type: 'ADD-TODOLIST', todolist } as const);
+  ({ type: "ADD-TODOLIST", todolist } as const);
 
 export const changeTodolistTitleAC = (title: string, todolistId: string) =>
   ({
-    type: 'CHANGE-TODOLIST-TITLE',
+    type: "CHANGE-TODOLIST-TITLE",
     todolistId,
-    title
+    title,
   } as const);
 
 export const changeTodolistFilterAC = (
@@ -48,15 +48,15 @@ export const changeTodolistFilterAC = (
   todolistId: string
 ) =>
   ({
-    type: 'CHANGE-TODOLIST-FILTER',
+    type: "CHANGE-TODOLIST-FILTER",
     todolistId,
-    key
+    key,
   } as const);
 
 export const setTodosAC = (todolists: Array<TodolistDomainType>) =>
   ({
-    type: 'SET-TODOS',
-    todolists
+    type: "SET-TODOS",
+    todolists,
   } as const);
 
 // ** ===== THUNKS
@@ -100,7 +100,7 @@ export type AddTodolistAT = ReturnType<typeof addTodoListAC>;
 export type RemoveTodolistAT = ReturnType<typeof removeTodoListAC>;
 export type SetTodosActionType = ReturnType<typeof setTodosAC>;
 
-export type FilterValueType = 'All' | 'Active' | 'Completed';
+export type FilterValueType = "All" | "Active" | "Completed";
 
 export type TodolistDomainType = TodolistType & {
   filter: FilterValueType;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import s from "./App.module.scss";
 import { v1 } from "uuid";
-import { AddItemForm } from "./components/ui/addItemForm/AddItemForm";
 import {
   AppBar,
   Button,
@@ -13,9 +12,13 @@ import {
   Paper,
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
-import { FilterValueType, TodolistDomainType } from "./store/todolistsReducer";
-import { TaskPriorities, TaskStatuses, TaskType } from "./api/todolist-api";
-import { Todolist } from "./components/todolist/Todolist";
+import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
+import { AddItemForm } from "../components/ui/addItemForm/AddItemForm";
+import {
+  FilterValueType,
+  TodolistDomainType,
+} from "../features/TodolistsList/todolistsReducer";
+import { Todolist } from "../features/TodolistsList/Todolist/Todolist";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -48,7 +51,7 @@ function App() {
         id: v1(),
         title: "HTML&CSS",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -60,7 +63,7 @@ function App() {
         id: v1(),
         title: "JS",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -72,7 +75,7 @@ function App() {
         id: v1(),
         title: "ReactJS",
         status: TaskStatuses.New,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -84,7 +87,7 @@ function App() {
         id: v1(),
         title: "SASS",
         status: TaskStatuses.New,
-        todolistId: todolistId_1,
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -98,7 +101,7 @@ function App() {
         id: v1(),
         title: "NASDAQ",
         status: TaskStatuses.New,
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -110,7 +113,7 @@ function App() {
         id: v1(),
         title: "Amazon",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -122,7 +125,7 @@ function App() {
         id: v1(),
         title: "Facebook",
         status: TaskStatuses.New,
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -134,7 +137,7 @@ function App() {
         id: v1(),
         title: "NVIDIA",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -146,7 +149,7 @@ function App() {
         id: v1(),
         title: "Tesla",
         status: TaskStatuses.Completed,
-        todolistId: todolistId_2,
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -192,7 +195,7 @@ function App() {
       id: v1(),
       title,
       status: TaskStatuses.New,
-      todolistId: todolistId,
+      todoListId: todolistId,
       startDate: "",
       deadline: "",
       addedDate: "",

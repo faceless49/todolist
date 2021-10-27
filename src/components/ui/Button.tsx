@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./Button.module.scss";
-import { FilterValueType } from "../../store/todolistsReducer";
+import { FilterValueType } from "../../features/TodolistsList/todolistsReducer";
 
 type propsType = {
   callBack: () => void;

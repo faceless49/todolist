@@ -1,7 +1,7 @@
-import { tasksReducer } from "./taskReducer";
-import { todolistsReducer } from "./todolistsReducer";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
+import { tasksReducer } from "../features/TodolistsList/taskReducer";
+import { todolistsReducer } from "../features/TodolistsList/todolistsReducer";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
