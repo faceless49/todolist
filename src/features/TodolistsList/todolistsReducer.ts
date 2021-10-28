@@ -8,6 +8,11 @@ import {
   setAppStatusAC,
   SetAppStatusActionType,
 } from "../../app/app-reducer";
+import { AxiosError } from "axios";
+import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../../utils/error-utils";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -117,19 +122,27 @@ export const addTodolistTC = (title: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.createTodo(title).then((res) => {
-    if (res.data.resultCode === 0) {
-      dispatch(addTodoListAC(res.data.data.item));
-      dispatch(setAppStatusAC("succeeded"));
-    } else {
-      if (res.data.messages[0]) {
-        dispatch(setAppErrorAC(res.data.messages[0]));
+  todolistApi
+    .createTodo(title)
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        dispatch(addTodoListAC(res.data.data.item));
+        dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC("Some Error"));
+        //   if (res.data.messages[0]) {
+        //     dispatch(setAppErrorAC(res.data.messages[0]));
+        //   } else {
+        //     dispatch(setAppErrorAC("Some Error"));
+        //   }
+        //   dispatch(setAppStatusAC("failed"));
+        // }
+        // *===== Generic function
+        handleServerAppError<{ item: TodolistType }>(res.data, dispatch);
       }
-      dispatch(setAppStatusAC("failed"));
-    }
-  });
+    })
+    .catch((res: AxiosError) => {
+      handleServerNetworkError(dispatch, res.message);
+    });
 };
 
 export const changeTodolistTitleTC = (title: string, todolistId: string) => (

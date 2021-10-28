@@ -19,6 +19,11 @@ import {
   setAppStatusAC,
   SetAppStatusActionType,
 } from "../../app/app-reducer";
+import { AxiosError } from "axios";
+import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../../utils/error-utils";
 
 const initialState: TaskStateType = {};
 
@@ -131,21 +136,26 @@ export const addTaskTC = (title: string, todolistId: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.createTask(todolistId, title).then((res) => {
-    if (res.data.resultCode === 0) {
-      let task = res.data.data.item;
-      const action = addTaskAC(task);
-      dispatch(action);
-      dispatch(setAppStatusAC("succeeded"));
-    } else {
-      if (res.data.messages[0]) {
-        dispatch(setAppErrorAC(res.data.messages[0]));
+  todolistApi
+    .createTask(todolistId, title)
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        let task = res.data.data.item;
+        const action = addTaskAC(task);
+        dispatch(action);
+        dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC("Some Error"));
+        handleServerAppError(res.data, dispatch);
       }
-      dispatch(setAppStatusAC("failed"));
-    }
-  });
+    })
+    .catch((res: AxiosError) => {
+      // dispatch(setAppErrorAC(res.message)); = Proxy Refactor
+      // dispatch(setAppStatusAC("failed"));
+      handleServerNetworkError(dispatch, res.message);
+    });
+  // .finally(() => {
+  //   dispatch(setAppStatusAC("succeeded"));
+  // });
 };
 
 export const updateTaskTC = (
