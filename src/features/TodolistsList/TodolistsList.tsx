@@ -6,7 +6,7 @@ import {
   changeTodolistTitleTC,
   FilterValueType,
   removeTodolistTC,
-  setTodolistsTC,
+  fetchTodolistsTC,
   TodolistDomainType,
 } from "./todolistsReducer";
 import { AppRootStateType } from "../../app/store";
@@ -15,12 +15,13 @@ import { TaskStatuses } from "../../api/todolist-api";
 import { addTaskTC, removeTaskTC, updateTaskTC } from "./taskReducer";
 import { AddItemForm } from "../../components/ui/addItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
-import { Grid, Paper } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 export const TodolistsList: React.FC = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setTodolistsTC());
+    dispatch(fetchTodolistsTC());
   }, []);
 
   let todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(

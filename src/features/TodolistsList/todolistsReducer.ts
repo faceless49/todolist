@@ -1,6 +1,11 @@
 import { Dispatch } from "redux";
 import { todolistApi, TodolistType } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
+import {
+  RequestStatusType,
+  setAppStatusAC,
+  SetAppStatusActionType,
+} from "../../app/app-reducer";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -60,37 +65,45 @@ export const setTodosAC = (todolists: Array<TodolistDomainType>) =>
   } as const);
 
 // ** ===== THUNKS
-export const setTodolistsTC = () => (
+export const fetchTodolistsTC = () => (
   dispatch: Dispatch<ActionsType>,
   getState: () => AppRootStateType
 ): void => {
+  dispatch(setAppStatusAC("loading"));
   todolistApi.getTodos().then((res) => {
     let todos = res.data;
     dispatch(setTodosAC(todos));
+    dispatch(setAppStatusAC("succeeded"));
   });
 };
 
 export const removeTodolistTC = (todolistId: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
+  dispatch(setAppStatusAC("loading"));
   todolistApi.deleteTodo(todolistId).then((res) => {
     dispatch(removeTodoListAC(todolistId));
+    dispatch(setAppStatusAC("succeeded"));
   });
 };
 
 export const addTodolistTC = (title: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
+  dispatch(setAppStatusAC("loading"));
   todolistApi.createTodo(title).then((res) => {
     dispatch(addTodoListAC(res.data.data.item));
+    dispatch(setAppStatusAC("succeeded"));
   });
 };
 
 export const changeTodolistTitleTC = (title: string, todolistId: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
+  dispatch(setAppStatusAC("loading"));
   todolistApi.updateTodolistTitle(todolistId, title).then((res) => {
     dispatch(changeTodolistTitleAC(title, todolistId));
+    dispatch(setAppStatusAC("succeeded"));
   });
 };
 
@@ -110,4 +123,5 @@ export type ActionsType =
   | RemoveTodolistAT
   | SetTodosActionType
   | ReturnType<typeof changeTodolistTitleAC>
-  | ReturnType<typeof changeTodolistFilterAC>;
+  | ReturnType<typeof changeTodolistFilterAC>
+  | SetAppStatusActionType;
