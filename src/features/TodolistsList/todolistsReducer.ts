@@ -3,7 +3,6 @@ import { todolistApi, TodolistType } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
   RequestStatusType,
-  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -15,6 +14,11 @@ import {
 } from "../../utils/error-utils";
 
 const initialState: Array<TodolistDomainType> = [];
+enum ResponseStatusCodes {
+  success = 0,
+  error = 1,
+  captcha = 10,
+}
 
 export const todolistsReducer = (
   state: Array<TodolistDomainType> = initialState,
@@ -125,7 +129,7 @@ export const addTodolistTC = (title: string) => (
   todolistApi
     .createTodo(title)
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(addTodoListAC(res.data.data.item));
         dispatch(setAppStatusAC("succeeded"));
       } else {

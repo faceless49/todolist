@@ -26,6 +26,11 @@ import {
 } from "../../utils/error-utils";
 
 const initialState: TaskStateType = {};
+enum ResponseStatusCodes {
+  success = 0,
+  error = 1,
+  captcha = 10,
+}
 
 export const tasksReducer = (
   state: TaskStateType = initialState,
@@ -139,7 +144,7 @@ export const addTaskTC = (title: string, todolistId: string) => (
   todolistApi
     .createTask(todolistId, title)
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResponseStatusCodes.success) {
         let task = res.data.data.item;
         const action = addTaskAC(task);
         dispatch(action);
