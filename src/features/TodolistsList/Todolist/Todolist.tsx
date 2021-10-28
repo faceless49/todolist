@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Button, IconButton } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+
 import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../../api/todolist-api";
 import { FilterValueType } from "../todolistsReducer";
@@ -8,6 +7,8 @@ import { fetchTasksTC } from "../taskReducer";
 import { AddItemForm } from "../../../components/ui/addItemForm/AddItemForm";
 import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
+import { Button, IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
 export const Todolist = React.memo((props: PropsType) => {
   const dispatch = useDispatch();

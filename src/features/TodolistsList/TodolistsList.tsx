@@ -13,9 +13,9 @@ import { AppRootStateType } from "../../app/store";
 import { TaskStateType } from "../../app/AppWithRedux";
 import { TaskStatuses } from "../../api/todolist-api";
 import { addTaskTC, removeTaskTC, updateTaskTC } from "./taskReducer";
-import { Grid, Paper } from "@material-ui/core";
 import { AddItemForm } from "../../components/ui/addItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
+import { Grid, Paper } from "@mui/material";
 
 export const TodolistsList: React.FC = (props) => {
   const dispatch = useDispatch();

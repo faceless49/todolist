@@ -1,5 +1,7 @@
 import React from "react";
 import s from "./App.module.scss";
+import { TaskType } from "../api/todolist-api";
+import { TodolistsList } from "../features/TodolistsList/TodolistsList";
 import {
   AppBar,
   Button,
@@ -7,10 +9,8 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from "@material-ui/core";
-import { Menu } from "@material-ui/icons";
-import { TaskType } from "../api/todolist-api";
-import { TodolistsList } from "../features/TodolistsList/TodolistsList";
+} from "@mui/material";
+import { Menu } from "@mui/icons-material";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;

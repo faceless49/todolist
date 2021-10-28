@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import s from "./App.module.scss";
 import { v1 } from "uuid";
-import {
-  AppBar,
-  Button,
-  Container,
-  IconButton,
-  Toolbar,
-  Typography,
-  Grid,
-  Paper,
-} from "@material-ui/core";
-import { Menu } from "@material-ui/icons";
 import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
 import { AddItemForm } from "../components/ui/addItemForm/AddItemForm";
 import {
@@ -19,6 +8,17 @@ import {
   TodolistDomainType,
 } from "../features/TodolistsList/todolistsReducer";
 import { Todolist } from "../features/TodolistsList/Todolist/Todolist";
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { Menu } from "@mui/icons-material";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
