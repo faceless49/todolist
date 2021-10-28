@@ -13,6 +13,8 @@ import Container from "@mui/material/Container";
 import { AppRootStateType } from "./store";
 import { RequestStatusType } from "./app-reducer";
 import { useSelector } from "react-redux";
+import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
+
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
 };
@@ -41,6 +43,8 @@ function AppWithRedux() {
       <Container fixed>
         <TodolistsList />
       </Container>
+
+      <ErrorSnackbar />
     </div>
   );
 }

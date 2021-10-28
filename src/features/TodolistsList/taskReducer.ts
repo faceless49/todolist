@@ -13,7 +13,12 @@ import {
   UpdateTaskModelType,
 } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
-import { setAppStatusAC, SetAppStatusActionType } from "../../app/app-reducer";
+import {
+  setAppErrorAC,
+  SetAppErrorActionType,
+  setAppStatusAC,
+  SetAppStatusActionType,
+} from "../../app/app-reducer";
 
 const initialState: TaskStateType = {};
 
@@ -37,6 +42,7 @@ export const tasksReducer = (
       };
     }
     case "ADD-TASK":
+      debugger;
       return {
         ...state,
         [action.task.todoListId]: [
@@ -125,12 +131,20 @@ export const addTaskTC = (title: string, todolistId: string) => (
   dispatch: Dispatch<ActionsType>
 ) => {
   dispatch(setAppStatusAC("loading"));
-
   todolistApi.createTask(todolistId, title).then((res) => {
-    let task = res.data.data.item;
-    const action = addTaskAC(task);
-    dispatch(action);
-    dispatch(setAppStatusAC("succeeded"));
+    if (res.data.resultCode === 0) {
+      let task = res.data.data.item;
+      const action = addTaskAC(task);
+      dispatch(action);
+      dispatch(setAppStatusAC("succeeded"));
+    } else {
+      if (res.data.messages[0]) {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+      } else {
+        dispatch(setAppErrorAC("Some Error"));
+      }
+      dispatch(setAppStatusAC("failed"));
+    }
   });
 };
 
@@ -188,4 +202,5 @@ type ActionsType =
   | AddTodolistAT
   | RemoveTodolistAT
   | SetTodosActionType
-  | SetAppStatusActionType;
+  | SetAppStatusActionType
+  | SetAppErrorActionType;

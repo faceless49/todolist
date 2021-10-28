@@ -9,6 +9,7 @@ import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { RequestStatusType } from "../../../app/app-reducer";
 
 export const Todolist = React.memo((props: PropsType) => {
   const dispatch = useDispatch();
@@ -61,16 +62,21 @@ export const Todolist = React.memo((props: PropsType) => {
     <div>
       <h3>
         <EditableSpan title={props.title} changeTitle={changeTodoListTitle} />
+
         <IconButton
           onClick={onClickRemoveTodoList}
           size={"small"}
           color={"primary"}
+          disabled={props.entityStatus === "loading"}
         >
           <Delete />
         </IconButton>
       </h3>
 
-      <AddItemForm addItem={addTask} />
+      <AddItemForm
+        addItem={addTask}
+        disabled={props.entityStatus === "loading"}
+      />
 
       <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
         {allTodolistTasks.map((t: TaskType) => (
@@ -122,6 +128,7 @@ export type PropsType = {
   title: string;
   tasks: Array<TaskType>;
   filter: FilterValueType;
+  entityStatus: RequestStatusType;
   removeTasks: (id: string, todolistId: string) => void;
   changeTodoListFilter: (key: FilterValueType, todolistId: string) => void;
   addTask: (newTitle: string, todolistId: string) => void;

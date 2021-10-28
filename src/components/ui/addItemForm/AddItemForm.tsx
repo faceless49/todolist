@@ -9,6 +9,7 @@ import { AddBox } from "@mui/icons-material";
 
 type AddItemFormPropsType = {
   addItem: (newTitle: string) => void;
+  disabled?: boolean;
 };
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
@@ -52,8 +53,14 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         onKeyPress={onKeyPressHandler}
         error={!!error} // ! TODO: Use StyleComponent later for text required
         helperText={error && error}
+        disabled={props.disabled}
       />
-      <IconButton size={"small"} color={"primary"} onClick={onClickHandler}>
+      <IconButton
+        size={"small"}
+        color={"primary"}
+        onClick={onClickHandler}
+        disabled={props.disabled}
+      >
         <AddBox />
       </IconButton>
     </div>

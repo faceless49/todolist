@@ -45,6 +45,7 @@ function AppWithReducers() {
       filter: "All",
       order: 0,
       addedDate: "",
+      entityStatus: "idle",
     },
     {
       id: todolistId_2,
@@ -52,6 +53,7 @@ function AppWithReducers() {
       filter: "All",
       order: 0,
       addedDate: "",
+      entityStatus: "idle",
     },
   ]);
 
@@ -247,6 +249,7 @@ function AppWithReducers() {
       <Grid item key={tl.id}>
         <Paper style={{ padding: "10px" }} elevation={5}>
           <Todolist
+            entityStatus={tl.entityStatus}
             todolistId={tl.id}
             title={tl.title}
             tasks={tasksForTodolist}
