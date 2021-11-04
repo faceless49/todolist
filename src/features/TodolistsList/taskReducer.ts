@@ -14,7 +14,6 @@ import {
 } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
-  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -52,7 +51,6 @@ export const tasksReducer = (
       };
     }
     case "ADD-TASK":
-      debugger;
       return {
         ...state,
         [action.task.todoListId]: [
@@ -96,7 +94,7 @@ export const tasksReducer = (
   }
 };
 
-// ===== Action Creators
+// *===== Action Creators
 
 export const removeTaskAC = (taskID: string, todolistId: string) =>
   ({ type: "REMOVE-TASK", taskID, todolistId } as const);
@@ -113,7 +111,7 @@ export const updateTaskAC = (
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
   ({ type: "SET-TASKS", tasks, todolistId } as const);
 
-// ===== THUNKS
+// * ===== THUNKS
 
 export const fetchTasksTC = (todolistId: string) => (
   dispatch: Dispatch<ActionsType>

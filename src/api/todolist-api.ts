@@ -38,12 +38,12 @@ export const todolistApi = {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
   },
   createTask(todolistId: string, title: string) {
-    return instance.post<ResponseType<{ item: TaskType }>>(
-      `todo-lists/${todolistId}/tasks`,
-      {
-        title,
-      }
-    );
+    return instance.post<
+      { title: string },
+      { data: ResponseType<{ item: TaskType }> }
+    >(`todo-lists/${todolistId}/tasks`, {
+      title,
+    });
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<ResponseType>(
@@ -58,7 +58,30 @@ export const todolistApi = {
   },
 };
 
+// * Auth
+
+export const authAPI = {
+  login(data: LoginParamsType) {
+    return instance.post<
+      LoginParamsType,
+      AxiosResponse<ResponseType<{ userId: number }>>
+    >("/auth/login", data);
+  },
+  me() {
+    return instance.get<ResponseType<MeResponseType>>("/auth/me");
+  },
+  logout() {
+    return instance.delete<ResponseType>("auth/login");
+  },
+};
+
 // types
+type MeResponseType = {
+  id: number;
+  email: string;
+  login: string;
+};
+
 type CommonResponseType<T = {}> = {
   resultCode: number;
   messages: Array<string>;
@@ -114,4 +137,17 @@ export type UpdateTaskModelType = {
   priority: TaskPriorities;
   startDate: string;
   deadline: string;
+};
+export type LoginParamsType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha?: string;
+};
+export type LoginResponseType = {
+  resultCode: number;
+  messages: Array<string>;
+  data: {
+    userId: number;
+  };
 };

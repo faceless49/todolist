@@ -99,6 +99,7 @@ export const changeTodolistEntityStatusAC = (
   } as const);
 
 // ** ===== THUNKS
+
 export const fetchTodolistsTC = () => (
   dispatch: Dispatch<ActionsType>,
   getState: () => AppRootStateType
