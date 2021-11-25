@@ -3,7 +3,7 @@ import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   FilterValueType,
-  removeTodoListAC,
+  removeTodolistAC,
   TodolistDomainType,
   todolistsReducer,
 } from "./todolistsReducer";
@@ -40,7 +40,7 @@ beforeEach(() => {
 });
 
 test.skip("correct todolist should be removed", () => {
-  const endState = todolistsReducer(startState, removeTodoListAC(todolistId1));
+  const endState = todolistsReducer(startState, removeTodolistAC(todolistId1));
 
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);

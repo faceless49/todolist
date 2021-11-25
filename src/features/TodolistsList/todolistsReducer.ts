@@ -1,8 +1,8 @@
-import { Dispatch } from "redux";
 import { todolistApi, TodolistType } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
   RequestStatusType,
+  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -12,9 +12,11 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
+import { fetchTasksTC } from "./taskReducer";
+import { ThunkAction } from "redux-thunk";
 
 const initialState: Array<TodolistDomainType> = [];
-enum ResponseStatusCodes {
+export enum ResponseStatusCodes {
   success = 0,
   error = 1,
   captcha = 10,
@@ -52,6 +54,8 @@ export const todolistsReducer = (
           ? { ...tl, entityStatus: action.entityStatus }
           : tl
       );
+    case "CLEAR-DATA":
+      return [];
     default:
       return state;
   }
@@ -59,7 +63,7 @@ export const todolistsReducer = (
 
 // ** ===== Action Creators
 
-export const removeTodoListAC = (todolistId: string) =>
+export const removeTodolistAC = (todolistId: string) =>
   ({ type: "REMOVE-TODOLIST", todolistId } as const);
 
 export const addTodoListAC = (todolist: TodolistType) =>
@@ -98,41 +102,63 @@ export const changeTodolistEntityStatusAC = (
     entityStatus,
   } as const);
 
+export const clearTodosDataAC = () => ({ type: "CLEAR-DATA" } as const);
+
 // ** ===== THUNKS
 
-export const fetchTodolistsTC = () => (
-  dispatch: Dispatch<ActionsType>,
+export type ThunkType = ThunkAction<
+  void,
+  AppRootStateType,
+  unknown,
+  ActionsType
+>;
+
+export const fetchTodolistsTC = (): ThunkType => (
+  dispatch,
   getState: () => AppRootStateType
 ): void => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.getTodos().then((res) => {
-    let todos = res.data;
-    dispatch(setTodosAC(todos));
-    dispatch(setAppStatusAC("succeeded"));
-  });
+  todolistApi
+    .getTodolists()
+    .then((res) => {
+      let todos = res.data;
+      dispatch(setTodosAC(todos));
+      return res.data;
+    })
+    .then((todos) => {
+      todos.forEach((tl) => {
+        dispatch(fetchTasksTC(tl.id));
+      });
+    })
+    .catch((err) => handleServerNetworkError(dispatch, err.message))
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
-export const removeTodolistTC = (todolistId: string) => (
-  dispatch: Dispatch<ActionsType>
-) => {
-  dispatch(setAppStatusAC("loading"));
-  dispatch(changeTodolistEntityStatusAC(todolistId, "loading"));
-  todolistApi.deleteTodo(todolistId).then((res) => {
-    dispatch(removeTodoListAC(todolistId));
-    dispatch(setAppStatusAC("succeeded"));
-  });
+export const removeTodolistTC = (todolistId: string): ThunkType => {
+  return (dispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    dispatch(changeTodolistEntityStatusAC(todolistId, "loading"));
+    todolistApi
+      .deleteTodolist(todolistId)
+      .then((res) => {
+        if (res.data.resultCode === ResponseStatusCodes.success) {
+          dispatch(removeTodolistAC(todolistId));
+        } else {
+          handleServerAppError(res.data, dispatch);
+        }
+      })
+      .catch((err) => handleServerNetworkError(dispatch, err.message))
+      .finally(() => dispatch(setAppStatusAC("succeeded")));
+  };
 };
 
-export const addTodolistTC = (title: string) => (
-  dispatch: Dispatch<ActionsType>
-) => {
+export const addTodolistTC = (title: string): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
   todolistApi
     .createTodo(title)
     .then((res) => {
       if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(addTodoListAC(res.data.data.item));
-        dispatch(setAppStatusAC("succeeded"));
       } else {
         //   if (res.data.messages[0]) {
         //     dispatch(setAppErrorAC(res.data.messages[0]));
@@ -142,28 +168,39 @@ export const addTodolistTC = (title: string) => (
         //   dispatch(setAppStatusAC("failed"));
         // }
         // *===== Generic function
-        handleServerAppError<{ item: TodolistType }>(res.data, dispatch);
+        handleServerAppError<{ item: TodolistType }>(res.data, dispatch); // You can delete <T>.
       }
     })
     .catch((res: AxiosError) => {
       handleServerNetworkError(dispatch, res.message);
-    });
+    })
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
-export const changeTodolistTitleTC = (title: string, todolistId: string) => (
-  dispatch: Dispatch<ActionsType>
-) => {
+export const changeTodolistTitleTC = (
+  title: string,
+  todolistId: string
+): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.updateTodolistTitle(todolistId, title).then((res) => {
-    dispatch(changeTodolistTitleAC(title, todolistId));
-    dispatch(setAppStatusAC("succeeded"));
-  });
+  todolistApi
+    .updateTodolistTitle(todolistId, title)
+    .then((res) => {
+      if (res.data.resultCode === ResponseStatusCodes.success) {
+        dispatch(changeTodolistTitleAC(title, todolistId));
+      } else {
+        handleServerAppError(res.data, dispatch);
+      }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message);
+    })
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
 // * types
 
 export type AddTodolistAT = ReturnType<typeof addTodoListAC>;
-export type RemoveTodolistAT = ReturnType<typeof removeTodoListAC>;
+export type RemoveTodolistAT = ReturnType<typeof removeTodolistAC>;
 export type SetTodosActionType = ReturnType<typeof setTodosAC>;
 export type ChangeTodolistEntityStatusActionType = ReturnType<
   typeof changeTodolistEntityStatusAC
@@ -183,4 +220,5 @@ export type ActionsType =
   | ReturnType<typeof changeTodolistFilterAC>
   | SetAppStatusActionType
   | SetAppErrorActionType
-  | ChangeTodolistEntityStatusActionType;
+  | ChangeTodolistEntityStatusActionType
+  | ReturnType<typeof clearTodosDataAC>;

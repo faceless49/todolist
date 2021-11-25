@@ -9,7 +9,7 @@ export const GetTodolists = () => {
   const [state, setState] = useState<any>(null);
   const [todolistId, settodolistId] = useState<string>("");
   const GetTodolists = () => {
-    todolistApi.getTodos().then((res) => {
+    todolistApi.getTodolists().then((res) => {
       let todos = res.data;
       setState(todos);
     });
@@ -67,7 +67,7 @@ export const DeleteTodolist = () => {
   const [todolistId, settodolistId] = useState<string>("");
 
   const DeleteTodolist = () => {
-    todolistApi.deleteTodo(todolistId).then((res) => {
+    todolistApi.deleteTodolist(todolistId).then((res) => {
       setState(res.data);
     });
   };

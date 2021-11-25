@@ -12,7 +12,7 @@ const instance = axios.create({
 // api
 export const todolistApi = {
   //* Todolist
-  getTodos() {
+  getTodolists() {
     let promise = instance.get<Array<TodolistDomainType>>("todo-lists");
     return promise;
   },
@@ -24,7 +24,7 @@ export const todolistApi = {
       }
     );
   },
-  deleteTodo(todolistId: string) {
+  deleteTodolist(todolistId: string) {
     return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`);
   },
   updateTodolistTitle(todolistId: string, title: string) {

@@ -7,7 +7,7 @@ import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   FilterValueType,
-  removeTodoListAC,
+  removeTodolistAC,
   todolistsReducer,
 } from "../features/TodolistsList/todolistsReducer";
 import {
@@ -208,7 +208,7 @@ function AppWithReducers() {
   };
 
   const removeTodoList = (todolistId: string) => {
-    const action = removeTodoListAC(todolistId);
+    const action = removeTodolistAC(todolistId);
     dispatchToTodoLists(action);
     dispatchToTasks(action);
   };

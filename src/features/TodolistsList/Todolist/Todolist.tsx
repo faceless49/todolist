@@ -13,9 +13,9 @@ import { RequestStatusType } from "../../../app/app-reducer";
 
 export const Todolist = React.memo((props: PropsType) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchTasksTC(props.todolistId));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchTasksTC(props.todolistId));
+  // }, []);
 
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistId);
   const changeTodoListTitle = useCallback(

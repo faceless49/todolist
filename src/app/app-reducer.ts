@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { authAPI } from "../api/todolist-api";
 import { setIsLoggedInAC } from "../features/Login/auth-reducer";
+import { ResponseStatusCodes } from "../features/TodolistsList/todolistsReducer";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -44,7 +45,7 @@ export const initializeAppTC = () => (dispatch: Dispatch<ActionsType>) => {
   authAPI
     .me()
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(setIsLoggedInAC(true));
       } else {
       }

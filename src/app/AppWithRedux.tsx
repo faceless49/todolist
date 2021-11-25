@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TaskType } from "../api/todolist-api";
-import { AppRootStateType } from "./store";
+import { useAppSelector } from "./store";
 import { initializeAppTC, RequestStatusType } from "./app-reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
 import { Login } from "../features/Login/Login";
 import { Route, Routes } from "react-router-dom";
@@ -24,15 +24,11 @@ export type TaskStateType = {
 };
 
 function AppWithRedux() {
-  const status = useSelector<AppRootStateType, RequestStatusType>(
-    (state) => state.app.status
-  );
-  const isInitialized = useSelector<AppRootStateType, boolean>(
+  const status = useAppSelector<RequestStatusType>((state) => state.app.status);
+  const isInitialized = useAppSelector<boolean>(
     (state) => state.app.isInitialized
   );
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(
-    (state) => state.auth.isLoggedIn
-  );
+  const isLoggedIn = useAppSelector<boolean>((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
 
   useEffect(() => {

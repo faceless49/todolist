@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import {
   AddTodolistAT,
+  clearTodosDataAC,
   RemoveTodolistAT,
   SetTodosActionType,
 } from "./todolistsReducer";
@@ -89,6 +90,8 @@ export const tasksReducer = (
       // stateCopy[action.todolistId] = action.tasks;
       // return stateCopy;
     }
+    case "CLEAR-DATA":
+      return {};
     default:
       return state;
   }
@@ -216,4 +219,5 @@ type ActionsType =
   | RemoveTodolistAT
   | SetTodosActionType
   | SetAppStatusActionType
-  | SetAppErrorActionType;
+  | SetAppErrorActionType
+  | ReturnType<typeof clearTodosDataAC>;

@@ -9,6 +9,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
+import { clearTodosDataAC } from "../TodolistsList/todolistsReducer";
 
 const initialState = {
   isLoggedIn: false,
@@ -55,9 +56,10 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
   authAPI
     .logout()
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(setIsLoggedInAC(false));
         dispatch(setAppStatusAC("succeeded"));
+        dispatch(clearTodosDataAC());
       } else {
         handleServerAppError(res.data, dispatch);
       }
@@ -71,7 +73,8 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
 type ActionsType =
   | ReturnType<typeof setIsLoggedInAC>
   | SetAppStatusActionType
-  | SetAppErrorActionType;
+  | SetAppErrorActionType
+  | ReturnType<typeof clearTodosDataAC>;
 enum ResponseStatusCodes {
   success = 0,
   error = 1,
