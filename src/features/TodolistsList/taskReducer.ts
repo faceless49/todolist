@@ -15,6 +15,7 @@ import {
 } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
+  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -24,6 +25,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
+import { ThunkAction } from "redux-thunk";
 
 const initialState: TaskStateType = {};
 enum ResponseStatusCodes {
@@ -116,9 +118,9 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
 
 // * ===== THUNKS
 
-export const fetchTasksTC = (todolistId: string) => (
-  dispatch: Dispatch<ActionsType>
-) => {
+type ThunkType = ThunkAction<void, AppRootStateType, unknown, ActionsType>;
+
+export const fetchTasksTC = (todolistId: string): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
   todolistApi.getTasks(todolistId).then((res) => {
     const tasks = res.data.items;
@@ -128,8 +130,8 @@ export const fetchTasksTC = (todolistId: string) => (
   });
 };
 
-export const removeTaskTC = (taskId: string, todolistId: string) => (
-  dispatch: Dispatch<ActionsType>
+export const removeTaskTC = (taskId: string, todolistId: string): ThunkType => (
+  dispatch
 ) => {
   dispatch(setAppStatusAC("loading"));
   todolistApi.deleteTask(todolistId, taskId).then((res) => {
@@ -138,8 +140,8 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (
   });
 };
 
-export const addTaskTC = (title: string, todolistId: string) => (
-  dispatch: Dispatch<ActionsType>
+export const addTaskTC = (title: string, todolistId: string): ThunkType => (
+  dispatch
 ) => {
   dispatch(setAppStatusAC("loading"));
   todolistApi
@@ -149,7 +151,6 @@ export const addTaskTC = (title: string, todolistId: string) => (
         let task = res.data.data.item;
         const action = addTaskAC(task);
         dispatch(action);
-        dispatch(setAppStatusAC("succeeded"));
       } else {
         handleServerAppError(res.data, dispatch);
       }
@@ -158,17 +159,17 @@ export const addTaskTC = (title: string, todolistId: string) => (
       // dispatch(setAppErrorAC(res.message)); = Proxy Refactor
       // dispatch(setAppStatusAC("failed"));
       handleServerNetworkError(dispatch, res.message);
+    })
+    .finally(() => {
+      dispatch(setAppStatusAC("succeeded"));
     });
-  // .finally(() => {
-  //   dispatch(setAppStatusAC("succeeded"));
-  // });
 };
 
 export const updateTaskTC = (
   taskId: string,
   todolistId: string,
   domainModel: UpdateDomainModelTaskType
-) => (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
+): ThunkType => (dispatch, getState: () => AppRootStateType) => {
   // так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
   // те, которые мы хотим обновить, соответственно нам нужно в этом месте взять таску целиком  // чтобы у неё отобрать остальные св-ва
 
@@ -193,12 +194,14 @@ export const updateTaskTC = (
     ...domainModel,
   };
   dispatch(setAppStatusAC("loading"));
-
-  todolistApi.updateTask(todolistId, taskId, apiModel).then((res) => {
-    const action = updateTaskAC(taskId, domainModel, todolistId);
-    dispatch(action);
-    dispatch(setAppStatusAC("succeeded"));
-  });
+  todolistApi
+    .updateTask(todolistId, taskId, apiModel)
+    .then((res) => {
+      const action = updateTaskAC(taskId, domainModel, todolistId);
+      dispatch(action);
+    })
+    .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
 // types
