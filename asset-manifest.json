@@ -1,22 +1,20 @@
 {
   "files": {
-    "main.css": "/todolist/static/css/main.bc5730d4.chunk.css",
-    "main.js": "/todolist/static/js/main.569344b6.chunk.js",
-    "main.js.map": "/todolist/static/js/main.569344b6.chunk.js.map",
-    "runtime-main.js": "/todolist/static/js/runtime-main.283d8678.js",
-    "runtime-main.js.map": "/todolist/static/js/runtime-main.283d8678.js.map",
-    "static/js/2.9cd56a21.chunk.js": "/todolist/static/js/2.9cd56a21.chunk.js",
-    "static/js/2.9cd56a21.chunk.js.map": "/todolist/static/js/2.9cd56a21.chunk.js.map",
+    "main.css": "/todolist/static/css/main.eac2e072.chunk.css",
+    "main.js": "/todolist/static/js/main.c86a7c2e.chunk.js",
+    "main.js.map": "/todolist/static/js/main.c86a7c2e.chunk.js.map",
+    "runtime-main.js": "/todolist/static/js/runtime-main.3711c8a9.js",
+    "runtime-main.js.map": "/todolist/static/js/runtime-main.3711c8a9.js.map",
+    "static/js/2.205f3563.chunk.js": "/todolist/static/js/2.205f3563.chunk.js",
+    "static/js/2.205f3563.chunk.js.map": "/todolist/static/js/2.205f3563.chunk.js.map",
     "index.html": "/todolist/index.html",
-    "precache-manifest.3e2e1c41864b833fa98ef0d316b4bcee.js": "/todolist/precache-manifest.3e2e1c41864b833fa98ef0d316b4bcee.js",
-    "service-worker.js": "/todolist/service-worker.js",
-    "static/css/main.bc5730d4.chunk.css.map": "/todolist/static/css/main.bc5730d4.chunk.css.map",
-    "static/js/2.9cd56a21.chunk.js.LICENSE.txt": "/todolist/static/js/2.9cd56a21.chunk.js.LICENSE.txt"
+    "static/css/main.eac2e072.chunk.css.map": "/todolist/static/css/main.eac2e072.chunk.css.map",
+    "static/js/2.205f3563.chunk.js.LICENSE.txt": "/todolist/static/js/2.205f3563.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.283d8678.js",
-    "static/js/2.9cd56a21.chunk.js",
-    "static/css/main.bc5730d4.chunk.css",
-    "static/js/main.569344b6.chunk.js"
+    "static/js/runtime-main.3711c8a9.js",
+    "static/js/2.205f3563.chunk.js",
+    "static/css/main.eac2e072.chunk.css",
+    "static/js/main.c86a7c2e.chunk.js"
   ]
 }
