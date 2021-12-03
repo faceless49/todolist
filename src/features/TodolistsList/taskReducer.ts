@@ -1,4 +1,3 @@
-import { Dispatch } from "redux";
 import {
   AddTodolistAT,
   clearTodosDataAC,
@@ -15,7 +14,6 @@ import {
 } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
-  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -122,22 +120,28 @@ type ThunkType = ThunkAction<void, AppRootStateType, unknown, ActionsType>;
 
 export const fetchTasksTC = (todolistId: string): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.getTasks(todolistId).then((res) => {
-    const tasks = res.data.items;
-    const action = setTasksAC(tasks, todolistId);
-    dispatch(action);
-    dispatch(setAppStatusAC("succeeded"));
-  });
+  todolistApi
+    .getTasks(todolistId)
+    .then((res) => {
+      const tasks = res.data.items;
+      const action = setTasksAC(tasks, todolistId);
+      dispatch(action);
+    })
+    .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
 export const removeTaskTC = (taskId: string, todolistId: string): ThunkType => (
   dispatch
 ) => {
   dispatch(setAppStatusAC("loading"));
-  todolistApi.deleteTask(todolistId, taskId).then((res) => {
-    dispatch(removeTaskAC(taskId, todolistId));
-    dispatch(setAppStatusAC("succeeded"));
-  });
+  todolistApi
+    .deleteTask(todolistId, taskId)
+    .then((res) => {
+      dispatch(removeTaskAC(taskId, todolistId));
+    })
+    .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
+    .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
 export const addTaskTC = (title: string, todolistId: string): ThunkType => (
@@ -155,10 +159,10 @@ export const addTaskTC = (title: string, todolistId: string): ThunkType => (
         handleServerAppError(res.data, dispatch);
       }
     })
-    .catch((res: AxiosError) => {
+    .catch((err: AxiosError) => {
       // dispatch(setAppErrorAC(res.message)); = Proxy Refactor
       // dispatch(setAppStatusAC("failed"));
-      handleServerNetworkError(dispatch, res.message);
+      handleServerNetworkError(dispatch, err.message);
     })
     .finally(() => {
       dispatch(setAppStatusAC("succeeded"));

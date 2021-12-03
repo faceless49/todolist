@@ -11,16 +11,13 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { loginTC } from "./auth-reducer";
 import { AppRootStateType } from "../../app/store";
-import { Navigate } from "react-router-dom";
-
-type FormikErrorType = {
-  email?: string;
-  password?: string;
-  rememberMe?: boolean;
-};
+import { Navigate, useNavigate } from "react-router-dom";
+import { FormikErrorType } from "../../api/todolist-api";
 
 export const Login = () => {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate(); // * Test hook
 
   const isLoggedIn = useSelector<AppRootStateType, boolean>(
     (state) => state.auth.isLoggedIn
@@ -32,7 +29,7 @@ export const Login = () => {
       rememberMe: false,
     },
     validate: (values) => {
-      const errors: FormikErrorType = {};
+      const errors: Partial<FormikErrorType> = {};
       if (!values.email) {
         errors.email = "Required";
       } else if (
@@ -50,9 +47,10 @@ export const Login = () => {
 
   // formik.setFieldValue('email', 'value')
 
-  if (isLoggedIn) {
-    return <Navigate to={"/"} />;
-  }
+  // if (isLoggedIn) {
+  //   return <Navigate to={"/"} />;
+  // }
+  if (isLoggedIn) navigate("/");
 
   return (
     <Grid container justifyContent={"center"}>
@@ -83,9 +81,13 @@ export const Login = () => {
                 // onBlur={formik.handleBlur}
                 {...formik.getFieldProps("email")}
               />
-              {formik.touched.email && formik.errors.email ? (
+              {/*{formik.touched.email && formik.errors.email ? (*/}
+              {/*  <div style={{ color: "red" }}>{formik.errors.email}</div>*/}
+              {/*) : null}       */}
+
+              {formik.touched.email && formik.errors.email && (
                 <div style={{ color: "red" }}>{formik.errors.email}</div>
-              ) : null}
+              )}
               <TextField
                 type="password"
                 label="Password"

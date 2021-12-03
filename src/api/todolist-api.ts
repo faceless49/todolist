@@ -76,6 +76,12 @@ export const authAPI = {
 };
 
 // types
+export type FormikErrorType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+
 type MeResponseType = {
   id: number;
   email: string;
@@ -138,10 +144,7 @@ export type UpdateTaskModelType = {
   startDate: string;
   deadline: string;
 };
-export type LoginParamsType = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
+export type LoginParamsType = FormikErrorType & {
   captcha?: string;
 };
 export type LoginResponseType = {

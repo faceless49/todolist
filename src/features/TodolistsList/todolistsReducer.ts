@@ -2,7 +2,6 @@ import { todolistApi, TodolistType } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
 import {
   RequestStatusType,
-  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
@@ -130,7 +129,7 @@ export const fetchTodolistsTC = (): ThunkType => (
         dispatch(fetchTasksTC(tl.id));
       });
     })
-    .catch((err) => handleServerNetworkError(dispatch, err.message))
+    .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
     .finally(() => dispatch(setAppStatusAC("succeeded")));
 };
 
@@ -147,7 +146,9 @@ export const removeTodolistTC = (todolistId: string): ThunkType => {
           handleServerAppError(res.data, dispatch);
         }
       })
-      .catch((err) => handleServerNetworkError(dispatch, err.message))
+      .catch((err: AxiosError) =>
+        handleServerNetworkError(dispatch, err.message)
+      )
       .finally(() => dispatch(setAppStatusAC("succeeded")));
   };
 };
@@ -171,8 +172,8 @@ export const addTodolistTC = (title: string): ThunkType => (dispatch) => {
         handleServerAppError<{ item: TodolistType }>(res.data, dispatch); // You can delete <T>.
       }
     })
-    .catch((res: AxiosError) => {
-      handleServerNetworkError(dispatch, res.message);
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message);
     })
     .finally(() => dispatch(setAppStatusAC("succeeded")));
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import s from "./App.module.scss";
+import styles from "./App.module.scss";
 import { TodolistsList } from "../features/TodolistsList/TodolistsList";
 import Menu from "@mui/icons-material/Menu";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -16,7 +16,7 @@ import { initializeAppTC, RequestStatusType } from "./app-reducer";
 import { useDispatch } from "react-redux";
 import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
 import { Login } from "../features/Login/Login";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { logoutTC } from "../features/Login/auth-reducer";
 
 export type TaskStateType = {
@@ -53,7 +53,7 @@ function AppWithRedux() {
   }
 
   return (
-    <div className={s.App}>
+    <div className={styles.App}>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu">
@@ -73,9 +73,10 @@ function AppWithRedux() {
       )}
       <Container fixed>
         <Routes>
-          <Route path={"/"} element={<TodolistsList />} />
-          <Route path={"/login"} element={<Login />} />
-          {/*<Route path={"/*"} } />*/}
+          <Route path="/" element={<TodolistsList />} />
+          <Route path="login" element={<Login />} />
+          <Route path={"/404"} element={<h1>404: Page not found</h1>} />
+          <Route path={"*"} element={<Navigate to="/404" />} />
         </Routes>
       </Container>
       <ErrorSnackbar />
