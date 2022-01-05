@@ -35,7 +35,7 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
     if (e.key === "Enter") {
       offEditMode();
     }
-  }; // TODO: Why when i wrapped onkeypresshandler usecallback no set title
+  };
 
   return editMode ? (
     <TextField

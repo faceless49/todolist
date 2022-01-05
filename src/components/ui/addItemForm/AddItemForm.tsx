@@ -14,7 +14,6 @@ type AddItemFormPropsType = {
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
   // Обернули в хок, но у нас в пропсах addItem callback, поэтому перерисовка все равно произойдет
-  console.log("AddItemForm render");
 
   let [title, setTitle] = useState("");
   let [error, setError] = useState<null | string>(null);
@@ -52,7 +51,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
         error={!!error} // ! TODO: Use StyleComponent later for text required
-        helperText={error && error}
+        helperText={error}
         disabled={props.disabled}
       />
       <IconButton

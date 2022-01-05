@@ -3,6 +3,7 @@ import { TaskStatuses, TaskType } from "../../../../api/todolist-api";
 import { EditableSpan } from "../../../../components/ui/editableSpan/EditableSpan";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import styles from "./Task.module.scss";
 
 type TaskPropsType = {
   removeTasks: (id: string, todolistId: string) => void;
@@ -17,7 +18,6 @@ type TaskPropsType = {
 };
 
 export const Task = React.memo((props: TaskPropsType) => {
-  console.log("task render");
   const removeTasksHandler = useCallback(() => {
     props.removeTasks(props.task.id, props.todolistId);
   }, [props.task.id, props.removeTasks, props.todolistId]);
@@ -40,7 +40,12 @@ export const Task = React.memo((props: TaskPropsType) => {
   );
 
   return (
-    <li key={props.task.id}>
+    <li
+      key={props.task.id}
+      className={
+        props.task.status === TaskStatuses.Completed ? `${styles.isDone}` : ""
+      }
+    >
       <Checkbox
         checked={props.task.status === TaskStatuses.Completed}
         color="primary"
