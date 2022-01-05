@@ -16,8 +16,6 @@ let todolistId2: string;
 let startState: Array<TodolistDomainType>;
 
 beforeEach(() => {
-  // ? Определяем здесь значения для всех тестов
-  // ? Выносим за скоуп переменные тудулистов для иммутабельности
   todolistId1 = v1();
   todolistId2 = v1();
 
@@ -28,6 +26,7 @@ beforeEach(() => {
       filter: "All",
       addedDate: "",
       order: 0,
+      entityStatus: "idle",
     },
     {
       id: todolistId2,
@@ -35,6 +34,7 @@ beforeEach(() => {
       filter: "All",
       addedDate: "",
       order: 0,
+      entityStatus: "idle",
     },
   ];
 });

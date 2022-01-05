@@ -1,24 +1,29 @@
 import {
   addTaskAC,
-  updateTaskAC,
-  changeTaskTitleAC,
   removeTaskAC,
   tasksReducer,
+  updateTaskAC,
 } from "./taskReducer";
-import { TaskStateType } from "../App";
 import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
-import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
+
+import { TaskStateType } from "../../trash/AppWithReducers";
+import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
+import { v1 } from "uuid";
 
 let startState: TaskStateType;
+let todolistId_1: string;
+let todolistId_2: string;
 
 beforeEach(() => {
+  todolistId_1 = v1();
+  todolistId_2 = v1();
   startState = {
     todolistId1: [
       {
         id: "1",
         title: "CSS",
         status: TaskStatuses.New,
-        todolistId: "todolistId1",
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -30,7 +35,7 @@ beforeEach(() => {
         id: "2",
         title: "JS",
         status: TaskStatuses.Completed,
-        todolistId: "todolistId1",
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -42,7 +47,7 @@ beforeEach(() => {
         id: "3",
         title: "React",
         status: TaskStatuses.New,
-        todolistId: "todolistId1",
+        todoListId: todolistId_1,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -56,7 +61,7 @@ beforeEach(() => {
         id: "1",
         title: "bread",
         status: TaskStatuses.New,
-        todolistId: "todolistId2",
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -68,7 +73,7 @@ beforeEach(() => {
         id: "2",
         title: "milk",
         status: TaskStatuses.Completed,
-        todolistId: "todolistId2",
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -80,7 +85,7 @@ beforeEach(() => {
         id: "3",
         title: "tea",
         status: TaskStatuses.New,
-        todolistId: "todolistId2",
+        todoListId: todolistId_2,
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -111,6 +116,7 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
+  // @ts-ignore
   const action = addTaskAC("juce");
 
   const endState = tasksReducer(startState, action);
