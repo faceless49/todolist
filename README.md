@@ -15,6 +15,7 @@
 - Add todolists/tasks
 - Remove todolists/tasks
 - Filter tasks
+- Validation form
 
 ## Account
 Login: digital.zeus@mail.ru
