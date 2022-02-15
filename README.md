@@ -6,6 +6,7 @@
 - TypeScript
 - Redux
 - Redux-thunk
+- SASS
 
 ## API
 - Samurai API (Axios)
