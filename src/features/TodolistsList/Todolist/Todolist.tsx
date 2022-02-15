@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 
 import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../../api/todolist-api";
 import { FilterValueType } from "../todolistsReducer";
-import { fetchTasksTC } from "../taskReducer";
 import { AddItemForm } from "../../../components/ui/addItemForm/AddItemForm";
 import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";

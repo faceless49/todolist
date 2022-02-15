@@ -177,14 +177,6 @@ function AppWithReducers() {
     ],
   });
 
-  // * Отправляем в 1 объект 2 массива
-  // let [tasks, setTasks] = useState<Array<TaskType>>([
-  //   {id: v1(), title: 'HTML&CSS', isDone: true},
-  //   {id: v1(), title: 'JS', isDone: true},
-  //   {id: v1(), title: 'ReactJS', isDone: false},
-  //   {id: v1(), title: 'SASS', isDone: true}
-  // ])
-
   const changeTaskStatus = (
     tID: string,
     status: TaskStatuses,
