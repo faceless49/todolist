@@ -22,13 +22,13 @@ const slice = createSlice({
     ) {
       state.status = action.payload.status;
     },
-    setAppErrorAC(state, action: PayloadAction<{ error: string | null }>) {
+    setAppErrorAC: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error;
     },
-    setAppIsInitialized(
+    setAppIsInitialized: (
       state,
       action: PayloadAction<{ isInitialized: boolean }>
-    ) {
+    ) => {
       state.isInitialized = action.payload.isInitialized;
     },
   },
@@ -48,9 +48,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
     .then((res) => {
       if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(setIsLoggedInAC({ isLoggedIn: true }));
-      } else {
       }
-      //* TODO: Fix add prealoader
     })
     .finally(() => {
       dispatch(setAppIsInitialized({ isInitialized: true }));

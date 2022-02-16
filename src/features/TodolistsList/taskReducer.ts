@@ -55,14 +55,6 @@ export const tasksReducer = (
           ...state[action.task.todoListId],
         ],
       };
-    // const stateCopy = { ...state };
-    // const tasks = stateCopy[action.task.todolistId];
-    // console.log(tasks);
-    // const newTasks = [action.task, ...tasks];
-    // console.log(newTasks);
-    //
-    // stateCopy[action.task.todolistId] = newTasks;
-    // return stateCopy;
 
     case "UPDATE-TASK": {
       return {
@@ -221,6 +213,5 @@ type ActionsType =
   | AddTodolistAT
   | RemoveTodolistAT
   | SetTodosActionType
-  | SetAppStatusActionType
-  | SetAppErrorActionType
+  | ReturnType<typeof setAppStatusAC>
   | ReturnType<typeof clearTodosDataAC>;
