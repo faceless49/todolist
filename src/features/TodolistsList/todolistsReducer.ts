@@ -36,7 +36,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<{ todolist: TodolistType }>
     ) => {
-      state.push({
+      state.unshift({
         ...action.payload.todolist,
         filter: "All",
         entityStatus: "idle",
@@ -216,4 +216,5 @@ export type ActionsType =
   | ReturnType<typeof changeTodolistTitleAC>
   | ReturnType<typeof changeTodolistFilterAC>
   | ChangeTodolistEntityStatusActionType
-  | ReturnType<typeof clearTodosDataAC>;
+  | ReturnType<typeof clearTodosDataAC>
+  | ReturnType<typeof setAppStatusAC>;
