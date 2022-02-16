@@ -13,11 +13,7 @@ import {
   UpdateTaskModelType,
 } from "../../api/todolist-api";
 import { AppRootStateType } from "../../app/store";
-import {
-  SetAppErrorActionType,
-  setAppStatusAC,
-  SetAppStatusActionType,
-} from "../../app/app-reducer";
+import { setAppStatusAC } from "../../app/app-reducer";
 import { AxiosError } from "axios";
 import {
   handleServerAppError,
@@ -119,7 +115,7 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
 type ThunkType = ThunkAction<void, AppRootStateType, unknown, ActionsType>;
 
 export const fetchTasksTC = (todolistId: string): ThunkType => (dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(setAppStatusAC({ status: "loading" }));
   todolistApi
     .getTasks(todolistId)
     .then((res) => {
@@ -128,26 +124,26 @@ export const fetchTasksTC = (todolistId: string): ThunkType => (dispatch) => {
       dispatch(action);
     })
     .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
-    .finally(() => dispatch(setAppStatusAC("succeeded")));
+    .finally(() => dispatch(setAppStatusAC({ status: "succeeded" })));
 };
 
 export const removeTaskTC = (taskId: string, todolistId: string): ThunkType => (
   dispatch
 ) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(setAppStatusAC({ status: "loading" }));
   todolistApi
     .deleteTask(todolistId, taskId)
     .then((res) => {
       dispatch(removeTaskAC(taskId, todolistId));
     })
     .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
-    .finally(() => dispatch(setAppStatusAC("succeeded")));
+    .finally(() => dispatch(setAppStatusAC({ status: "succeeded" })));
 };
 
 export const addTaskTC = (title: string, todolistId: string): ThunkType => (
   dispatch
 ) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(setAppStatusAC({ status: "loading" }));
   todolistApi
     .createTask(todolistId, title)
     .then((res) => {
@@ -165,7 +161,7 @@ export const addTaskTC = (title: string, todolistId: string): ThunkType => (
       handleServerNetworkError(dispatch, err.message);
     })
     .finally(() => {
-      dispatch(setAppStatusAC("succeeded"));
+      dispatch(setAppStatusAC({ status: "succeeded" }));
     });
 };
 
@@ -197,7 +193,7 @@ export const updateTaskTC = (
     status: task.status,
     ...domainModel,
   };
-  dispatch(setAppStatusAC("loading"));
+  dispatch(setAppStatusAC({ status: "loading" }));
   todolistApi
     .updateTask(todolistId, taskId, apiModel)
     .then((res) => {
@@ -205,7 +201,7 @@ export const updateTaskTC = (
       dispatch(action);
     })
     .catch((err: AxiosError) => handleServerNetworkError(dispatch, err.message))
-    .finally(() => dispatch(setAppStatusAC("succeeded")));
+    .finally(() => dispatch(setAppStatusAC({ status: "succeeded" })));
 };
 
 // types
