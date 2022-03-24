@@ -29,43 +29,33 @@ enum ResponseStatusCodes {
 
 export const fetchTasksTC = createAsyncThunk(
   "task/fetchTasksTC",
-  (todolistId: string, thunkAPI) => {
+  async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-    return (
-      todolistApi
-        .getTasks(todolistId)
-        .then((res) => {
-          const tasks = res.data.items;
-          // thunkAPI.dispatch(setTasksAC({ tasks, todolistId }));
-          return { tasks, todolistId };
-        })
-        // .catch((err: AxiosError) =>
-        //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
-        // )
-        .finally(() =>
-          thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
-        )
-    );
+    const res = await todolistApi.getTasks(todolistId);
+    const tasks = res.data.items;
+    // thunkAPI.dispatch(setTasksAC({ tasks, todolistId }));
+    // .catch((err: AxiosError) =>
+    //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
+    // )
+    thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+    // );
+    return { tasks, todolistId };
   }
 );
 
 export const removeTaskTC = createAsyncThunk(
   "task/removeTaskTC",
-  (param: { taskId: string; todolistId: string }, thunkAPI) => {
+  async (param: { taskId: string; todolistId: string }, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-    todolistApi
-      .deleteTask(param.todolistId, param.taskId)
-      .then((res) => {
-        thunkAPI.dispatch(
-          removeTaskAC({ taskID: param.taskId, todolistId: param.todolistId })
-        );
-      })
-      .catch((err: AxiosError) =>
-        handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
-      )
-      .finally(() =>
-        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
-      );
+    const res = await todolistApi.deleteTask(param.todolistId, param.taskId);
+
+    return { taskID: param.taskId, todolistId: param.todolistId };
+    // .catch((err: AxiosError) =>
+    //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
+    // )
+    // .finally(() =>
+    //   thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
+    // )
   }
 );
 
@@ -73,16 +63,16 @@ const slice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    removeTaskAC: (
-      state,
-      action: PayloadAction<{ taskID: string; todolistId: string }>
-    ) => {
-      const tasks = state[action.payload.todolistId];
-      const index = tasks.findIndex((t) => t.id === action.payload.taskID);
-      if (index > -1) {
-        tasks.splice(index, 1);
-      }
-    },
+    // removeTaskAC: (
+    //   state,
+    //   action: PayloadAction<{ taskID: string; todolistId: string }>
+    // ) => {
+    //   const tasks = state[action.payload.todolistId];
+    //   const index = tasks.findIndex((t) => t.id === action.payload.taskID);
+    //   if (index > -1) {
+    //     tasks.splice(index, 1);
+    //   }
+    // },
     addTaskAC: (state, action: PayloadAction<{ task: TaskType }>) => {
       state[action.payload.task.todoListId].unshift(action.payload.task);
     },
@@ -122,10 +112,20 @@ const slice = createSlice({
     builder.addCase(fetchTasksTC.fulfilled, (state, action) => {
       state[action.payload.todolistId] = action.payload.tasks;
     });
+    builder.addCase(removeTaskTC.fulfilled, (state, action) => {
+      const tasks = state[action.payload.todolistId];
+      const index = tasks.findIndex((t) => t.id === action.payload.taskID);
+      if (index > -1) {
+        tasks.splice(index, 1);
+      }
+    });
   },
 });
 
-const { removeTaskAC, addTaskAC, updateTaskAC /*setTasksAC*/ } = slice.actions;
+const {
+  /*removeTaskAC,*/ addTaskAC,
+  updateTaskAC /*setTasksAC*/,
+} = slice.actions;
 
 export const tasksReducer = slice.reducer;
 

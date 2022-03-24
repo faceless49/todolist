@@ -141,6 +141,7 @@ export const removeTodolistTC = (todolistId: string): ThunkType => {
         if (res.data.resultCode === ResponseStatusCodes.success) {
           dispatch(removeTodolistAC({ todolistId }));
         } else {
+          // @ts-ignore
           handleServerAppError(res.data, dispatch);
         }
       })
@@ -165,6 +166,7 @@ export const addTodolistTC = (title: string): ThunkType => (dispatch) => {
         //   dispatch(setAppStatusAC("failed"));
         // }
         // *===== Generic function
+        // @ts-ignore
         handleServerAppError<{ item: TodolistType }>(res.data, dispatch); // You can delete <T>.
       }
     })
@@ -185,6 +187,7 @@ export const changeTodolistTitleTC = (
       if (res.data.resultCode === ResponseStatusCodes.success) {
         dispatch(changeTodolistTitleAC({ title, todolistId }));
       } else {
+        // @ts-ignore
         handleServerAppError(res.data, dispatch);
       }
     })
