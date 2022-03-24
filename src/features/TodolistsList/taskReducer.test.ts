@@ -1,29 +1,25 @@
 import {
   addTaskAC,
+  fetchTasksTC,
   removeTaskAC,
   tasksReducer,
   updateTaskAC,
 } from "./taskReducer";
 import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
 
-import { TaskStateType } from "../../trash/AppWithReducers";
 import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
-import { v1 } from "uuid";
+import { TaskStateType } from "../../app/AppWithRedux";
 
-let startState: TaskStateType;
-let todolistId_1: string;
-let todolistId_2: string;
+let startState: TaskStateType = {};
 
 beforeEach(() => {
-  todolistId_1 = v1();
-  todolistId_2 = v1();
   startState = {
     todolistId1: [
       {
         id: "1",
         title: "CSS",
         status: TaskStatuses.New,
-        todoListId: todolistId_1,
+        todoListId: "todolistId1",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -35,7 +31,7 @@ beforeEach(() => {
         id: "2",
         title: "JS",
         status: TaskStatuses.Completed,
-        todoListId: todolistId_1,
+        todoListId: "todolistId1",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -47,7 +43,7 @@ beforeEach(() => {
         id: "3",
         title: "React",
         status: TaskStatuses.New,
-        todoListId: todolistId_1,
+        todoListId: "todolistId1",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -61,7 +57,7 @@ beforeEach(() => {
         id: "1",
         title: "bread",
         status: TaskStatuses.New,
-        todoListId: todolistId_2,
+        todoListId: "todolistId2",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -73,7 +69,7 @@ beforeEach(() => {
         id: "2",
         title: "milk",
         status: TaskStatuses.Completed,
-        todoListId: todolistId_2,
+        todoListId: "todolistId2",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -85,7 +81,7 @@ beforeEach(() => {
         id: "3",
         title: "tea",
         status: TaskStatuses.New,
-        todoListId: todolistId_2,
+        todoListId: "todolistId2",
         startDate: "",
         deadline: "",
         addedDate: "",
@@ -148,10 +144,7 @@ test("title of specified task should be changed", () => {
 
 test("new array should be added when new todolist is added", () => {
   const action = addTodoListAC({
-    id: "",
-    title: "new todolist",
-    order: 0,
-    addedDate: "",
+    todolist: { id: "123", title: "new todolist", order: 0, addedDate: "" },
   });
 
   const endState = tasksReducer(startState, action);
@@ -175,4 +168,23 @@ test("property with todolistId should be deleted", () => {
 
   expect(keys.length).toBe(1);
   expect(endState["todolistId2"]).not.toBeDefined();
+});
+
+test("tasks should be added for todolist", () => {
+  const action = fetchTasksTC.fulfilled(
+    { tasks: startState["todolistId2"], todolistId: "todolistId1" },
+    "requestId",
+    "todolistId1"
+  );
+
+  const endState = tasksReducer(
+    {
+      todolistId2: [],
+      todolistId1: [],
+    },
+    action
+  );
+
+  expect(endState["todolistId1"].length).toBe(3);
+  expect(endState["todolistId2"].length).toBe(0);
 });
