@@ -4,7 +4,7 @@ import { tasksReducer } from "../features/TodolistsList/taskReducer";
 import { todolistsReducer } from "../features/TodolistsList/todolistsReducer";
 import { appReducer } from "./app-reducer";
 import { authReducer } from "../features/Login/auth-reducer";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
@@ -20,6 +20,7 @@ export const store = configureStore({
 
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
+export const useAppDispatch = () => useDispatch<AppRootStateType>()
 
 // @ts-ignore
 window.store = store;

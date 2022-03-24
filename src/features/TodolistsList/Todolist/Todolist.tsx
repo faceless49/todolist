@@ -11,11 +11,11 @@ import { Delete } from "@mui/icons-material";
 import { RequestStatusType } from "../../../app/app-reducer";
 
 export const Todolist = React.memo((props: PropsType) => {
+  console.log("todolist render");
   const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(fetchTasksTC(props.todolistId));
   // }, []);
-
   const onClickRemoveTodoList = () => props.removeTodoList(props.todolistId);
   const changeTodoListTitle = useCallback(
     (title: string) => {
