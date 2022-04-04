@@ -3,6 +3,7 @@ import {
   fetchTasksTC,
   removeTaskTC,
   tasksReducer,
+  updateTaskTC,
 } from "./taskReducer";
 import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
 
@@ -138,16 +139,25 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = updateTaskAC("2", { status: TaskStatuses.New }, "todolistId2");
+  const param = {
+    taskId: "2",
+    domainModel: { status: TaskStatuses.New },
+    todolistId: "todolistId1",
+  };
+  const action = updateTaskTC.fulfilled(param, "requestId", param);
 
   const endState = tasksReducer(startState, action);
 
   expect(endState["todolistId1"][0].status).toBe(TaskStatuses.New);
-  expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New);
 });
 
 test("title of specified task should be changed", () => {
-  const action = updateTaskAC("1", { title: "yogurt" }, "todolistId2");
+  const param = {
+    taskId: "1",
+    domainModel: { title: "nasdaq" },
+    todolistId: "todolistId2",
+  };
+  const action = updateTaskTC.fulfilled(param, "requestId", param);
 
   const endState = tasksReducer(startState, action);
 
