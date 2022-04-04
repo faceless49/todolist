@@ -19,12 +19,12 @@ enum ResponseStatusCodes {
   captcha = 10,
 }
 
-const initialState = {
-  isLoggedIn: false,
-};
+// const initialState = {
+//   isLoggedIn: false,
+// };
 
 export const loginTC = createAsyncThunk<
-  { isLoggedIn: boolean },
+  undefined,
   LoginParamsType,
   {
     rejectValue: {
@@ -39,7 +39,7 @@ export const loginTC = createAsyncThunk<
     if (res.data.resultCode === ResponseStatusCodes.success) {
       // thunkAPI.dispatch(setIsLoggedInAC({ isLoggedIn: true }));
       thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-      return { isLoggedIn: true };
+      return;
     } else {
       handleServerAppError(res.data, thunkAPI.dispatch);
       return thunkAPI.rejectWithValue({
@@ -59,41 +59,50 @@ export const loginTC = createAsyncThunk<
   }
 });
 
+export const logoutTC = createAsyncThunk(
+  "auth/logout",
+  async (param, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+    try {
+      const res = await authAPI.logout();
+      if (res.data.resultCode === ResponseStatusCodes.success) {
+        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        thunkAPI.dispatch(clearTodosDataAC());
+        return;
+      } else {
+        handleServerAppError(res.data, thunkAPI.dispatch);
+        return thunkAPI.rejectWithValue({});
+      }
+    } catch (err) {
+      const error: AxiosError = err;
+      handleServerNetworkError(error, thunkAPI.dispatch(error));
+      return thunkAPI.rejectWithValue({});
+    }
+  }
+);
+
 const slice = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    isLoggedIn: false,
+  },
   reducers: {
     setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
       state.isLoggedIn = action.payload.isLoggedIn;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginTC.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn;
+    builder.addCase(loginTC.fulfilled, (state) => {
+      state.isLoggedIn = true;
+    });
+    builder.addCase(logoutTC.fulfilled, (state) => {
+      state.isLoggedIn = false;
     });
   },
 });
 
 export const { setIsLoggedInAC } = slice.actions;
 export const authReducer = slice.reducer;
-
-export const logoutTC = () => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({ status: "loading" }));
-  authAPI
-    .logout()
-    .then((res) => {
-      if (res.data.resultCode === ResponseStatusCodes.success) {
-        dispatch(setIsLoggedInAC({ isLoggedIn: false }));
-        dispatch(setAppStatusAC({ status: "succeeded" }));
-        dispatch(clearTodosDataAC());
-      } else {
-        handleServerAppError(res.data, dispatch);
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch(error));
-    });
-};
 
 // *thunks
 // export const loginTC_ = (data: LoginParamsType) => (dispatch: Dispatch) => {
@@ -110,5 +119,23 @@ export const logoutTC = () => (dispatch: Dispatch) => {
 //     })
 //     .catch((error) => {
 //       handleServerAppError(error, dispatch);
+//     });
+// };
+
+// export const logoutTC_ = () => (dispatch: Dispatch) => {
+//   dispatch(setAppStatusAC({ status: "loading" }));
+//   authAPI
+//     .logout()
+//     .then((res) => {
+//       if (res.data.resultCode === ResponseStatusCodes.success) {
+//         dispatch(setIsLoggedInAC({ isLoggedIn: false }));
+//         dispatch(setAppStatusAC({ status: "succeeded" }));
+//         dispatch(clearTodosDataAC());
+//       } else {
+//         handleServerAppError(res.data, dispatch);
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch(error));
 //     });
 // };

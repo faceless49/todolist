@@ -37,8 +37,8 @@ export const fetchTasksTC = createAsyncThunk(
     // .catch((err: AxiosError) =>
     //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
     // )
-    thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
     // );
+    thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
     return { tasks, todolistId };
   }
 );
