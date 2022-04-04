@@ -19,10 +19,6 @@ enum ResponseStatusCodes {
   captcha = 10,
 }
 
-// const initialState = {
-//   isLoggedIn: false,
-// };
-
 export const loginTC = createAsyncThunk<
   undefined,
   LoginParamsType,
@@ -103,6 +99,11 @@ const slice = createSlice({
 
 export const { setIsLoggedInAC } = slice.actions;
 export const authReducer = slice.reducer;
+
+// * init state
+// const initialState = {
+//   isLoggedIn: false,
+// };
 
 // *thunks
 // export const loginTC_ = (data: LoginParamsType) => (dispatch: Dispatch) => {
