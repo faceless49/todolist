@@ -1,4 +1,9 @@
-import { fetchTasksTC, removeTaskTC, tasksReducer } from "./taskReducer";
+import {
+  addTaskTC,
+  fetchTasksTC,
+  removeTaskTC,
+  tasksReducer,
+} from "./taskReducer";
 import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
 
 import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
@@ -105,15 +110,30 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  // @ts-ignore
-  const action = addTaskAC("juce");
+  const task = {
+    id: "id exists",
+    title: "new task",
+    status: TaskStatuses.New,
+    todoListId: "todolistId2",
+    startDate: "",
+    deadline: "",
+    addedDate: "",
+    order: 0,
+    priority: TaskPriorities.Low,
+    description: "",
+  };
+
+  const action = addTaskTC.fulfilled(task, "requestId", {
+    title: task.title,
+    todolistId: task.todoListId,
+  });
 
   const endState = tasksReducer(startState, action);
 
   expect(endState["todolistId1"].length).toBe(3);
   expect(endState["todolistId2"].length).toBe(4);
   expect(endState["todolistId2"][0].id).toBeDefined();
-  expect(endState["todolistId2"][0].title).toBe("juce");
+  expect(endState["todolistId2"][0].title).toBe("new task");
   expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 

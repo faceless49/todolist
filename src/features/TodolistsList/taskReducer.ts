@@ -33,10 +33,6 @@ export const fetchTasksTC = createAsyncThunk(
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
     const res = await todolistApi.getTasks(todolistId);
     const tasks = res.data.items;
-    // thunkAPI.dispatch(setTasksAC({ tasks, todolistId }));
-    // .catch((err: AxiosError) =>
-    //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
-    // )
 
     thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
     return { tasks, todolistId };
@@ -59,23 +55,33 @@ export const removeTaskTC = createAsyncThunk(
   }
 );
 
+export const addTaskTC = createAsyncThunk(
+  "task/addTaskTC",
+  async (
+    param: { title: string; todolistId: string },
+    { dispatch, rejectWithValue }
+  ) => {
+    dispatch(setAppStatusAC({ status: "loading" }));
+    try {
+      const res = await todolistApi.createTask(param.todolistId, param.title);
+      if (res.data.resultCode === ResponseStatusCodes.success) {
+        const task = res.data.data.item;
+        return task;
+      } else {
+        handleServerAppError(res.data, dispatch);
+        return rejectWithValue({});
+      }
+    } catch (err) {
+      handleServerNetworkError(dispatch, { message: err.message });
+      return rejectWithValue({});
+    }
+  }
+);
+
 const slice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    // removeTaskAC: (
-    //   state,
-    //   action: PayloadAction<{ taskId: string; todolistId: string }>
-    // ) => {
-    //   const tasks = state[action.payload.todolistId];
-    //   const index = tasks.findIndex((t) => t.id === action.payload.taskId);
-    //   if (index > -1) {
-    //     tasks.splice(index, 1);
-    //   }
-    // },
-    addTaskAC: (state, action: PayloadAction<{ task: TaskType }>) => {
-      state[action.payload.task.todoListId].unshift(action.payload.task);
-    },
     updateTaskAC: (
       state,
       action: PayloadAction<{
@@ -90,12 +96,6 @@ const slice = createSlice({
         task[index] = { ...task[index], ...action.payload.model };
       }
     },
-    // setTasksAC: (
-    //   state,
-    //   action: PayloadAction<{ tasks: Array<TaskType>; todolistId: string }>
-    // ) => {
-    //   state[action.payload.todolistId] = action.payload.tasks;
-    // },
   },
   extraReducers: (builder) => {
     builder.addCase(addTodoListAC, (state, action) => {
@@ -119,72 +119,17 @@ const slice = createSlice({
         tasks.splice(index, 1);
       }
     });
+    builder.addCase(addTaskTC.fulfilled, (state, action) => {
+      state[action.payload.todoListId].unshift(action.payload);
+    });
   },
 });
 
-const {
-  /*removeTaskAC,*/ addTaskAC,
-  updateTaskAC /*setTasksAC*/,
-} = slice.actions;
+const { updateTaskAC } = slice.actions;
 
 export const tasksReducer = slice.reducer;
 
 // * ===== THUNKS
-
-// export const fetchTasksTC_ = (todolistId: string) => (dispatch: any) => {
-//   dispatch(setAppStatusAC({ status: "loading" }));
-//   todolistApi
-//     .getTasks(todolistId)
-//     .then((res) => {
-//       const tasks = res.data.items;
-//       const action = setTasksAC({ tasks, todolistId });
-//       dispatch(action);
-//     })
-//     .catch((err: AxiosError) =>
-//       handleServerNetworkError(dispatch, { message: err.message })
-//     )
-//     .finally(() => dispatch(setAppStatusAC({ status: "succeeded" })));
-// };
-
-// export const removeTaskTC_ = (taskId: string, todolistId: string) => (
-//   dispatch: any
-// ) => {
-//   dispatch(setAppStatusAC({ status: "loading" }));
-//   todolistApi
-//     .deleteTask(todolistId, taskId)
-//     .then((res) => {
-//       dispatch(removeTaskAC({ taskId: taskId, todolistId }));
-//     })
-//     .catch((err: AxiosError) =>
-//       handleServerNetworkError(dispatch, { message: err.message })
-//     )
-//     .finally(() => dispatch(setAppStatusAC({ status: "succeeded" })));
-// };
-
-export const addTaskTC = (title: string, todolistId: string) => (
-  dispatch: any
-) => {
-  dispatch(setAppStatusAC({ status: "loading" }));
-  todolistApi
-    .createTask(todolistId, title)
-    .then((res) => {
-      if (res.data.resultCode === ResponseStatusCodes.success) {
-        let task = res.data.data.item;
-        const action = addTaskAC({ task });
-        dispatch(action);
-      } else {
-        handleServerAppError(res.data, dispatch);
-      }
-    })
-    .catch((err: AxiosError) => {
-      // dispatch(setAppErrorAC(res.message)); = Proxy Refactor
-      // dispatch(setAppStatusAC("failed"));
-      handleServerNetworkError(dispatch, { message: err.message });
-    })
-    .finally(() => {
-      dispatch(setAppStatusAC({ status: "succeeded" }));
-    });
-};
 
 export const updateTaskTC = (
   taskId: string,
