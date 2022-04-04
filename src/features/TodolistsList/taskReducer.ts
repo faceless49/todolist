@@ -49,7 +49,7 @@ export const removeTaskTC = createAsyncThunk(
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
     const res = await todolistApi.deleteTask(param.todolistId, param.taskId);
 
-    return { taskID: param.taskId, todolistId: param.todolistId };
+    return { taskId: param.taskId, todolistId: param.todolistId };
     // .catch((err: AxiosError) =>
     //   handleServerNetworkError(thunkAPI.dispatch, { message: err.message })
     // )
@@ -65,10 +65,10 @@ const slice = createSlice({
   reducers: {
     // removeTaskAC: (
     //   state,
-    //   action: PayloadAction<{ taskID: string; todolistId: string }>
+    //   action: PayloadAction<{ taskId: string; todolistId: string }>
     // ) => {
     //   const tasks = state[action.payload.todolistId];
-    //   const index = tasks.findIndex((t) => t.id === action.payload.taskID);
+    //   const index = tasks.findIndex((t) => t.id === action.payload.taskId);
     //   if (index > -1) {
     //     tasks.splice(index, 1);
     //   }
@@ -79,13 +79,13 @@ const slice = createSlice({
     updateTaskAC: (
       state,
       action: PayloadAction<{
-        taskID: string;
+        taskId: string;
         model: UpdateDomainModelTaskType;
         todolistId: string;
       }>
     ) => {
       const task = state[action.payload.todolistId];
-      const index = task.findIndex((t) => t.id === action.payload.taskID);
+      const index = task.findIndex((t) => t.id === action.payload.taskId);
       if (index > -1) {
         task[index] = { ...task[index], ...action.payload.model };
       }
@@ -114,7 +114,7 @@ const slice = createSlice({
     });
     builder.addCase(removeTaskTC.fulfilled, (state, action) => {
       const tasks = state[action.payload.todolistId];
-      const index = tasks.findIndex((t) => t.id === action.payload.taskID);
+      const index = tasks.findIndex((t) => t.id === action.payload.taskId);
       if (index > -1) {
         tasks.splice(index, 1);
       }
@@ -153,7 +153,7 @@ export const tasksReducer = slice.reducer;
 //   todolistApi
 //     .deleteTask(todolistId, taskId)
 //     .then((res) => {
-//       dispatch(removeTaskAC({ taskID: taskId, todolistId }));
+//       dispatch(removeTaskAC({ taskId: taskId, todolistId }));
 //     })
 //     .catch((err: AxiosError) =>
 //       handleServerNetworkError(dispatch, { message: err.message })
@@ -215,7 +215,7 @@ export const updateTaskTC = (
     .updateTask(todolistId, taskId, apiModel)
     .then((res) => {
       const action = updateTaskAC({
-        taskID: taskId,
+        taskId: taskId,
         model: domainModel,
         todolistId,
       });

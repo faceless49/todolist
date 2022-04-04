@@ -49,7 +49,7 @@ export const loginTC = createAsyncThunk<
     }
   } catch (err) {
     // @ts-ignore
-    const error: AxiosError = err;
+    const error: AxiosError = err; //* TODO Support
     // @ts-ignore
     handleServerAppError(error, thunkAPI.dispatch);
     return thunkAPI.rejectWithValue({
@@ -77,24 +77,6 @@ const slice = createSlice({
 export const { setIsLoggedInAC } = slice.actions;
 export const authReducer = slice.reducer;
 
-// thunks
-// export const loginTC_ = (data: LoginParamsType) => (dispatch: Dispatch) => {
-//   dispatch(setAppStatusAC({ status: "loading" }));
-//   authAPI
-//     .login(data)
-//     .then((res) => {
-//       if (res.data.resultCode === ResponseStatusCodes.success) {
-//         dispatch(setIsLoggedInAC({ isLoggedIn: true }));
-//         dispatch(setAppStatusAC({ status: "succeeded" }));
-//       } else {
-//         handleServerAppError(res.data, dispatch);
-//       }
-//     })
-//     .catch((error) => {
-//       handleServerAppError(error, dispatch);
-//     });
-// };
-
 export const logoutTC = () => (dispatch: Dispatch) => {
   dispatch(setAppStatusAC({ status: "loading" }));
   authAPI
@@ -112,3 +94,21 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       handleServerNetworkError(error, dispatch(error));
     });
 };
+
+// *thunks
+// export const loginTC_ = (data: LoginParamsType) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatusAC({ status: "loading" }));
+//   authAPI
+//     .login(data)
+//     .then((res) => {
+//       if (res.data.resultCode === ResponseStatusCodes.success) {
+//         dispatch(setIsLoggedInAC({ isLoggedIn: true }));
+//         dispatch(setAppStatusAC({ status: "succeeded" }));
+//       } else {
+//         handleServerAppError(res.data, dispatch);
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerAppError(error, dispatch);
+//     });
+// };

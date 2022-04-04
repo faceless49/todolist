@@ -1,10 +1,4 @@
-import {
-  addTaskAC,
-  fetchTasksTC,
-  removeTaskAC,
-  tasksReducer,
-  updateTaskAC,
-} from "./taskReducer";
+import { fetchTasksTC, removeTaskTC, tasksReducer } from "./taskReducer";
 import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
 
 import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
@@ -94,21 +88,20 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTaskAC("2", "todolistId2");
+  const action = removeTaskTC.fulfilled(
+    {
+      taskId: "2",
+      todolistId: "todolistId2",
+    },
+    "requestId",
+    { taskId: "2", todolistId: "todolistId2" }
+  );
 
   const endState = tasksReducer(startState, action);
 
-  expect(endState).toEqual({
-    todolistId1: [
-      { id: "1", title: "CSS", isDone: false },
-      { id: "2", title: "JS", isDone: true },
-      { id: "3", title: "React", isDone: false },
-    ],
-    todolistId2: [
-      { id: "1", title: "bread", isDone: false },
-      { id: "3", title: "tea", isDone: false },
-    ],
-  });
+  expect(endState["todolistId1"].length).toBe(3);
+  expect(endState["todolistId2"].length).toBe(2);
+  expect(endState["todolistId2"].every((t) => t.id !== "2")).toBeTruthy();
 });
 
 test("correct task should be added to correct array", () => {
@@ -160,7 +153,7 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const action = removeTodolistAC("todolistId2");
+  const action = removeTodolistAC({ todolistId: "todolistId2" });
 
   const endState = tasksReducer(startState, action);
 
@@ -172,7 +165,7 @@ test("property with todolistId should be deleted", () => {
 
 test("tasks should be added for todolist", () => {
   const action = fetchTasksTC.fulfilled(
-    { tasks: startState["todolistId2"], todolistId: "todolistId1" },
+    { tasks: startState["todolistId1"], todolistId: "todolistId1" },
     "requestId",
     "todolistId1"
   );
