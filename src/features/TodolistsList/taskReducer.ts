@@ -1,7 +1,7 @@
 import {
-  addTodoListAC,
-  removeTodolistAC,
-  setTodosAC,
+  addTodolistTC,
+  fetchTodolistsTC,
+  removeTodolistTC,
 } from "./todolistsReducer";
 import { TaskStateType } from "../../app/AppWithRedux";
 import {
@@ -131,13 +131,13 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addTodoListAC, (state, action) => {
+    builder.addCase(addTodolistTC.fulfilled, (state, action) => {
       state[action.payload.todolist.id] = [];
     });
-    builder.addCase(removeTodolistAC, (state, action) => {
+    builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
       delete state[action.payload.todolistId];
     });
-    builder.addCase(setTodosAC, (state, action) => {
+    builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
       action.payload.todolists.forEach((tl) => {
         state[tl.id] = [];
       });
@@ -166,8 +166,6 @@ const slice = createSlice({
 });
 
 export const tasksReducer = slice.reducer;
-
-// * ===== THUNKS
 
 // types
 export type UpdateDomainModelTaskType = {

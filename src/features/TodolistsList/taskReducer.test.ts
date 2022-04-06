@@ -5,7 +5,7 @@ import {
   tasksReducer,
   updateTaskTC,
 } from "./taskReducer";
-import { addTodoListAC, removeTodolistAC } from "./todolistsReducer";
+import { addTodolistTC, removeTodolistTC } from "./todolistsReducer";
 
 import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
 import { TaskStateType } from "../../app/AppWithRedux";
@@ -166,8 +166,11 @@ test("title of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  const action = addTodoListAC({
+  let payload = {
     todolist: { id: "123", title: "new todolist", order: 0, addedDate: "" },
+  };
+  const action = addTodolistTC.fulfilled(payload, "requestId", {
+    title: "new todolist",
   });
 
   const endState = tasksReducer(startState, action);
@@ -183,7 +186,11 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const action = removeTodolistAC({ todolistId: "todolistId2" });
+  const action = removeTodolistTC.fulfilled(
+    { todolistId: "todolistId2" },
+    "requestId",
+    { todolistId: "todolistId2" }
+  );
 
   const endState = tasksReducer(startState, action);
 
