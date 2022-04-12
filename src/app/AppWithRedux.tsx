@@ -18,17 +18,20 @@ import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
 import { Login } from "../features/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { logoutTC } from "../features/Login/auth-reducer";
+import { authSelectors } from "../features/Login";
+import { appSelectors } from "./index";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
 };
 
 function AppWithRedux() {
-  const status = useAppSelector<RequestStatusType>((state) => state.app.status);
+  const status = useAppSelector<RequestStatusType>(appSelectors.selectStatus);
   const isInitialized = useAppSelector<boolean>(
-    (state) => state.app.isInitialized
+    appSelectors.selectIsInitialized
   );
-  const isLoggedIn = useAppSelector<boolean>((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useAppSelector<boolean>(authSelectors.selectIsLoggedIn);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

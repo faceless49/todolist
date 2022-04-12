@@ -18,6 +18,7 @@ import { Todolist } from "./Todolist/Todolist";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Navigate } from "react-router-dom";
+import { selectIsLoggedIn } from "../Login/selectors";
 
 export const TodolistsList: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -28,9 +29,7 @@ export const TodolistsList: React.FC = (props) => {
     dispatch(fetchTodolistsTC());
   }, []);
 
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(
-    (state) => state.auth.isLoggedIn
-  );
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
     (state) => state.todoLists

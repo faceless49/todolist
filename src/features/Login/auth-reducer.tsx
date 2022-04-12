@@ -1,4 +1,3 @@
-import { Dispatch } from "redux";
 import { setAppStatusAC } from "../../app/app-reducer";
 import {
   authAPI,

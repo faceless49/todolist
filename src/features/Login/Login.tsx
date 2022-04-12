@@ -13,6 +13,7 @@ import { loginTC } from "./auth-reducer";
 import { AppRootStateType, useAppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { FormikErrorType } from "../../api/todolist-api";
+import { selectIsLoggedIn } from "./selectors";
 
 type FormValuesType = {
   email: string;
@@ -25,9 +26,8 @@ export const Login = () => {
 
   const navigate = useNavigate(); // * Test hook
 
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(
-    (state) => state.auth.isLoggedIn
-  );
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   const formik = useFormik({
     initialValues: {
       email: "",
