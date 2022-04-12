@@ -8,7 +8,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
-import { clearTodosDataAC } from "../TodolistsList/todolistsReducer";
+import { clearTodosData } from "../TodolistsList/todolistsReducer";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
@@ -62,7 +62,7 @@ export const logoutTC = createAsyncThunk(
       const res = await authAPI.logout();
       if (res.data.resultCode === ResponseStatusCodes.success) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-        thunkAPI.dispatch(clearTodosDataAC());
+        thunkAPI.dispatch(clearTodosData());
         return;
       } else {
         handleServerAppError(res.data, thunkAPI.dispatch);

@@ -1,5 +1,5 @@
 import {
-  changeTodolistFilterAC,
+  changeTodolistFilter,
   FilterValueType,
   TodolistDomainType,
   todolistsReducer,
@@ -9,10 +9,10 @@ import { v1 } from "uuid";
 // @ts-ignore
 import { TodolistType } from "src/api/todolist-api";
 import {
-  addTodolistTC,
-  changeTodolistTitleTC,
-  fetchTodolistsTC,
-  removeTodolistTC,
+  addTodolist,
+  changeTodolistTitle,
+  fetchTodolists,
+  removeTodolist,
 } from "./todolists-actions";
 
 let todolistId1: string;
@@ -47,7 +47,7 @@ beforeEach(() => {
 test("correct todolist should be removed", () => {
   const endState = todolistsReducer(
     startState,
-    removeTodolistTC.fulfilled({ todolistId: todolistId1 }, "requestId", {
+    removeTodolist.fulfilled({ todolistId: todolistId1 }, "requestId", {
       todolistId: todolistId1,
     })
   );
@@ -59,7 +59,7 @@ test("correct todolist should be removed", () => {
 
 test("todolists should be added", () => {
   let payload = { todolists: startState };
-  const action = fetchTodolistsTC.fulfilled(payload, "requestId");
+  const action = fetchTodolists.fulfilled(payload, "requestId");
   const endState = todolistsReducer([], action);
 
   expect(endState.length).toBe(2);
@@ -73,7 +73,7 @@ test("correct todolist should be added", () => {
   };
   const endState = todolistsReducer(
     startState,
-    addTodolistTC.fulfilled({ todolist }, "requestId", todolist.title)
+    addTodolist.fulfilled({ todolist }, "requestId", todolist.title)
   );
 
   expect(endState.length).toBe(3);
@@ -85,7 +85,7 @@ test("correct todolist should change its name", () => {
   let newTodolistTitle: string = "New Todolist";
 
   let param = { title: newTodolistTitle, todolistId: todolistId2 };
-  const action = changeTodolistTitleTC.fulfilled(param, "requestId", param);
+  const action = changeTodolistTitle.fulfilled(param, "requestId", param);
 
   const endState = todolistsReducer(startState, action);
 
@@ -96,7 +96,7 @@ test("correct todolist should change its name", () => {
 test("correct filter of todolist should be changed", () => {
   let newFilter: FilterValueType = "Completed";
 
-  const action = changeTodolistFilterAC({
+  const action = changeTodolistFilter({
     key: newFilter,
     todolistId: todolistId2,
   });

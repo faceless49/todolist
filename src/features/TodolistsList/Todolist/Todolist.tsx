@@ -1,6 +1,4 @@
 import React, { useCallback } from "react";
-
-import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../../api/todolist-api";
 import { FilterValueType } from "../todolistsReducer";
 import { AddItemForm } from "../../../components/ui/addItemForm/AddItemForm";
@@ -12,34 +10,41 @@ import { RequestStatusType } from "../../../app/app-reducer";
 
 export const Todolist = React.memo((props: PropsType) => {
   console.log("todolist render");
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchTasksTC(props.todolistId));
-  // }, []);
-  const onClickRemoveTodoList = () => props.removeTodoList(props.todolistId);
+
+  const onClickRemoveTodoList = () =>
+    props.removeTodoList({ todolistId: props.todolistId });
   const changeTodoListTitle = useCallback(
     (title: string) => {
-      props.changeTodoListTitle(title, props.todolistId);
+      props.changeTodoListTitle({ title, todolistId: props.todolistId });
     },
     [props.changeTodoListTitle, props.todolistId]
   );
 
   const onAllClickHandler = useCallback(
-    () => props.changeTodoListFilter("All", props.todolistId),
+    () =>
+      props.changeTodoListFilter({ key: "All", todolistId: props.todolistId }),
     [props.changeTodoListFilter, props.todolistId]
   );
   const onActiveClickHandler = useCallback(
-    () => props.changeTodoListFilter("Active", props.todolistId),
+    () =>
+      props.changeTodoListFilter({
+        key: "Active",
+        todolistId: props.todolistId,
+      }),
     [props.changeTodoListFilter, props.todolistId]
   );
   const onCompletedClickHandler = useCallback(
-    () => props.changeTodoListFilter("Completed", props.todolistId),
+    () =>
+      props.changeTodoListFilter({
+        key: "Completed",
+        todolistId: props.todolistId,
+      }),
     [props.changeTodoListFilter, props.todolistId]
   );
 
   const addTask = useCallback(
     (title: string) => {
-      props.addTask(title, props.todolistId);
+      props.addTask({ title, todolistId: props.todolistId });
     },
     [props.addTask, props.todolistId]
   );
@@ -82,7 +87,7 @@ export const Todolist = React.memo((props: PropsType) => {
           <Task
             task={t}
             todolistId={props.todolistId}
-            removeTasks={props.removeTasks}
+            removeTask={props.removeTask}
             changeTaskStatus={props.changeTaskStatus}
             changeTaskTitle={props.changeTaskTitle}
             key={t.id}
@@ -128,15 +133,18 @@ export type PropsType = {
   tasks: Array<TaskType>;
   filter: FilterValueType;
   entityStatus: RequestStatusType;
-  removeTasks: (id: string, todolistId: string) => void;
-  changeTodoListFilter: (key: FilterValueType, todolistId: string) => void;
-  addTask: (newTitle: string, todolistId: string) => void;
+  removeTask: (params: { taskId: string; todolistId: string }) => void;
+  changeTodoListFilter: (params: {
+    key: FilterValueType;
+    todolistId: string;
+  }) => void;
+  addTask: (params: { title: string; todolistId: string }) => void;
   changeTaskStatus: (
     id: string,
     status: TaskStatuses,
     todolistId: string
   ) => void;
   changeTaskTitle: (tID: string, title: string, todolistId: string) => void;
-  removeTodoList: (todolistId: string) => void;
-  changeTodoListTitle: (title: string, todolistId: string) => void;
+  removeTodoList: (params: { todolistId: string }) => void;
+  changeTodoListTitle: (params: { title: string; todolistId: string }) => void;
 };

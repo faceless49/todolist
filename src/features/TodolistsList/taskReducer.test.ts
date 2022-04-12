@@ -2,13 +2,8 @@ import { tasksReducer } from "./taskReducer";
 
 import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
 import { TaskStateType } from "../../app/AppWithRedux";
-import {
-  addTaskTC,
-  fetchTasksTC,
-  removeTaskTC,
-  updateTaskTC,
-} from "./tasks-actions";
-import { addTodolistTC, removeTodolistTC } from "./todolists-actions";
+import { addTask, fetchTasks, removeTask, updateTask } from "./tasks-actions";
+import { addTodolist, removeTodolist } from "./todolists-actions";
 
 let startState: TaskStateType = {};
 
@@ -94,7 +89,7 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTaskTC.fulfilled(
+  const action = removeTask.fulfilled(
     {
       taskId: "2",
       todolistId: "todolistId2",
@@ -124,7 +119,7 @@ test("correct task should be added to correct array", () => {
     description: "",
   };
 
-  const action = addTaskTC.fulfilled(task, "requestId", {
+  const action = addTask.fulfilled(task, "requestId", {
     title: task.title,
     todolistId: task.todoListId,
   });
@@ -144,7 +139,7 @@ test("status of specified task should be changed", () => {
     domainModel: { status: TaskStatuses.New },
     todolistId: "todolistId1",
   };
-  const action = updateTaskTC.fulfilled(param, "requestId", param);
+  const action = updateTask.fulfilled(param, "requestId", param);
 
   const endState = tasksReducer(startState, action);
 
@@ -157,7 +152,7 @@ test("title of specified task should be changed", () => {
     domainModel: { title: "nasdaq" },
     todolistId: "todolistId2",
   };
-  const action = updateTaskTC.fulfilled(param, "requestId", param);
+  const action = updateTask.fulfilled(param, "requestId", param);
 
   const endState = tasksReducer(startState, action);
 
@@ -169,7 +164,7 @@ test("new array should be added when new todolist is added", () => {
   let payload = {
     todolist: { id: "123", title: "new todolist", order: 0, addedDate: "" },
   };
-  const action = addTodolistTC.fulfilled(payload, "requestId", {
+  const action = addTodolist.fulfilled(payload, "requestId", {
     title: "new todolist",
   });
 
@@ -186,7 +181,7 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const action = removeTodolistTC.fulfilled(
+  const action = removeTodolist.fulfilled(
     { todolistId: "todolistId2" },
     "requestId",
     { todolistId: "todolistId2" }
@@ -201,7 +196,7 @@ test("property with todolistId should be deleted", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const action = fetchTasksTC.fulfilled(
+  const action = fetchTasks.fulfilled(
     { tasks: startState["todolistId1"], todolistId: "todolistId1" },
     "requestId",
     "todolistId1"

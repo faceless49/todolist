@@ -1,13 +1,13 @@
 import { TaskStateType, TodolistType } from "../App";
 import { tasksReducer } from "./taskReducer";
 import { todolistsReducer } from "./todolistsReducer";
-import { addTodolistTC } from "./todolists-actions";
+import { addTodolist } from "./todolists-actions";
 
 test("ids should be equals", () => {
   const startTasksState: TaskStateType = {};
   const startTodolistsState: Array<TodolistType> = [];
 
-  const action = addTodolistTC.fulfilled(
+  const action = addTodolist.fulfilled(
     "new todolist",
     "requestId",
     "new todolist"

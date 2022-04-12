@@ -6,7 +6,7 @@ import { Delete } from "@mui/icons-material";
 import styles from "./Task.module.scss";
 
 type TaskPropsType = {
-  removeTasks: (id: string, todolistId: string) => void;
+  removeTask: (params: { taskId: string; todolistId: string }) => void;
   changeTaskStatus: (
     id: string,
     status: TaskStatuses,
@@ -20,8 +20,8 @@ type TaskPropsType = {
 export const Task = React.memo((props: TaskPropsType) => {
   console.log("task render");
   const removeTasksHandler = useCallback(() => {
-    props.removeTasks(props.task.id, props.todolistId);
-  }, [props.task.id, props.removeTasks, props.todolistId]);
+    props.removeTask({ taskId: props.task.id, todolistId: props.todolistId });
+  }, [props.task.id, props.removeTask, props.todolistId]);
   const changeTaskStatus = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDoneValue = e.currentTarget.checked;

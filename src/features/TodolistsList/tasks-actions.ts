@@ -14,7 +14,7 @@ enum ResponseStatusCodes {
   captcha = 10,
 }
 
-export const fetchTasksTC = createAsyncThunk(
+export const fetchTasks = createAsyncThunk(
   "task/fetchTasksTC",
   async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
@@ -25,7 +25,7 @@ export const fetchTasksTC = createAsyncThunk(
     return { tasks, todolistId };
   }
 );
-export const removeTaskTC = createAsyncThunk(
+export const removeTask = createAsyncThunk(
   "task/removeTaskTC",
   async (param: { taskId: string; todolistId: string }, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
@@ -40,7 +40,7 @@ export const removeTaskTC = createAsyncThunk(
     // )
   }
 );
-export const addTaskTC = createAsyncThunk(
+export const addTask = createAsyncThunk(
   "task/addTaskTC",
   async (
     param: { title: string; todolistId: string },
@@ -62,7 +62,7 @@ export const addTaskTC = createAsyncThunk(
     }
   }
 );
-export const updateTaskTC = createAsyncThunk(
+export const updateTask = createAsyncThunk(
   "task/updateTaskTC",
   async (
     param: {

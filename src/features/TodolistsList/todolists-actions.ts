@@ -6,12 +6,12 @@ import {
   handleServerNetworkError,
 } from "../../utils/error-utils";
 import {
-  changeTodolistEntityStatusAC,
+  changeTodolistEntityStatus,
   ResponseStatusCodes,
 } from "./todolistsReducer";
 
-export const fetchTodolistsTC = createAsyncThunk(
-  "todolist/fetchTodolistsTC",
+export const fetchTodolists = createAsyncThunk(
+  "todolist/fetchTodolists",
   async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
     const res = await todolistApi.getTodolists();
@@ -24,12 +24,12 @@ export const fetchTodolistsTC = createAsyncThunk(
     }
   }
 );
-export const removeTodolistTC = createAsyncThunk(
-  "todolist/removeTodolistTC",
+export const removeTodolist = createAsyncThunk(
+  "todolist/removeTodolist",
   async (param: { todolistId: string }, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }));
     dispatch(
-      changeTodolistEntityStatusAC({
+      changeTodolistEntityStatus({
         todolistId: param.todolistId,
         entityStatus: "loading",
       })
@@ -39,11 +39,11 @@ export const removeTodolistTC = createAsyncThunk(
     return { todolistId: param.todolistId };
   }
 );
-export const addTodolistTC = createAsyncThunk(
-  "todolist/addTodolistTC",
-  async (param: { title: string }, { dispatch, rejectWithValue }) => {
+export const addTodolist = createAsyncThunk(
+  "todolist/addTodolist",
+  async (title: string, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }));
-    const res = await todolistApi.createTodo(param.title);
+    const res = await todolistApi.createTodo(title);
     try {
       if (res.data.resultCode === ResponseStatusCodes.success) {
         return { todolist: res.data.data.item };
@@ -59,8 +59,8 @@ export const addTodolistTC = createAsyncThunk(
     }
   }
 );
-export const changeTodolistTitleTC = createAsyncThunk(
-  "todolist/changeTodolistTitleTC",
+export const changeTodolistTitle = createAsyncThunk(
+  "todolist/changeTodolistTitle",
   async (
     param: {
       title: string;
