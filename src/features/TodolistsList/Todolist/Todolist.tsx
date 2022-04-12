@@ -7,46 +7,68 @@ import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { RequestStatusType } from "../../../app/app-reducer";
+import { useActions } from "../../../app/store";
+import { tasksActions, todolistsActions } from "../index";
 
 export const Todolist = React.memo((props: PropsType) => {
-  console.log("todolist render");
+  const {
+    changeTodolistFilter,
+    removeTodolist,
+    changeTodolistTitle,
+  } = useActions(todolistsActions);
+
+  const { addTask, updateTask, removeTask } = useActions(tasksActions);
+
+  const changeTaskStatus = useCallback(
+    (taskId: string, status: TaskStatuses, todolistId: string) => {
+      updateTask({ taskId, todolistId, domainModel: { status } });
+    },
+    []
+  );
+
+  const changeTaskTitle = useCallback(
+    (taskId: string, title: string, todolistId: string) => {
+      updateTask({ taskId, todolistId, domainModel: { title } });
+    },
+    []
+  );
 
   const onClickRemoveTodoList = () =>
-    props.removeTodoList({ todolistId: props.todolistId });
+    removeTodolist({ todolistId: props.todolistId });
+
   const changeTodoListTitle = useCallback(
     (title: string) => {
-      props.changeTodoListTitle({ title, todolistId: props.todolistId });
+      changeTodolistTitle({ title, todolistId: props.todolistId });
     },
-    [props.changeTodoListTitle, props.todolistId]
+    [props.todolistId]
   );
 
   const onAllClickHandler = useCallback(
-    () =>
-      props.changeTodoListFilter({ key: "All", todolistId: props.todolistId }),
-    [props.changeTodoListFilter, props.todolistId]
+    () => changeTodolistFilter({ key: "All", todolistId: props.todolistId }),
+    [props.todolistId]
   );
   const onActiveClickHandler = useCallback(
     () =>
-      props.changeTodoListFilter({
+      changeTodolistFilter({
         key: "Active",
         todolistId: props.todolistId,
       }),
-    [props.changeTodoListFilter, props.todolistId]
+    [props.todolistId]
   );
   const onCompletedClickHandler = useCallback(
     () =>
-      props.changeTodoListFilter({
+      changeTodolistFilter({
         key: "Completed",
         todolistId: props.todolistId,
       }),
-    [props.changeTodoListFilter, props.todolistId]
+    [props.todolistId]
   );
 
-  const addTask = useCallback(
+  const addTaskCallback = useCallback(
     (title: string) => {
-      props.addTask({ title, todolistId: props.todolistId });
+      addTask({ title, todolistId: props.todolistId });
     },
-    [props.addTask, props.todolistId]
+    [props.todolistId]
   );
 
   let allTodolistTasks = props.tasks;
@@ -78,7 +100,7 @@ export const Todolist = React.memo((props: PropsType) => {
       </h3>
 
       <AddItemForm
-        addItem={addTask}
+        addItem={addTaskCallback}
         disabled={props.entityStatus === "loading"}
       />
 
@@ -87,9 +109,9 @@ export const Todolist = React.memo((props: PropsType) => {
           <Task
             task={t}
             todolistId={props.todolistId}
-            removeTask={props.removeTask}
-            changeTaskStatus={props.changeTaskStatus}
-            changeTaskTitle={props.changeTaskTitle}
+            removeTask={removeTask}
+            changeTaskStatus={changeTaskStatus}
+            changeTaskTitle={changeTaskTitle}
             key={t.id}
           />
         ))}
@@ -133,18 +155,4 @@ export type PropsType = {
   tasks: Array<TaskType>;
   filter: FilterValueType;
   entityStatus: RequestStatusType;
-  removeTask: (params: { taskId: string; todolistId: string }) => void;
-  changeTodoListFilter: (params: {
-    key: FilterValueType;
-    todolistId: string;
-  }) => void;
-  addTask: (params: { title: string; todolistId: string }) => void;
-  changeTaskStatus: (
-    id: string,
-    status: TaskStatuses,
-    todolistId: string
-  ) => void;
-  changeTaskTitle: (tID: string, title: string, todolistId: string) => void;
-  removeTodoList: (params: { todolistId: string }) => void;
-  changeTodoListTitle: (params: { title: string; todolistId: string }) => void;
 };
