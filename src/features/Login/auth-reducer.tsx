@@ -76,7 +76,12 @@ export const logoutTC = createAsyncThunk(
   }
 );
 
-const slice = createSlice({
+export const asyncActions = {
+  loginTC,
+  logoutTC,
+};
+
+export const slice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: false,
@@ -96,7 +101,7 @@ const slice = createSlice({
   },
 });
 
-export const { setIsLoggedInAC } = slice.actions;
+const { setIsLoggedInAC } = slice.actions;
 export const authReducer = slice.reducer;
 
 // * init state

@@ -14,6 +14,7 @@ import { useAppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { FormikErrorType } from "../../api/todolist-api";
 import { selectIsLoggedIn } from "./selectors";
+import { authActions } from "./index";
 
 type FormValuesType = {
   email: string;
@@ -23,7 +24,6 @@ type FormValuesType = {
 
 export const Login = () => {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate(); // * Test hook
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -46,23 +46,16 @@ export const Login = () => {
       return errors;
     },
     onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
-      const action = await dispatch(loginTC(values));
+      const action = await dispatch(authActions.loginTC(values));
       if (loginTC.rejected.match(action)) {
         if (action.payload?.fieldsErrors?.length) {
           const error = action.payload.fieldsErrors[0];
           formikHelpers.setFieldError(error.field, error.error);
         }
       }
-      // if (res === 'bad') show error
-      // formik.resetForm();
     },
   });
 
-  // formik.setFieldValue('email', 'value')
-
-  // if (isLoggedIn) {
-  //   return <Navigate to={"/"} />;
-  // }
   if (isLoggedIn) navigate("/");
 
   return (
@@ -88,15 +81,8 @@ export const Login = () => {
               <TextField
                 label="Email"
                 margin="normal"
-                // name="email"
-                // onChange={formik.handleChange}
-                // value={formik.values.email}
-                // onBlur={formik.handleBlur}
                 {...formik.getFieldProps("email")}
               />
-              {/*{formik.touched.email && formik.errors.email ? (*/}
-              {/*  <div style={{ color: "red" }}>{formik.errors.email}</div>*/}
-              {/*) : null}       */}
 
               {formik.touched.email && formik.errors.email && (
                 <div style={{ color: "red" }}>{formik.errors.email}</div>
@@ -105,10 +91,6 @@ export const Login = () => {
                 type="password"
                 label="Password"
                 margin="normal"
-                // name="password"
-                // onChange={formik.handleChange}
-                // value={formik.values.password}
-                // onBlur={formik.handleBlur}
                 {...formik.getFieldProps("password")}
               />
               {formik.touched.password && formik.errors.password ? (

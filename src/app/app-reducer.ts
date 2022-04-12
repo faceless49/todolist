@@ -11,7 +11,7 @@ const initialState = {
   isInitialized: false,
 };
 
-export const initializeAppTC = createAsyncThunk(
+const initializeAppTC = createAsyncThunk(
   "app/initializeApp",
   async (param, thunkAPI) => {
     const res = await authAPI.me();
@@ -20,6 +20,10 @@ export const initializeAppTC = createAsyncThunk(
     }
   }
 );
+
+export const asyncActions = {
+  initializeAppTC,
+};
 
 const slice = createSlice({
   name: "app",

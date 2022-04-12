@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./App.module.scss";
-import { TodolistsList } from "../features/TodolistsList/TodolistsList";
+import { TodolistsList } from "../features/TodolistsList";
 import Menu from "@mui/icons-material/Menu";
 import LinearProgress from "@mui/material/LinearProgress";
 import AppBar from "@mui/material/AppBar";
@@ -12,10 +12,10 @@ import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TaskType } from "../api/todolist-api";
 import { useAppSelector } from "./store";
-import { initializeAppTC, RequestStatusType } from "./app-reducer";
+import { asyncActions, RequestStatusType } from "./app-reducer";
 import { useDispatch } from "react-redux";
 import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
-import { Login } from "../features/Login/Login";
+import { Login } from "../features/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { logoutTC } from "../features/Login/auth-reducer";
 import { authSelectors } from "../features/Login";
@@ -35,7 +35,7 @@ function AppWithRedux() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initializeAppTC());
+    dispatch(asyncActions.initializeAppTC());
   }, []);
 
   const logoutHandler = () => dispatch(logoutTC());

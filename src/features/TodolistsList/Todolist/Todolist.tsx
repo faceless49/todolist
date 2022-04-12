@@ -9,6 +9,11 @@ import { Delete } from "@mui/icons-material";
 import { RequestStatusType } from "../../../app/app-reducer";
 import { useActions } from "../../../app/store";
 import { tasksActions, todolistsActions } from "../index";
+import {
+  ButtonPropsColorOverrides,
+  ButtonTypeMap,
+} from "@mui/material/Button/Button";
+import { OverridableStringUnion } from "@mui/types";
 
 export const Todolist = React.memo((props: PropsType) => {
   const {
@@ -84,6 +89,27 @@ export const Todolist = React.memo((props: PropsType) => {
     );
   }
 
+  const renderFilterButton = (
+    onClick: () => void,
+    buttonFilter: FilterValueType,
+    color: OverridableStringUnion<
+      "inherit" | "primary" | "secondary" | "success",
+      ButtonPropsColorOverrides
+    >,
+    text: string
+  ) => {
+    return (
+      <Button
+        size={"small"}
+        color={color}
+        onClick={onClick}
+        variant={props.filter === buttonFilter ? "outlined" : "text"}
+      >
+        {text}
+      </Button>
+    );
+  };
+
   return (
     <div>
       <h3>
@@ -118,32 +144,19 @@ export const Todolist = React.memo((props: PropsType) => {
       </ul>
 
       <div>
-        <Button
-          size={"small"}
-          variant={"contained"}
-          color={props.filter === "All" ? "secondary" : "primary"}
-          onClick={onAllClickHandler}
-        >
-          All
-        </Button>
-
-        <Button
-          size={"small"}
-          color={props.filter === "Active" ? "secondary" : "primary"}
-          onClick={onActiveClickHandler}
-          variant={"contained"}
-        >
-          Active
-        </Button>
-
-        <Button
-          size={"small"}
-          color={props.filter === "Completed" ? "secondary" : "primary"}
-          onClick={onCompletedClickHandler}
-          variant={"contained"}
-        >
-          Completed
-        </Button>
+        {renderFilterButton(onAllClickHandler, "All", "primary", "All")}
+        {renderFilterButton(
+          onActiveClickHandler,
+          "Active",
+          "primary",
+          "Active"
+        )}
+        {renderFilterButton(
+          onCompletedClickHandler,
+          "Completed",
+          "primary",
+          "Completed"
+        )}
       </div>
     </div>
   );
