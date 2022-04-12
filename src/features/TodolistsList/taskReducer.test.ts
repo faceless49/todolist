@@ -1,14 +1,14 @@
+import { tasksReducer } from "./taskReducer";
+
+import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
+import { TaskStateType } from "../../app/AppWithRedux";
 import {
   addTaskTC,
   fetchTasksTC,
   removeTaskTC,
-  tasksReducer,
   updateTaskTC,
-} from "./taskReducer";
-import { addTodolistTC, removeTodolistTC } from "./todolistsReducer";
-
-import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
-import { TaskStateType } from "../../app/AppWithRedux";
+} from "./tasks-actions";
+import { addTodolistTC, removeTodolistTC } from "./todolists-actions";
 
 let startState: TaskStateType = {};
 

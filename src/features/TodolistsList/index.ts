@@ -1,3 +1,4 @@
-import * as tasksAction from "./tasks-actions";
+import * as tasksActions from "./tasks-actions";
+import * as todolistsActions from "./todolists-actions";
 
-export { tasksAction };
+export { tasksActions, todolistsActions };
