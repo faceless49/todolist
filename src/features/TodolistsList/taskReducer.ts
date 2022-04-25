@@ -1,7 +1,8 @@
-import { TaskStateType } from "../../app/AppWithRedux";
 import {
+  FieldErrorType,
   TaskPriorities,
   TaskStatuses,
+  TaskType,
   todolistApi,
   UpdateTaskModelType,
 } from "../../api/todolist-api";
@@ -13,6 +14,8 @@ import {
 } from "../../utils/error-utils";
 import { AppRootStateType } from "../../app/store";
 import { asyncActions as asyncTodolistsActions } from "./todolistsReducer";
+import { TaskStateType } from "../../app/App";
+import { AxiosError } from "axios";
 
 const initialState: TaskStateType = {};
 
@@ -41,28 +44,37 @@ export const removeTask = createAsyncThunk(
     return { taskId: param.taskId, todolistId: param.todolistId };
   }
 );
-export const addTask = createAsyncThunk(
-  "task/addTaskTC",
-  async (
-    param: { title: string; todolistId: string },
-    { dispatch, rejectWithValue }
-  ) => {
-    dispatch(setAppStatusAC({ status: "loading" }));
-    try {
-      const res = await todolistApi.createTask(param.todolistId, param.title);
-      if (res.data.resultCode === ResponseStatusCodes.success) {
-        const task = res.data.data.item;
-        return task;
-      } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue({});
-      }
-    } catch (err) {
-      handleServerNetworkError(dispatch, { message: err.message });
-      return rejectWithValue({});
-    }
+export const addTask = createAsyncThunk<
+  TaskType,
+  { title: string; todolistId: string },
+  {
+    rejectValue: {
+      errors: Array<string>;
+      fieldsErrors?: Array<FieldErrorType>;
+    };
   }
-);
+>("task/addTaskTC", async (param, { dispatch, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: "loading" }));
+  try {
+    const res = await todolistApi.createTask(param.todolistId, param.title);
+    if (res.data.resultCode === ResponseStatusCodes.success) {
+      return res.data.data.item;
+    } else {
+      handleServerAppError(res.data, dispatch, false);
+      return rejectWithValue({
+        errors: res.data.messages,
+        fieldsErrors: res.data.fieldsErrors,
+      });
+    }
+  } catch (err) {
+    const error: AxiosError = err;
+    handleServerNetworkError(error, dispatch, false);
+    return rejectWithValue({
+      errors: [error.message],
+      fieldsErrors: undefined,
+    });
+  }
+});
 export const updateTask = createAsyncThunk(
   "task/updateTaskTC",
   async (

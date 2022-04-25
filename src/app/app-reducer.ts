@@ -1,7 +1,7 @@
 import { authAPI } from "../api/todolist-api";
-import { setIsLoggedInAC } from "../features/Login/auth-reducer";
 import { ResponseStatusCodes } from "../features/TodolistsList/todolistsReducer";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authActions } from "../features/Login";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -16,7 +16,7 @@ const initializeAppTC = createAsyncThunk(
   async (param, thunkAPI) => {
     const res = await authAPI.me();
     if (res.data.resultCode === ResponseStatusCodes.success) {
-      thunkAPI.dispatch(setIsLoggedInAC({ isLoggedIn: true }));
+      thunkAPI.dispatch(authActions.setIsLoggedInAC({ isLoggedIn: true }));
     }
   }
 );
@@ -49,3 +49,11 @@ const slice = createSlice({
 export const { setAppStatusAC, setAppErrorAC } = slice.actions;
 
 export const appReducer = slice.reducer;
+
+export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>;
+export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>;
+
+type ActionsType =
+  | SetAppErrorActionType
+  | SetAppStatusActionType
+  | ReturnType<typeof initializeAppTC>;

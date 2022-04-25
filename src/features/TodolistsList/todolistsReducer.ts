@@ -52,11 +52,11 @@ const addTodolist = createAsyncThunk(
       if (res.data.resultCode === ResponseStatusCodes.success) {
         return { todolist: res.data.data.item };
       } else {
-        handleServerAppError<{ item: TodolistType }>(res.data, dispatch);
+        handleServerAppError(res.data, dispatch);
         return rejectWithValue("Error");
       }
-    } catch (err) {
-      handleServerNetworkError(dispatch, err);
+    } catch (error) {
+      handleServerNetworkError(dispatch, error);
       return rejectWithValue("Error");
     } finally {
       dispatch(setAppStatusAC({ status: "succeeded" }));

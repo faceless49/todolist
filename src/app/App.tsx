@@ -25,7 +25,7 @@ export type TaskStateType = {
   [key: string]: Array<TaskType>;
 };
 
-function AppWithRedux() {
+function App() {
   const status = useAppSelector<RequestStatusType>(appSelectors.selectStatus);
   const isInitialized = useAppSelector<boolean>(
     appSelectors.selectIsInitialized
@@ -87,4 +87,4 @@ function AppWithRedux() {
   );
 }
 
-export default AppWithRedux;
+export default App;

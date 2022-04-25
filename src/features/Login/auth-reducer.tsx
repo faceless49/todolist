@@ -32,7 +32,6 @@ export const loginTC = createAsyncThunk<
   try {
     const res = await authAPI.login(param);
     if (res.data.resultCode === ResponseStatusCodes.success) {
-      // thunkAPI.dispatch(setIsLoggedInAC({ isLoggedIn: true }));
       thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
       return;
     } else {
@@ -43,9 +42,7 @@ export const loginTC = createAsyncThunk<
       });
     }
   } catch (err) {
-    // @ts-ignore
-    const error: AxiosError = err; //* TODO Support
-    // @ts-ignore
+    const error: AxiosError = err;
     handleServerAppError(error, thunkAPI.dispatch);
     return thunkAPI.rejectWithValue({
       errors: [error.message],
@@ -66,7 +63,10 @@ export const logoutTC = createAsyncThunk(
         return;
       } else {
         handleServerAppError(res.data, thunkAPI.dispatch);
-        return thunkAPI.rejectWithValue({});
+        return thunkAPI.rejectWithValue({
+          error: res.data.messages,
+          fieldsErrors: res.data.fieldsErrors,
+        });
       }
     } catch (err) {
       const error: AxiosError = err;
@@ -103,44 +103,3 @@ export const slice = createSlice({
 
 const { setIsLoggedInAC } = slice.actions;
 export const authReducer = slice.reducer;
-
-// * init state
-// const initialState = {
-//   isLoggedIn: false,
-// };
-
-// *thunks
-// export const loginTC_ = (data: LoginParamsType) => (dispatch: Dispatch) => {
-//   dispatch(setAppStatusAC({ status: "loading" }));
-//   authAPI
-//     .login(data)
-//     .then((res) => {
-//       if (res.data.resultCode === ResponseStatusCodes.success) {
-//         dispatch(setIsLoggedInAC({ isLoggedIn: true }));
-//         dispatch(setAppStatusAC({ status: "succeeded" }));
-//       } else {
-//         handleServerAppError(res.data, dispatch);
-//       }
-//     })
-//     .catch((error) => {
-//       handleServerAppError(error, dispatch);
-//     });
-// };
-
-// export const logoutTC_ = () => (dispatch: Dispatch) => {
-//   dispatch(setAppStatusAC({ status: "loading" }));
-//   authAPI
-//     .logout()
-//     .then((res) => {
-//       if (res.data.resultCode === ResponseStatusCodes.success) {
-//         dispatch(setIsLoggedInAC({ isLoggedIn: false }));
-//         dispatch(setAppStatusAC({ status: "succeeded" }));
-//         dispatch(clearTodosDataAC());
-//       } else {
-//         handleServerAppError(res.data, dispatch);
-//       }
-//     })
-//     .catch((error) => {
-//       handleServerNetworkError(error, dispatch(error));
-//     });
-// };

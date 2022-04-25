@@ -7,14 +7,16 @@ import React, {
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 
+export type AddItemFormSubmitHelperType = {
+  setError: (error: string) => void;
+  setTitle: (title: string) => void;
+};
 type AddItemFormPropsType = {
-  addItem: (newTitle: string) => void;
+  addItem: (newTitle: string, helpers?: AddItemFormSubmitHelperType) => void;
   disabled?: boolean;
 };
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-  // Обернули в хок, но у нас в пропсах addItem callback, поэтому перерисовка все равно произойдет
-
   let [title, setTitle] = useState("");
   let [error, setError] = useState<null | string>(null);
 
@@ -22,11 +24,10 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     setTitle(e.currentTarget.value);
   };
 
-  const onClickHandler = useCallback(() => {
+  const onClickHandler = useCallback(async () => {
     if (title) {
-      props.addItem(title.trim());
-      setTitle("");
-      setError(null);
+      props.addItem(title.trim(), { setError, setTitle });
+      setError(error.message);
     } else {
       setError("Title is required");
     }
