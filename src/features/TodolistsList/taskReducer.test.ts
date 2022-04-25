@@ -1,9 +1,9 @@
 import { tasksReducer } from "./taskReducer";
 
-import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
 import { TaskStateType } from "../../app/AppWithRedux";
 import { addTask, fetchTasks, removeTask, updateTask } from "./tasks-actions";
 import { addTodolist, removeTodolist } from "./todolists-actions";
+import { TaskPriorities, TaskStatuses } from "../../api/types";
 
 let startState: TaskStateType = {};
 

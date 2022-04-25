@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { TaskStatuses, TaskType } from "../../../api/todolist-api";
 import { FilterValueType } from "../todolistsReducer";
 import {
   AddItemForm,
@@ -9,11 +8,12 @@ import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { RequestStatusType } from "../../../app/app-reducer";
-import { useActions, useAppDispatch } from "../../../app/store";
+import { RequestStatusType } from "../../Application/app-reducer";
 import { tasksActions, todolistsActions } from "../index";
 import { ButtonPropsColorOverrides } from "@mui/material/Button/Button";
 import { OverridableStringUnion } from "@mui/types";
+import { useActions, useAppDispatch } from "../../../utils/redux-utils";
+import { TaskStatuses, TaskType } from "../../../api/types";
 
 export const Todolist = React.memo((props: TodolistProps) => {
   const {
@@ -42,19 +42,19 @@ export const Todolist = React.memo((props: TodolistProps) => {
   );
 
   const addTaskCallback = useCallback(
-    async (title: string, helper: AddItemFormSubmitHelperType) => {
+    async (title: string, helpers: AddItemFormSubmitHelperType) => {
       let thunk = addTask({ title, todolistId: props.todolistId });
       const resultAction = await dispatch(thunk);
 
       if (addTask.rejected.match(resultAction)) {
         if (resultAction.payload?.errors?.length) {
           const errorMessage = resultAction.payload?.errors[0];
-          helper.setError(errorMessage);
+          helpers.setError(errorMessage);
         } else {
-          helper.setError("Some error occured");
+          helpers.setError("Some error occured");
         }
       } else {
-        helper.setTitle("");
+        helpers.setTitle("");
       }
     },
     []

@@ -9,12 +9,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { FormikHelpers, useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { loginTC } from "./auth-reducer";
-import { useAppDispatch } from "../../app/store";
+import { login } from "./auth-reducer";
 import { useNavigate } from "react-router-dom";
-import { FormikErrorType } from "../../api/todolist-api";
 import { selectIsLoggedIn } from "./selectors";
 import { authActions } from "./index";
+import { useAppDispatch } from "../../utils/redux-utils";
+import { FormikErrorType } from "../../api/types";
 
 type FormValuesType = {
   email: string;
@@ -47,7 +47,7 @@ export const Login = () => {
     },
     onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
       const action = await dispatch(authActions.loginTC(values));
-      if (loginTC.rejected.match(action)) {
+      if (login.rejected.match(action)) {
         if (action.payload?.fieldsErrors?.length) {
           const error = action.payload.fieldsErrors[0];
           formikHelpers.setFieldError(error.field, error.error);

@@ -2,10 +2,10 @@ import { Provider } from "react-redux";
 import React from "react";
 import { v1 } from "uuid";
 import { combineReducers, createStore } from "redux";
-import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
 import { todolistsReducer } from "../features/TodolistsList/todolistsReducer";
 import { tasksReducer } from "../features/TodolistsList/taskReducer";
-import { AppRootStateType } from "../app/store";
+import { AppRootStateType } from "../utils/types";
+import { TaskPriorities, TaskStatuses } from "../api/types";
 
 // export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>
 // <Provider store={store}>{storyFn()}</Provider>

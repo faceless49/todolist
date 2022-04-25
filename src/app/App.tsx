@@ -10,16 +10,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
-import { TaskType } from "../api/todolist-api";
-import { useAppSelector } from "./store";
-import { asyncActions, RequestStatusType } from "./app-reducer";
-import { useDispatch } from "react-redux";
 import { ErrorSnackbar } from "../components/ui/ErrorSnackbar/ErrorSnackbar";
-import { Login } from "../features/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC } from "../features/Login/auth-reducer";
+import { authActions, Login } from "../features/Login/";
 import { authSelectors } from "../features/Login";
-import { appSelectors } from "./index";
+import { appSelectors, RequestStatusType } from "../features/Application";
+import { useActions, useAppSelector } from "../utils/redux-utils";
+import { TaskType } from "../api/types";
+import { appActions } from "../features/Application/";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -32,13 +30,14 @@ function App() {
   );
   const isLoggedIn = useAppSelector<boolean>(authSelectors.selectIsLoggedIn);
 
-  const dispatch = useDispatch();
+  const { logoutTC } = useActions(authActions);
+  const { initializeApp } = useActions(appActions);
 
   useEffect(() => {
-    dispatch(asyncActions.initializeAppTC());
+    initializeApp();
   }, []);
 
-  const logoutHandler = () => dispatch(logoutTC());
+  const logoutHandler = () => logoutTC();
 
   if (!isInitialized) {
     return (

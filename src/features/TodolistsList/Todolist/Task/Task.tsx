@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useCallback } from "react";
-import { TaskStatuses, TaskType } from "../../../../api/todolist-api";
 import { EditableSpan } from "../../../../components/ui/editableSpan/EditableSpan";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import styles from "./Task.module.scss";
-import { useActions } from "../../../../app/store";
 import { tasksActions } from "../../index";
+import { useActions } from "../../../../utils/redux-utils";
+import { TaskStatuses, TaskType } from "../../../../api/types";
 
 type TaskPropsType = {
   task: TaskType;

@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { TodolistDomainType } from "./todolistsReducer";
-import { AppRootStateType, useActions } from "../../app/store";
-import { AddItemForm } from "../../components/ui/addItemForm/AddItemForm";
+import {, AddItemFormSubmitHelperType
+  AddItemForm,
+  AddItemFormSubmitHelperType
+} from '../../components/ui/addItemForm/AddItemForm';
 import { Todolist } from "./Todolist/Todolist";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -10,6 +12,8 @@ import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "../Login/selectors";
 import { todolistsActions } from "./index";
 import { TaskStateType } from "../../app/App";
+import {useActions, useAppDispatch} from '../../utils/redux-utils';
+import {AppRootStateType} from '../../utils/types';
 
 export const TodolistsList: React.FC = (props) => {
   useEffect(() => {
@@ -21,6 +25,8 @@ export const TodolistsList: React.FC = (props) => {
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
+  const dispatch = useAppDispatch()
+
   const { fetchTodolists, addTodolist } = useActions(todolistsActions);
 
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
@@ -30,9 +36,21 @@ export const TodolistsList: React.FC = (props) => {
     (state) => state.tasks
   );
 
-  const addTodolistCallback = useCallback(async (title: string) => {
-    addTodolist(title);
-  }, []);
+  const addTodolistCallback = useCallback(async (title: string, helpers: AddItemFormSubmitHelperType) => {
+    let thunk = addTodolist(title)
+    const resultAction = await dispatch(thunk)
+
+    if (addTodolist.rejected.match(resultAction)) {
+      if (resultAction.payload?.errors?.length) {
+        const errorMessage = resultAction.payload?.errors[0]
+        helpers.setError(errorMessage)
+      } else {
+        helpers.setError('Some error occured')
+      }
+    } else {
+      helpers.setTitle('')
+    }
+  }, [])
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
