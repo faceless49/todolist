@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
 import { ResponseType } from "../api/types";
-import { appActions } from "../features/CommonActions/ApplicationCommonActions";
+import { appActions } from "../features/CommonActions/AppCommonActions";
+import { AxiosError } from "axios";
 
 export const handleAsyncServerAppError = <D>(
   data: ResponseType<D>,
@@ -22,22 +22,22 @@ export const handleAsyncServerAppError = <D>(
 };
 
 export const handleAsyncServerNetworkError = (
-  error: AxiosError,
+  error: AxiosError | unknown,
   thunkAPI: ThunkAPIType,
   showError = true
 ) => {
-  if (showError) {
+  if (showError && error instanceof AxiosError) {
     thunkAPI.dispatch(
       appActions.setAppError({
         error: error.message ? error.message : "Some error occurred",
       })
     );
+    thunkAPI.dispatch(appActions.setAppStatus({ status: "failed" }));
+    return thunkAPI.rejectWithValue({
+      errors: [error.message],
+      fieldsErrors: undefined,
+    });
   }
-  thunkAPI.dispatch(appActions.setAppStatus({ status: "failed" }));
-  return thunkAPI.rejectWithValue({
-    errors: [error.message],
-    fieldsErrors: undefined,
-  });
 };
 
 type ThunkAPIType = {

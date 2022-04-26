@@ -6,9 +6,9 @@ import {
   handleAsyncServerNetworkError,
 } from "../../utils/error-utils";
 import { AppRootStateType, ThunkError } from "../../utils/types";
-import { appActions } from "../CommonActions/ApplicationCommonActions";
 import { TodolistType } from "../../api/types";
 import { RequestStatusType } from "../Application";
+import { appActions } from "../CommonActions/AppCommonActions";
 
 export enum ResponseStatusCodes {
   success = 0,
@@ -34,7 +34,7 @@ const fetchTodolists = createAsyncThunk<
 });
 const removeTodolist = createAsyncThunk<
   { todolistId: string },
-  string,
+  { todolistId: string },
   ThunkError
 >(
   "todolist/removeTodolist",
@@ -131,7 +131,7 @@ export const slice = createSlice({
       );
       state[index].entityStatus = action.payload.entityStatus;
     },
-    clearTodosData: (state, action: PayloadAction) => {
+    clearTodosData: () => {
       return [];
     },
   },

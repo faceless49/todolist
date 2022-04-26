@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useState,
-} from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 
@@ -12,7 +7,7 @@ export type AddItemFormSubmitHelperType = {
   setTitle: (title: string) => void;
 };
 type AddItemFormPropsType = {
-  addItem: (newTitle: string, helpers?: AddItemFormSubmitHelperType) => void;
+  addItem: (newTitle: string, helpers: AddItemFormSubmitHelperType) => void;
   disabled?: boolean;
 };
 
@@ -24,21 +19,20 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     setTitle(e.currentTarget.value);
   };
 
-  const onClickHandler = useCallback(async () => {
-    if (title) {
-      props.addItem(title.trim(), { setError, setTitle });
-      setError(error.message);
+  const addItemHandler = async () => {
+    if (title.trim() !== "") {
+      props.addItem(title, { setError, setTitle });
     } else {
       setError("Title is required");
     }
-  }, [props, title]);
+  };
 
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null);
     }
     if (e.key === "Enter") {
-      onClickHandler();
+      addItemHandler();
     }
   };
 
@@ -58,7 +52,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
       <IconButton
         size={"small"}
         color={"primary"}
-        onClick={onClickHandler}
+        onClick={addItemHandler}
         disabled={props.disabled}
       >
         <AddBox />

@@ -8,12 +8,12 @@ import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/ui/editableSpan/EditableSpan";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { RequestStatusType } from "../../Application/app-reducer";
 import { tasksActions, todolistsActions } from "../index";
 import { ButtonPropsColorOverrides } from "@mui/material/Button/Button";
 import { OverridableStringUnion } from "@mui/types";
 import { useActions, useAppDispatch } from "../../../utils/redux-utils";
 import { TaskStatuses, TaskType } from "../../../api/types";
+import { RequestStatusType } from "../../Application";
 
 export const Todolist = React.memo((props: TodolistProps) => {
   const {

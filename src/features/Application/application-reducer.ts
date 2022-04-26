@@ -2,7 +2,7 @@ import { authAPI } from "../../api/todolist-api";
 import { ResponseStatusCodes } from "../TodolistsList/todolistsReducer";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authActions } from "../Login";
-import { appActions } from "../CommonActions/ApplicationCommonActions";
+import { appActions } from "../CommonActions/AppCommonActions";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 

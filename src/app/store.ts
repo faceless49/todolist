@@ -7,7 +7,7 @@ import { appReducer } from "../features/Application";
 
 export const rootReducer = combineReducers({
   tasks: tasksReducer,
-  todoLists: todolistsReducer,
+  todolists: todolistsReducer,
   app: appReducer,
   auth: authReducer,
 });

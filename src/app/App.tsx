@@ -30,14 +30,14 @@ function App() {
   );
   const isLoggedIn = useAppSelector<boolean>(authSelectors.selectIsLoggedIn);
 
-  const { logoutTC } = useActions(authActions);
+  const { logout } = useActions(authActions);
   const { initializeApp } = useActions(appActions);
 
   useEffect(() => {
     initializeApp();
   }, []);
 
-  const logoutHandler = () => logoutTC();
+  const logoutHandler = () => logout();
 
   if (!isInitialized) {
     return (

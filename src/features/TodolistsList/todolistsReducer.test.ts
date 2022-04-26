@@ -1,22 +1,21 @@
-import {
-  changeTodolistFilter,
-  FilterValueType,
-  TodolistDomainType,
-  todolistsReducer,
-} from "./todolistsReducer";
-
+import { FilterValueType, TodolistDomainType } from "./todolistsReducer";
+import { todolistsActions, todolistsReducer } from "./index";
 import { v1 } from "uuid";
-// @ts-ignore
-import { TodolistType } from "src/api/todolist-api";
-import {
-  addTodolist,
-  changeTodolistTitle,
-  fetchTodolists,
-  removeTodolist,
-} from "./todolists-actions";
+import { TodolistType } from "../../api/types";
+import { RequestStatusType } from "../Application";
 
 let todolistId1: string;
 let todolistId2: string;
+
+const {
+  changeTodolistFilter,
+  changeTodolistEntityStatus,
+  removeTodolist,
+  changeTodolistTitle,
+  fetchTodolists,
+  addTodolist,
+  clearTodosData,
+} = todolistsActions;
 
 let startState: Array<TodolistDomainType>;
 
@@ -59,11 +58,12 @@ test("correct todolist should be removed", () => {
 
 test("todolists should be added", () => {
   let payload = { todolists: startState };
-  const action = fetchTodolists.fulfilled(payload, "requestId");
+  const action = fetchTodolists.fulfilled(payload, "requestId", undefined);
   const endState = todolistsReducer([], action);
 
   expect(endState.length).toBe(2);
 });
+
 test("correct todolist should be added", () => {
   let todolist: TodolistType = {
     title: "New Todolist",
@@ -105,4 +105,18 @@ test("correct filter of todolist should be changed", () => {
 
   expect(endState[0].filter).toBe("All");
   expect(endState[1].filter).toBe(newFilter);
+});
+
+test("correct entity status of todolist should be changed", () => {
+  let newStatus: RequestStatusType = "loading";
+
+  const action = changeTodolistEntityStatus({
+    todolistId: todolistId2,
+    entityStatus: newStatus,
+  });
+
+  const endState = todolistsReducer(startState, action);
+
+  expect(endState[0].entityStatus).toBe("idle");
+  expect(endState[1].entityStatus).toBe(newStatus);
 });

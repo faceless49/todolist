@@ -9,11 +9,12 @@ export type MeResponseType = {
   email: string;
   login: string;
 };
-export type CommonResponseType<T = {}> = {
+
+export type ResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;
-  fieldsErrors: Array<string>;
-  data: T;
+  fieldsErrors?: Array<FieldErrorType>;
+  data: D;
 };
 export type TodolistType = {
   id: string;
@@ -55,12 +56,7 @@ export type GetTasksResponse = {
   items: Array<TaskType>;
 };
 export type FieldErrorType = { field: string; error: string };
-export type ResponseType<D = {}> = {
-  resultCode: number;
-  messages: Array<string>;
-  fieldsErrors?: Array<FieldErrorType>;
-  data: D;
-};
+
 export type UpdateTaskModelType = {
   title: string;
   description: string;

@@ -1,7 +1,6 @@
 import { AxiosResponse } from "axios";
 import { TodolistDomainType } from "../features/TodolistsList/todolistsReducer";
 import {
-  CommonResponseType,
   GetTasksResponse,
   LoginParamsType,
   MeResponseType,
@@ -16,22 +15,18 @@ import { instance } from "./apiConfig";
 export const todolistApi = {
   //* Todolist
   getTodolists() {
-    let promise = instance.get<Array<TodolistDomainType>>("todo-lists");
-    return promise;
+    return instance.get<Array<TodolistDomainType>>("todo-lists");
   },
   createTodo(title: string) {
-    return instance.post<CommonResponseType<{ item: TodolistType }>>(
-      "todo-lists",
-      {
-        title: title,
-      }
-    );
+    return instance.post<ResponseType<{ item: TodolistType }>>("todo-lists", {
+      title: title,
+    });
   },
   deleteTodolist(todolistId: string) {
-    return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`);
+    return instance.delete<ResponseType>(`todo-lists/${todolistId}`);
   },
   updateTodolistTitle(todolistId: string, title: string) {
-    return instance.put<CommonResponseType>(`todo-lists/${todolistId}`, {
+    return instance.put<ResponseType>(`todo-lists/${todolistId}`, {
       title,
     });
   },

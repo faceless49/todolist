@@ -6,7 +6,7 @@ import {
   handleAsyncServerAppError,
   handleAsyncServerNetworkError,
 } from "../../utils/error-utils";
-import { appActions } from "../CommonActions/ApplicationCommonActions";
+import { appActions } from "../CommonActions/AppCommonActions";
 
 enum ResponseStatusCodes {
   success = 0,
@@ -34,7 +34,7 @@ export const login = createAsyncThunk<
       return handleAsyncServerAppError(res.data, thunkAPI);
     }
   } catch (error) {
-    return handleAsyncServerAppError(error, thunkAPI);
+    return handleAsyncServerNetworkError(error, thunkAPI);
   }
 });
 
