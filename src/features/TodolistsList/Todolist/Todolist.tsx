@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { FilterValueType, TodolistDomainType } from "../todolistsReducer";
 import {
   AddItemForm,
@@ -13,6 +13,7 @@ import { ButtonPropsColorOverrides } from "@mui/material/Button/Button";
 import { OverridableStringUnion } from "@mui/types";
 import { useActions, useAppDispatch } from "../../../utils/redux-utils";
 import { TaskStatuses, TaskType } from "../../../api/types";
+import { fetchTasks } from "../taskReducer";
 
 export type TodolistProps = {
   todolist: TodolistDomainType;
@@ -27,6 +28,13 @@ export const Todolist = React.memo((props: TodolistProps) => {
   } = useActions(todolistsActions);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!props.tasks.length) {
+      fetchTasks(props.todolist.id);
+    }
+  }, []);
+
   const onClickRemoveTodoList = () =>
     removeTodolist({ todolistId: props.todolist.id });
 

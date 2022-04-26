@@ -28,7 +28,6 @@ export const TodolistsList: React.FC = (props) => {
   const tasks = useSelector<AppRootStateType, TaskStateType>(
     (state) => state.tasks
   );
-
   const addTodolistCallback = useCallback(
     async (title: string, helpers: AddItemFormSubmitHelperType) => {
       let thunk = todolistsActions.addTodolist(title);
