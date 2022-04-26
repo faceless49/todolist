@@ -114,6 +114,7 @@ export const updateTask = createAsyncThunk(
     );
     try {
       if (res.data.resultCode === ResponseStatusCodes.success) {
+        thunkAPI.dispatch(appActions.setAppStatus({ status: "succeeded" }));
         return param;
       } else {
         return handleAsyncServerAppError(res.data, thunkAPI);
