@@ -7,6 +7,7 @@ import {
   handleAsyncServerNetworkError,
 } from "../../utils/error-utils";
 import { appActions } from "../CommonActions/AppCommonActions";
+import { AxiosError } from "axios";
 
 enum ResponseStatusCodes {
   success = 0,
@@ -34,7 +35,8 @@ export const login = createAsyncThunk<
       return handleAsyncServerAppError(res.data, thunkAPI);
     }
   } catch (error) {
-    return handleAsyncServerNetworkError(error, thunkAPI);
+    if (error instanceof AxiosError)
+      return handleAsyncServerNetworkError(error, thunkAPI);
   }
 });
 
@@ -52,7 +54,8 @@ export const logout = createAsyncThunk(
         return handleAsyncServerAppError(res.data, thunkAPI);
       }
     } catch (error) {
-      return handleAsyncServerNetworkError(error, thunkAPI);
+      if (error instanceof AxiosError)
+        return handleAsyncServerNetworkError(error, thunkAPI);
     }
   }
 );

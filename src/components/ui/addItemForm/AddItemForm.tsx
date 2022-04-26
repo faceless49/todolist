@@ -45,7 +45,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         size={"small"}
         onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
-        error={!!error} // ! TODO: Use StyleComponent later for text required
+        error={!!error}
         helperText={error}
         disabled={props.disabled}
       />

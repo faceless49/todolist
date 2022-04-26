@@ -9,6 +9,7 @@ import { AppRootStateType, ThunkError } from "../../utils/types";
 import { TodolistType } from "../../api/types";
 import { RequestStatusType } from "../Application";
 import { appActions } from "../CommonActions/AppCommonActions";
+import { AxiosError } from "axios";
 
 export enum ResponseStatusCodes {
   success = 0,
@@ -29,7 +30,8 @@ const fetchTodolists = createAsyncThunk<
     thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
     return { todolists: res.data };
   } catch (error) {
-    return handleAsyncServerNetworkError(error, thunkAPI);
+    if (error instanceof AxiosError)
+      return handleAsyncServerNetworkError(error, thunkAPI);
   }
 });
 const removeTodolist = createAsyncThunk<
@@ -51,7 +53,8 @@ const removeTodolist = createAsyncThunk<
       thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
       return { todolistId: param.todolistId };
     } catch (error) {
-      return handleAsyncServerNetworkError(error, thunkAPI);
+      if (error instanceof AxiosError)
+        return handleAsyncServerNetworkError(error, thunkAPI);
     }
   }
 );
@@ -61,15 +64,17 @@ const addTodolist = createAsyncThunk<
   ThunkError
 >("todolist/addTodolist", async (title, thunkAPI) => {
   thunkAPI.dispatch(setAppStatus({ status: "loading" }));
-  const res = await todolistApi.createTodo(title);
   try {
+    const res = await todolistApi.createTodo(title);
     if (res.data.resultCode === ResponseStatusCodes.success) {
+      thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
       return { todolist: res.data.data.item };
     } else {
       return handleAsyncServerAppError(res.data, thunkAPI, false);
     }
   } catch (error) {
-    return handleAsyncServerNetworkError(error, thunkAPI, false);
+    if (error instanceof AxiosError)
+      return handleAsyncServerNetworkError(error, thunkAPI, false);
   }
 });
 const changeTodolistTitle = createAsyncThunk(
@@ -94,7 +99,8 @@ const changeTodolistTitle = createAsyncThunk(
         return handleAsyncServerAppError(res.data, thunkAPI, false);
       }
     } catch (error) {
-      return handleAsyncServerNetworkError(error, thunkAPI, false);
+      if (error instanceof AxiosError)
+        return handleAsyncServerNetworkError(error, thunkAPI, false);
     }
   }
 );

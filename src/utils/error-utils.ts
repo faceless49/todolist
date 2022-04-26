@@ -20,24 +20,24 @@ export const handleAsyncServerAppError = <D>(
     fieldsErrors: data.fieldsErrors,
   });
 };
-
 export const handleAsyncServerNetworkError = (
-  error: AxiosError | unknown,
+  error: AxiosError,
   thunkAPI: ThunkAPIType,
   showError = true
 ) => {
-  if (showError && error instanceof AxiosError) {
+  if (showError) {
     thunkAPI.dispatch(
       appActions.setAppError({
         error: error.message ? error.message : "Some error occurred",
       })
     );
-    thunkAPI.dispatch(appActions.setAppStatus({ status: "failed" }));
-    return thunkAPI.rejectWithValue({
-      errors: [error.message],
-      fieldsErrors: undefined,
-    });
   }
+  thunkAPI.dispatch(appActions.setAppStatus({ status: "failed" }));
+
+  return thunkAPI.rejectWithValue({
+    errors: [error.message],
+    fieldsErrors: undefined,
+  });
 };
 
 type ThunkAPIType = {

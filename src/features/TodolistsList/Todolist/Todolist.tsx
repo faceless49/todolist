@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { FilterValueType } from "../todolistsReducer";
+import { FilterValueType, TodolistDomainType } from "../todolistsReducer";
 import {
   AddItemForm,
   AddItemFormSubmitHelperType,
@@ -13,7 +13,11 @@ import { ButtonPropsColorOverrides } from "@mui/material/Button/Button";
 import { OverridableStringUnion } from "@mui/types";
 import { useActions, useAppDispatch } from "../../../utils/redux-utils";
 import { TaskStatuses, TaskType } from "../../../api/types";
-import { RequestStatusType } from "../../Application";
+
+export type TodolistProps = {
+  todolist: TodolistDomainType;
+  tasks: Array<TaskType>;
+};
 
 export const Todolist = React.memo((props: TodolistProps) => {
   const {
@@ -22,31 +26,32 @@ export const Todolist = React.memo((props: TodolistProps) => {
     changeTodolistTitle,
   } = useActions(todolistsActions);
 
-  const { addTask } = useActions(tasksActions);
-
   const dispatch = useAppDispatch();
   const onClickRemoveTodoList = () =>
-    removeTodolist({ todolistId: props.todolistId });
+    removeTodolist({ todolistId: props.todolist.id });
 
   const changeTodoListTitle = useCallback(
     (title: string) => {
-      changeTodolistTitle({ title, todolistId: props.todolistId });
+      changeTodolistTitle({ title, todolistId: props.todolist.id });
     },
-    [props.todolistId]
+    [props.todolist.id]
   );
 
   const onFilterButtonClickHandler = useCallback(
     (filter: FilterValueType) =>
-      changeTodolistFilter({ key: filter, todolistId: props.todolistId }),
-    [props.todolistId]
+      changeTodolistFilter({ key: filter, todolistId: props.todolist.id }),
+    [props.todolist.id]
   );
 
   const addTaskCallback = useCallback(
     async (title: string, helpers: AddItemFormSubmitHelperType) => {
-      let thunk = addTask({ title, todolistId: props.todolistId });
+      let thunk = tasksActions.addTask({
+        title,
+        todolistId: props.todolist.id,
+      });
       const resultAction = await dispatch(thunk);
 
-      if (addTask.rejected.match(resultAction)) {
+      if (tasksActions.addTask.rejected.match(resultAction)) {
         if (resultAction.payload?.errors?.length) {
           const errorMessage = resultAction.payload?.errors[0];
           helpers.setError(errorMessage);
@@ -57,17 +62,17 @@ export const Todolist = React.memo((props: TodolistProps) => {
         helpers.setTitle("");
       }
     },
-    []
+    [props.todolist.id]
   );
 
   let allTodolistTasks = props.tasks;
 
-  if (props.filter === "Active") {
+  if (props.todolist.filter === "Active") {
     allTodolistTasks = allTodolistTasks.filter(
       (t) => t.status === TaskStatuses.New
     );
   }
-  if (props.filter === "Completed") {
+  if (props.todolist.filter === "Completed") {
     allTodolistTasks = allTodolistTasks.filter(
       (t) => t.status === TaskStatuses.Completed
     );
@@ -86,7 +91,7 @@ export const Todolist = React.memo((props: TodolistProps) => {
         size={"small"}
         color={color}
         onClick={() => onFilterButtonClickHandler(buttonFilter)}
-        variant={props.filter === buttonFilter ? "outlined" : "text"}
+        variant={props.todolist.filter === buttonFilter ? "outlined" : "text"}
       >
         {text}
       </Button>
@@ -96,13 +101,16 @@ export const Todolist = React.memo((props: TodolistProps) => {
   return (
     <div>
       <h3>
-        <EditableSpan title={props.title} changeTitle={changeTodoListTitle} />
+        <EditableSpan
+          title={props.todolist.title}
+          changeTitle={changeTodoListTitle}
+        />
 
         <IconButton
           onClick={onClickRemoveTodoList}
           size={"small"}
           color={"primary"}
-          disabled={props.entityStatus === "loading"}
+          disabled={props.todolist.entityStatus === "loading"}
         >
           <Delete />
         </IconButton>
@@ -110,12 +118,12 @@ export const Todolist = React.memo((props: TodolistProps) => {
 
       <AddItemForm
         addItem={addTaskCallback}
-        disabled={props.entityStatus === "loading"}
+        disabled={props.todolist.entityStatus === "loading"}
       />
 
       <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
         {allTodolistTasks.map((t: TaskType) => (
-          <Task task={t} todolistId={props.todolistId} key={t.id} />
+          <Task task={t} todolistId={props.todolist.id} key={t.id} />
         ))}
       </ul>
 
@@ -127,11 +135,3 @@ export const Todolist = React.memo((props: TodolistProps) => {
     </div>
   );
 });
-
-export type TodolistProps = {
-  todolistId: string;
-  title: string;
-  tasks: Array<TaskType>;
-  filter: FilterValueType;
-  entityStatus: RequestStatusType;
-};

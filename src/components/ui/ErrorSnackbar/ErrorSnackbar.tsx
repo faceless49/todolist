@@ -22,7 +22,7 @@ export function ErrorSnackbar() {
     }
     setAppError({ error: null });
   };
-  const isOpen = error! == null;
+  const isOpen = error !== null;
 
   return (
     <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>

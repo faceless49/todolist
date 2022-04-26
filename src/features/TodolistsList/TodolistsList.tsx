@@ -16,18 +16,11 @@ import { useActions, useAppDispatch } from "../../utils/redux-utils";
 import { AppRootStateType } from "../../utils/types";
 
 export const TodolistsList: React.FC = (props) => {
-  useEffect(() => {
-    if (!isLoggedIn) {
-      return;
-    }
-    fetchTodolists();
-  }, []);
-
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const dispatch = useAppDispatch();
 
-  const { fetchTodolists, addTodolist } = useActions(todolistsActions);
+  const { fetchTodolists } = useActions(todolistsActions);
 
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
     (state) => state.todolists
@@ -38,7 +31,7 @@ export const TodolistsList: React.FC = (props) => {
 
   const addTodolistCallback = useCallback(
     async (title: string, helpers: AddItemFormSubmitHelperType) => {
-      let thunk = addTodolist(title);
+      let thunk = todolistsActions.addTodolist(title);
       const resultAction = await dispatch(thunk);
 
       if (todolistsActions.addTodolist.rejected.match(resultAction)) {
@@ -55,10 +48,18 @@ export const TodolistsList: React.FC = (props) => {
     []
   );
 
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+    if (!todolists.length) {
+      fetchTodolists();
+    }
+  }, []);
+
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
-
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
@@ -69,13 +70,7 @@ export const TodolistsList: React.FC = (props) => {
           return (
             <Grid item key={tl.id}>
               <Paper style={{ padding: "10px" }} elevation={5}>
-                <Todolist
-                  todolistId={tl.id}
-                  title={tl.title}
-                  tasks={tasks[tl.id]}
-                  entityStatus={tl.entityStatus}
-                  filter={tl.filter}
-                />
+                <Todolist todolist={tl} tasks={tasks[tl.id]} />
               </Paper>
             </Grid>
           );
